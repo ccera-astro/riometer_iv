@@ -144,7 +144,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 604)</value>
+      <value>(0, 516)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -649,7 +649,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(848, 76)</value>
+      <value>(840, 108)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -747,7 +747,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(288, 608)</value>
+      <value>(104, 768)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -896,7 +896,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(168, 608)</value>
+      <value>(8, 680)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2449,7 +2449,7 @@ and then power calculated from the result</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(344, 704)</value>
+      <value>(248, 680)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2802,7 +2802,7 @@ and then power calculated from the result</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(456, 704)</value>
+      <value>(264, 768)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2849,7 +2849,7 @@ and then power calculated from the result</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(120, 704)</value>
+      <value>(8, 768)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2926,8 +2926,8 @@ def modified_fft(infft,prefix,refscale):
     
     indx = 0
     for v in infft:
-        if (abs(v-mode) &gt; 1.0):
-            outfft[indx] = mode+random.uniform(-0.25,0.25)
+        if (v-mode &gt; 1.5):
+            outfft[indx] = mode+random.uniform(-0.3,0.3)
         else:
             outfft[indx] = v
         indx += 1
@@ -3029,7 +3029,7 @@ def stash_ref(rv):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(1.0/frate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(0.5/frate))</value>
     </param>
     <param>
       <key>alias</key>
@@ -3080,7 +3080,7 @@ def stash_ref(rv):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(2.0/samp_rate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(1.0/samp_rate))</value>
     </param>
     <param>
       <key>alias</key>
@@ -3143,7 +3143,7 @@ def stash_ref(rv):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(224, 704)</value>
+      <value>(120, 680)</value>
     </param>
     <param>
       <key>_rotation</key>

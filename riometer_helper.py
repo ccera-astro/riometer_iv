@@ -36,8 +36,8 @@ def modified_fft(infft,prefix,refscale):
     
     indx = 0
     for v in infft:
-        if (abs(v-mode) > 1.0):
-            outfft[indx] = mode+random.uniform(-0.25,0.25)
+        if (v-mode > 1.5):
+            outfft[indx] = mode+random.uniform(-0.3,0.3)
         else:
             outfft[indx] = v
         indx += 1
