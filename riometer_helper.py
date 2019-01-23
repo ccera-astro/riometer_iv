@@ -7,11 +7,13 @@ avg_fft = [0.0]*128
 refval = -1.0
 last_time = time.time()
 seconds = 0
+current_ratio = 1.0
 def modified_fft(infft,prefix,refscale):
     global avg_fft
     global refval
     global last_time
     global seconds
+    global current_ratio
     dbdict = {}
     for v in infft:
         key = "%d" % v
@@ -36,7 +38,7 @@ def modified_fft(infft,prefix,refscale):
     
     indx = 0
     for v in infft:
-        if (v-mode > 1.5):
+        if (v-mode >= 2.0):
             outfft[indx] = mode+random.uniform(-0.3,0.3)
         else:
             outfft[indx] = v
@@ -46,14 +48,17 @@ def modified_fft(infft,prefix,refscale):
     if (len(avg_fft) != len(outfft)):
         avg_fft = list(outfft)
     
-    new_fft = numpy.multiply(outfft,[0.2]*len(outfft))
-    avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[0.8]*len(outfft)))
+    new_fft = numpy.multiply(outfft,[0.1]*len(outfft))
+    avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[0.9]*len(outfft)))
     
     #
     # For display purposes only
     #
-    outfft = numpy.add(avg_fft, [20.0]*len(avg_fft))
+    outfft = numpy.add(avg_fft, [15.0]*len(avg_fft))
     
+    #
+    # Update the seconds counter
+    #
     if ((time.time() - last_time) >= 1.0):
         last_time = time.time()
         seconds += 1
@@ -61,7 +66,10 @@ def modified_fft(infft,prefix,refscale):
         #
         # Power estimates
         #
-        if (seconds != 0 and (seconds % 2 == 0)):
+        #
+        # Every two seconds
+        #
+        if (seconds != 0 and (seconds % 1 == 0)):
             pvect = numpy.multiply(avg_fft, [0.1]*len(avg_fft))
             pvect = numpy.power([10.0]*len(avg_fft),pvect)
             pwr = numpy.sum(pvect)
@@ -77,10 +85,13 @@ def modified_fft(infft,prefix,refscale):
             rv = 1.0e-15 + rv
             fp.write ("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
             fp.write ("%.7f,%.7f,%.7f,%e\n" % (pwr, refval, pwr-rv, pwr/rv))
+            current_ratio = pwr/rv
             fp.close()
             
         #
         # Spectral
+        #
+        # Every 60 seconds
         #
         if (seconds != 0 and (seconds % 60 == 0)):
             fn = prefix+"spec-raw-"
@@ -111,3 +122,32 @@ def stash_ref(rv):
     global refval
     
     refval = rv
+
+stripchart = [0.0]*128
+def power_ratio(pace,siz,reftemp,tsys):
+	global stripchart
+	global current_ratio
+	
+	if (len(stripchart) != siz):
+		stripchart = [0.0]*siz
+	
+	#
+	# Need to find Sky temp that satisfies:
+	#
+	# ratio = (Tsky+Tsys)/(Tsys+reftemp)
+	#
+	X = tsys+reftemp
+	Tsky = (current_ratio*X)-tsys
+	
+	#
+	# Shift the "stripchart" buffer
+	#
+	for i in range(len(stripchart)-1,0,-1):
+		stripchart[i] = stripchart[i-1]
+	#
+	# Plonk the current Tsky value into the 0th position
+	#
+	stripchart[0] = Tsky
+	return (stripchart)
+	
+	
