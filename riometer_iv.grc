@@ -405,7 +405,7 @@ the excised FFT data</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1080, 324)</value>
+      <value>(1088, 332)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -697,7 +697,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(840, 324)</value>
+      <value>(872, 332)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3137,7 +3137,7 @@ and then power calculated from the result</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(752, 480)</value>
+      <value>(744, 432)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3243,7 +3243,7 @@ and then power calculated from the result</value>
     </param>
     <param>
       <key>value</key>
-      <value>300</value>
+      <value>297</value>
     </param>
   </block>
   <block>
@@ -3671,7 +3671,7 @@ def power_ratio(pace,siz,reftemp,tsys):
     </param>
     <param>
       <key>value</key>
-      <value>1000</value>
+      <value>1300</value>
     </param>
   </block>
   <connection>
