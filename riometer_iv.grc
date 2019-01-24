@@ -795,7 +795,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(264, 28)</value>
+      <value>(240, 60)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1106,7 +1106,7 @@ and then power calculated from the result</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(216, 108)</value>
+      <value>(248, 180)</value>
     </param>
     <param>
       <key>_rotation</key>
