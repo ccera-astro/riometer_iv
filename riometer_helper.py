@@ -8,12 +8,14 @@ refval = -1.0
 last_time = time.time()
 seconds = 0
 current_ratio = 1.0
+Tsky = 100.0
 def modified_fft(infft,prefix,refscale):
     global avg_fft
     global refval
     global last_time
     global seconds
     global current_ratio
+    global Tsky
     dbdict = {}
     for v in infft:
         key = "%d" % v
@@ -84,7 +86,7 @@ def modified_fft(infft,prefix,refscale):
             rv = refval * refscale
             rv = 1.0e-15 + rv
             fp.write ("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
-            fp.write ("%.7f,%.7f,%.7f,%e\n" % (pwr, refval, pwr-rv, pwr/rv))
+            fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, refval, pwr-rv, pwr/rv, Tsky))
             current_ratio = pwr/rv
             fp.close()
             
@@ -127,6 +129,7 @@ stripchart = [0.0]*128
 def power_ratio(pace,siz,reftemp,tsys):
 	global stripchart
 	global current_ratio
+	global Tsky
 	
 	if (len(stripchart) != siz):
 		stripchart = [0.0]*siz
