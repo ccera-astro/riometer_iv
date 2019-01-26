@@ -120,37 +120,40 @@ def modified_fft(infft,prefix,refscale):
     return (outfft)
     
             
-def stash_ref(rv):
+def do_reference(ref_fft):
     global refval
     
-    refval = rv
+    pvect = numpy.multiply(ref_fft, [0.1]*len(ref_fft))
+    pvect = numpy.power([10.0]*len(ref_fft),pvect)
+    refval = numpy.sum(pvect)
+    return ref_fft
 
 stripchart = [0.0]*128
 def power_ratio(pace,siz,reftemp,tsys):
-	global stripchart
-	global current_ratio
-	global Tsky
-	
-	if (len(stripchart) != siz):
-		stripchart = [0.0]*siz
-	
-	#
-	# Need to find Sky temp that satisfies:
-	#
-	# ratio = (Tsky+Tsys)/(Tsys+reftemp)
-	#
-	X = tsys+reftemp
-	Tsky = (current_ratio*X)-tsys
-	
-	#
-	# Shift the "stripchart" buffer
-	#
-	for i in range(len(stripchart)-1,0,-1):
-		stripchart[i] = stripchart[i-1]
-	#
-	# Plonk the current Tsky value into the 0th position
-	#
-	stripchart[0] = Tsky
-	return (stripchart)
-	
-	
+    global stripchart
+    global current_ratio
+    global Tsky
+    
+    if (len(stripchart) != siz):
+        stripchart = [0.0]*siz
+    
+    #
+    # Need to find Sky temp that satisfies:
+    #
+    # ratio = (Tsky+Tsys)/(Tsys+reftemp)
+    #
+    X = tsys+reftemp
+    Tsky = (current_ratio*X)-tsys
+    
+    #
+    # Shift the "stripchart" buffer
+    #
+    for i in range(len(stripchart)-1,0,-1):
+        stripchart[i] = stripchart[i-1]
+    #
+    # Plonk the current Tsky value into the 0th position
+    #
+    stripchart[0] = Tsky
+    return (stripchart)
+    
+    
