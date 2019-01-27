@@ -4,18 +4,21 @@ import math
 import numpy
 import random
 avg_fft = [0.0]*128
+peakhold = [0.0]*128
 refval = -1.0
 last_time = time.time()
 seconds = 0
 current_ratio = 1.0
 Tsky = 100.0
-def modified_fft(infft,prefix,refscale):
+
+def modified_fft(infft,prefix,refscale,rst):
     global avg_fft
     global refval
     global last_time
     global seconds
     global current_ratio
     global Tsky
+    global peakhold
     dbdict = {}
     for v in infft:
         key = "%d" % v
@@ -40,8 +43,8 @@ def modified_fft(infft,prefix,refscale):
     
     indx = 0
     for v in infft:
-        if (v-mode >= 2.0):
-            outfft[indx] = mode+random.uniform(-0.3,0.3)
+        if (v-mode >= 1.0):
+            outfft[indx] = mode+random.uniform(-0.4,0.4)
         else:
             outfft[indx] = v
         indx += 1
@@ -49,9 +52,18 @@ def modified_fft(infft,prefix,refscale):
     
     if (len(avg_fft) != len(outfft)):
         avg_fft = list(outfft)
+        peakhold = list(infft)
     
     new_fft = numpy.multiply(outfft,[0.1]*len(outfft))
     avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[0.9]*len(outfft)))
+    
+    if (rst):
+        for i in range(0,len(peakhold)):
+            peakhold[i] = infft[i]
+
+    for i in range(0,len(peakhold)):
+        if (infft[i] > peakhold[i]):
+            peakhold[i] = infft[i]
     
     #
     # For display purposes only
@@ -156,4 +168,9 @@ def power_ratio(pace,siz,reftemp,tsys):
     stripchart[0] = Tsky
     return (stripchart)
     
+def do_peak(pfft):
+    global peakhold
     
+    if (len(peakhold) != len(pfft)):
+        peakhold = [-140.0]*len(pfft)
+    return (peakhold)

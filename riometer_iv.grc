@@ -327,6 +327,53 @@
     </param>
   </block>
   <block>
+    <key>variable_qtgui_push_button</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(728, 864)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>reset_peak</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Reset Peak Hold</value>
+    </param>
+    <param>
+      <key>pressed</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>released</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>int</value>
+    </param>
+  </block>
+  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -420,7 +467,7 @@ the excised FFT data</value>
     </param>
     <param>
       <key>const</key>
-      <value>riometer_helper.modified_fft(fft_prober,prefix,refscale)</value>
+      <value>riometer_helper.modified_fft(fft_prober,prefix,refscale,reset_peak)</value>
     </param>
     <param>
       <key>affinity</key>
@@ -535,7 +582,7 @@ the excised FFT data</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(808, 220)</value>
+      <value>(808, 180)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -544,6 +591,57 @@ the excised FFT data</value>
     <param>
       <key>id</key>
       <value>blocks_add_const_vxx_0_1</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>fftsize</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_add_const_vxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>const</key>
+      <value>riometer_helper.do_peak(ref_prober)</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(576, 420)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_add_const_vxx_0_1_0</value>
     </param>
     <param>
       <key>type</key>
@@ -775,7 +873,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(872, 332)</value>
+      <value>(904, 332)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2933,11 +3031,11 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>color4</key>
-      <value>"black"</value>
+      <value>"magenta"</value>
     </param>
     <param>
       <key>label4</key>
-      <value></value>
+      <value>Peak Hold</value>
     </param>
     <param>
       <key>width4</key>
@@ -3037,7 +3135,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>nconnections</key>
-      <value>3</value>
+      <value>4</value>
     </param>
     <param>
       <key>ref_level</key>
@@ -3553,18 +3651,21 @@ import math
 import numpy
 import random
 avg_fft = [0.0]*128
+peakhold = [0.0]*128
 refval = -1.0
 last_time = time.time()
 seconds = 0
 current_ratio = 1.0
 Tsky = 100.0
-def modified_fft(infft,prefix,refscale):
+
+def modified_fft(infft,prefix,refscale,rst):
     global avg_fft
     global refval
     global last_time
     global seconds
     global current_ratio
     global Tsky
+    global peakhold
     dbdict = {}
     for v in infft:
         key = "%d" % v
@@ -3589,8 +3690,8 @@ def modified_fft(infft,prefix,refscale):
     
     indx = 0
     for v in infft:
-        if (v-mode &gt;= 2.0):
-            outfft[indx] = mode+random.uniform(-0.3,0.3)
+        if (v-mode &gt;= 1.0):
+            outfft[indx] = mode+random.uniform(-0.4,0.4)
         else:
             outfft[indx] = v
         indx += 1
@@ -3598,9 +3699,18 @@ def modified_fft(infft,prefix,refscale):
     
     if (len(avg_fft) != len(outfft)):
         avg_fft = list(outfft)
+        peakhold = list(infft)
     
     new_fft = numpy.multiply(outfft,[0.1]*len(outfft))
     avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[0.9]*len(outfft)))
+    
+    if (rst):
+        for i in range(0,len(peakhold)):
+            peakhold[i] = infft[i]
+
+    for i in range(0,len(peakhold)):
+        if (infft[i] &gt; peakhold[i]):
+            peakhold[i] = infft[i]
     
     #
     # For display purposes only
@@ -3705,7 +3815,12 @@ def power_ratio(pace,siz,reftemp,tsys):
     stripchart[0] = Tsky
     return (stripchart)
     
+def do_peak(pfft):
+    global peakhold
     
+    if (len(peakhold) != len(pfft)):
+        peakhold = [-140.0]*len(pfft)
+    return (peakhold)
 </value>
     </param>
     <param>
@@ -3872,11 +3987,11 @@ def power_ratio(pace,siz,reftemp,tsys):
     </param>
     <param>
       <key>type</key>
-      <value>intx</value>
+      <value>eng_float</value>
     </param>
     <param>
       <key>value</key>
-      <value>int(300e3)</value>
+      <value>300e3</value>
     </param>
   </block>
   <block>
@@ -3945,6 +4060,12 @@ def power_ratio(pace,siz,reftemp,tsys):
     <sink_key>2</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_add_const_vxx_0_1_0</source_block_id>
+    <sink_block_id>qtgui_vector_sink_f_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>3</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_complex_to_mag_squared_0</source_block_id>
     <sink_block_id>single_pole_iir_filter_xx_0</sink_block_id>
     <source_key>0</source_key>
@@ -3983,6 +4104,12 @@ def power_ratio(pace,siz,reftemp,tsys):
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
     <sink_block_id>blocks_add_const_vxx_0_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0_1_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
