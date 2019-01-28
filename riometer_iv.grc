@@ -346,7 +346,7 @@
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>4,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2947,7 +2947,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>0,0,3,5</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3031,7 +3031,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>color4</key>
-      <value>"magenta"</value>
+      <value>"dark red"</value>
     </param>
     <param>
       <key>label4</key>
@@ -3218,7 +3218,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value></value>
+      <value>5,0,3,5</value>
     </param>
     <param>
       <key>_rotation</key>
