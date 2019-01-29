@@ -54,8 +54,10 @@ def modified_fft(infft,prefix,refscale,rst):
         avg_fft = list(outfft)
         peakhold = list(infft)
     
-    new_fft = numpy.multiply(outfft,[0.1]*len(outfft))
-    avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[0.9]*len(outfft)))
+    alpha = 0.05
+    beta = 1.0-alpha
+    new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
+    avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[beta]*len(outfft)))
     
     if (rst):
         for i in range(0,len(peakhold)):
@@ -97,11 +99,11 @@ def modified_fft(infft,prefix,refscale,rst):
             fp = open(fn, "a")
             rv = refval * refscale
             rv = 1.0e-15 + rv
-            fp.write ("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
+            fp.write ("%02d,%02d,%02d" % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
             fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, refval, pwr-rv, pwr/rv, Tsky))
             current_ratio = pwr/rv
             fp.close()
-            
+        
         #
         # Spectral
         #
@@ -131,14 +133,25 @@ def modified_fft(infft,prefix,refscale,rst):
               
     return (outfft)
     
-            
+
+avg_rfft = [-220.0]*128
 def do_reference(ref_fft):
     global refval
+    global avg_rfft
+    
+    alpha = 0.1
+    beta = 1.0-alpha
+    
+    if (len(avg_rfft) != len(ref_fft)):
+        avg_rfft = list(ref_fft)
+    
+    tfft = numpy.multiply([alpha]*len(ref_fft),ref_fft)
+    avg_rfft = numpy.add(tfft,numpy.multiply([beta]*len(avg_rfft),avg_rfft))
     
     pvect = numpy.multiply(ref_fft, [0.1]*len(ref_fft))
     pvect = numpy.power([10.0]*len(ref_fft),pvect)
-    refval = numpy.sum(pvect)
-    return ref_fft
+    refval = (alpha*numpy.sum(pvect))+(beta*refval)
+    return avg_rfft
 
 stripchart = [0.0]*128
 def power_ratio(pace,siz,reftemp,tsys):
@@ -174,3 +187,20 @@ def do_peak(pfft):
     if (len(peakhold) != len(pfft)):
         peakhold = [-140.0]*len(pfft)
     return (peakhold)
+
+def annotate(prefix, reftemp, tsys, freq, bw, gain, notes):
+    fn = prefix+"annotation-"
+    ltp = time.gmtime(time.time())
+    
+    fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+    fn += ".csv"
+    
+    fp = open(fn, "a")
+    fp.write("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
+    fp.write("%.1f,%.1f," % (reftemp, tsys))
+    fp.write("%.1f,%.1f,%.1f," % (freq, bw, gain))
+    fp.write("%s\n" % notes)
+    fp.close()
+
+    
+    
