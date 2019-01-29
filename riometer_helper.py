@@ -99,7 +99,7 @@ def modified_fft(infft,prefix,refscale,rst):
             fp = open(fn, "a")
             rv = refval * refscale
             rv = 1.0e-15 + rv
-            fp.write ("%02d,%02d,%02d" % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
+            fp.write ("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
             fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, refval, pwr-rv, pwr/rv, Tsky))
             current_ratio = pwr/rv
             fp.close()
@@ -127,6 +127,17 @@ def modified_fft(infft,prefix,refscale,rst):
             
             fp = open(fn, "a")
             for v in avg_fft:
+                fp.write("%.2f," % v)
+            fp.write("\n")
+            fp.close()
+            
+            fn = prefix+"spec-peak-"
+            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+            fn += ".csv"
+            
+            fp = open(fn, "a")
+            fp.write("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
+            for v in peakhold:
                 fp.write("%.2f," % v)
             fp.write("\n")
             fp.close()
