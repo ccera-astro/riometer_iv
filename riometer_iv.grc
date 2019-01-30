@@ -30,7 +30,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 20)</value>
+      <value>(8, 4)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -93,7 +93,8 @@
     <key>variable</key>
     <param>
       <key>comment</key>
-      <value></value>
+      <value>Based on an empirical model of 
+Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -101,7 +102,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1152, 452)</value>
+      <value>(1200, 1268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -217,7 +218,7 @@
     <key>variable</key>
     <param>
       <key>comment</key>
-      <value></value>
+      <value>The FFT frame rate</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -688,7 +689,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(600, 1172)</value>
+      <value>(608, 1132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -715,7 +716,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 1100)</value>
+      <value>(608, 1068)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1192,7 +1193,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 28)</value>
+      <value>(672, 28)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1212,7 +1213,7 @@ to models.</value>
     </param>
     <param>
       <key>n</key>
-      <value>frate/5</value>
+      <value>frate/10</value>
     </param>
     <param>
       <key>type</key>
@@ -1263,7 +1264,7 @@ to models.</value>
     </param>
     <param>
       <key>n</key>
-      <value>frate/5</value>
+      <value>frate/10</value>
     </param>
     <param>
       <key>type</key>
@@ -1299,7 +1300,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(904, 332)</value>
+      <value>(800, 300)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1782,7 +1783,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>window</key>
-      <value>window.blackmanharris(fftsize)</value>
+      <value>win</value>
     </param>
   </block>
   <block>
@@ -1845,7 +1846,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>window</key>
-      <value>window.blackmanharris(fftsize)</value>
+      <value>win</value>
     </param>
   </block>
   <block>
@@ -2058,7 +2059,7 @@ displaying in a 24-hour display.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1032, 812)</value>
+      <value>(1000, 788)</value>
     </param>
     <param>
       <key>_rotation</key>
