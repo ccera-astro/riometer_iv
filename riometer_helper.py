@@ -213,5 +213,34 @@ def annotate(prefix, reftemp, tsys, freq, bw, gain, notes):
     fp.write("%s\n" % notes)
     fp.close()
 
-    
-    
+
+#
+# Because this little model is so damned useful
+#
+# We use it for automatically scaling the Sky temperature display
+#  (Assuming, of course, that all the other algebra is correct)
+#
+def tsky_model(freq):
+    a = ((freq/1.0e6)/39.0)
+    a = math.pow(a,-2.55)
+    a *= 9120.0
+    return a
+
+DAILY_MINUTES=1440
+minutes_chart = [0.0]*DAILY_MINUTES
+mtsky = -1
+mcounter = 0
+def minute_data(p):
+	global minutes_chart
+	global Tsky
+	global mtsky
+	global mcounter
+	
+	mtsky += Tsky
+	mcounter += 1
+	if ((mcounter % 60) == 0):
+		mtsky /= 60.0
+		minutes_chart = [mtsky]+minutes_chart[0:DAILY_MINUTES-1]
+		mtsky = 0.0
+
+	return minutes_chart
