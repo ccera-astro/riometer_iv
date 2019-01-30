@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1312, 260)</value>
+      <value>(1152, 452)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -490,7 +490,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1280, 20)</value>
+      <value>(1264, 20)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -502,7 +502,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>20</value>
+      <value>15</value>
     </param>
   </block>
   <block>
@@ -854,7 +854,7 @@ the excised FFT data</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(792, 476)</value>
+      <value>(752, 476)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2039,6 +2039,38 @@ at the same rate as the FFT</value>
     <param>
       <key>num_tabs</key>
       <value>2</value>
+    </param>
+  </block>
+  <block>
+    <key>note</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value>Provides for 60s-averaged data,
+displaying in a 24-hour display.</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1032, 812)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>note_0</value>
+    </param>
+    <param>
+      <key>note</key>
+      <value></value>
     </param>
   </block>
   <block>
@@ -3590,7 +3622,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1080, 100)</value>
+      <value>(1296, 92)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -4344,7 +4376,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>x_axis_label</key>
-      <value>"Hours"</value>
+      <value>"Time (Hours)"</value>
     </param>
     <param>
       <key>x_start</key>
