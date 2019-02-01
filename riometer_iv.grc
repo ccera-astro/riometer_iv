@@ -1126,7 +1126,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1152, 212)</value>
+      <value>(1160, 156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1332,7 +1332,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1184, 276)</value>
+      <value>(1192, 228)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1383,7 +1383,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1216, 348)</value>
+      <value>(1232, 300)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1567,7 +1567,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(624, 700)</value>
+      <value>(808, 644)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1606,8 +1606,7 @@ to models.</value>
     </param>
     <param>
       <key>comment</key>
-      <value>Just to produce a stream of zeros
-at the same rate as the FFT</value>
+      <value></value>
     </param>
     <param>
       <key>const</key>
@@ -1670,7 +1669,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(896, 28)</value>
+      <value>(1208, 28)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1721,7 +1720,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 628)</value>
+      <value>(1048, 636)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2074,7 +2073,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1536, 20)</value>
+      <value>(1496, 20)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4970,7 +4969,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1064, 644)</value>
+      <value>(1240, 652)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -5592,7 +5591,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(544, 628)</value>
+      <value>(552, 644)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -5916,6 +5915,33 @@ def impulses(p):
     </param>
   </block>
   <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(776, 276)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_sink_4</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>zeros</value>
+    </param>
+  </block>
+  <block>
     <key>virtual_source</key>
     <param>
       <key>comment</key>
@@ -5981,7 +6007,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(688, 44)</value>
+      <value>(992, 44)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6048,6 +6074,87 @@ def impulses(p):
     <param>
       <key>stream_id</key>
       <value>rfftmags</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(736, 372)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_5</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>zeros</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1032, 524)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_5_0</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>zeros</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(992, 388)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_5_0_0</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>zeros</value>
     </param>
   </block>
   <connection>
@@ -6118,31 +6225,7 @@ def impulses(p):
   </connection>
   <connection>
     <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_multiply_const_vxx_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_1_0</sink_block_id>
+    <sink_block_id>virtual_sink_4</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -6269,6 +6352,36 @@ def impulses(p):
   <connection>
     <source_block_id>virtual_source_4</source_block_id>
     <sink_block_id>single_pole_iir_filter_xx_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_5</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_5_0</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_5_0_0</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_5_0_0</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_5_0_0</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0_1_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
