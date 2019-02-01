@@ -129,7 +129,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1112, 1100)</value>
+      <value>(1224, 924)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -142,6 +142,33 @@ Sky Temp vs frequency</value>
     <param>
       <key>value</key>
       <value>riometer_helper.annotate(prefix, ireftemp, itsys, ifreq, samp_rate, igain, itsys_ref, ilnagain, note)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1320, 252)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ebw</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"%d" % ((samp_rate/1.0e3)*0.87)</value>
     </param>
   </block>
   <block>
@@ -261,7 +288,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>8,0,1,1</value>
+      <value>main@2:8,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -300,7 +327,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>8,1,1,1</value>
+      <value>main@2:8,1,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -339,7 +366,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@0:4,1,1,1</value>
+      <value>main@2:0,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -378,7 +405,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>8,3,1,1</value>
+      <value>main@2:8,3,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -444,7 +471,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>10,1,1,1</value>
+      <value>main@2:10,1,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -483,7 +510,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>10,2,1,1</value>
+      <value>main@2:10,2,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -522,7 +549,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@0:4,4,1,1</value>
+      <value>main@2:0,1,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -561,7 +588,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>8,2,1,1</value>
+      <value>main@2:8,2,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -600,7 +627,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>10,0,1,1</value>
+      <value>main@2:10,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -639,7 +666,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>9,0,1,5</value>
+      <value>main@2:9,0,1,5</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -752,7 +779,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(968, 1080)</value>
+      <value>(1088, 912)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -869,7 +896,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@0:4,3,1,1</value>
+      <value>main@2:0,3,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2445,7 +2472,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1344, 372)</value>
+      <value>(640, 1352)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -2509,7 +2536,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>label2</key>
-      <value>Tab 2</value>
+      <value>Parameters</value>
     </param>
     <param>
       <key>label3</key>
@@ -2541,7 +2568,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>num_tabs</key>
-      <value>2</value>
+      <value>3</value>
     </param>
   </block>
   <block>
@@ -2561,7 +2588,7 @@ displaying in a 24-hour display.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1000, 788)</value>
+      <value>(1104, 796)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2628,7 +2655,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(328, 316)</value>
+      <value>(392, 300)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3111,7 +3138,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>freq1</key>
-      <value>ifreq</value>
+      <value>ifreq+25e3</value>
     </param>
     <param>
       <key>gain_mode1</key>
@@ -4129,7 +4156,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@0:0,0,3,5</value>
+      <value>main@0:0,0,2,5</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4313,7 +4340,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>name</key>
-      <value>"Raw and Excised Spectrum: Bw=" + str(samp_rate/1.0e3)+"kHz"</value>
+      <value>"Raw and Excised Spectrum: Effective Bw=" + str(ebw)+"kHz"</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -4400,7 +4427,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@0:5,0,3,5</value>
+      <value>main@0:5,0,2,5</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4584,7 +4611,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>name</key>
-      <value>Apparent Sky Noise Temperature</value>
+      <value>Apparent Sky Noise Temperature (K)</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -4667,7 +4694,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1312, 636)</value>
+      <value>(1288, 660)</value>
     </param>
     <param>
       <key>gui_hint</key>
