@@ -193,10 +193,21 @@ def do_reference(ref_fft):
     return avg_rfft
 
 stripchart = [0.0]*128
-def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain):
+
+#
+# We can use this to "force" a known calibration point using the UI
+#
+# For example, if the user plugs in a 10,000K noise source, and
+#  Tsky is only reading 5000, this can be used to instantaneously
+#  calculate an adjustment factor
+#
+skyratio = 1.0
+
+def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
     global stripchart
     global current_ratio
     global Tsky
+    global skyratio
     
     if (len(stripchart) != siz):
         stripchart = [0.0]*siz
@@ -223,6 +234,11 @@ def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain):
     #
     Tsky /= math.pow(10.0, lnagain/10.0)
     
+    if (estimate > 0.0 and commit != 0):
+        skyratio = estimate/Tsky
+    
+    Tsky = Tsky * skyratio
+
     #
     # Shift the "stripchart" buffer
     #

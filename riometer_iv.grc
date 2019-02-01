@@ -10,7 +10,7 @@
     </param>
     <param>
       <key>window_size</key>
-      <value>1500,1500</value>
+      <value>1700,1700</value>
     </param>
     <param>
       <key>category</key>
@@ -873,6 +873,92 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
+    <key>variable_qtgui_entry</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(968, 1484)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>main@2:5,0,1,1</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>skyestimate</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Sky Temp Estimate</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>real</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_qtgui_push_button</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(816, 1464)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>main@2:5,1,1,1</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>temp_commit</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Commit Sky Temp</value>
+    </param>
+    <param>
+      <key>pressed</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>released</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>int</value>
+    </param>
+  </block>
+  <block>
     <key>variable_qtgui_label</key>
     <param>
       <key>comment</key>
@@ -1081,7 +1167,7 @@ the excised FFT data</value>
     </param>
     <param>
       <key>const</key>
-      <value>riometer_helper.power_ratio(pacer,fftsize,ireftemp,itsys,itsys_ref,ilnagain)</value>
+      <value>riometer_helper.power_ratio(pacer,fftsize,ireftemp,itsys,itsys_ref,ilnagain,skyestimate,temp_commit)</value>
     </param>
     <param>
       <key>affinity</key>
@@ -5367,10 +5453,21 @@ def do_reference(ref_fft):
     return avg_rfft
 
 stripchart = [0.0]*128
-def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain):
+
+#
+# We can use this to "force" a known calibration point using the UI
+#
+# For example, if the user plugs in a 10,000K noise source, and
+#  Tsky is only reading 5000, this can be used to instantaneously
+#  calculate an adjustment factor
+#
+skyratio = 1.0
+
+def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
     global stripchart
     global current_ratio
     global Tsky
+    global skyratio
     
     if (len(stripchart) != siz):
         stripchart = [0.0]*siz
@@ -5397,6 +5494,11 @@ def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain):
     #
     Tsky /= math.pow(10.0, lnagain/10.0)
     
+    if (estimate &gt; 0.0 and commit != 0):
+        skyratio = estimate/Tsky
+    
+    Tsky = Tsky * skyratio
+
     #
     # Shift the "stripchart" buffer
     #
