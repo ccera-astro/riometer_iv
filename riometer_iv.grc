@@ -288,7 +288,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:8,0,1,1</value>
+      <value>main@2:4,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -323,11 +323,11 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(848, 1084)</value>
+      <value>(1064, 1172)</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:8,1,1,1</value>
+      <value>main@2:1,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -405,7 +405,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:8,3,1,1</value>
+      <value>main@2:1,2,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -471,7 +471,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:10,1,1,1</value>
+      <value>main@2:3,0,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -510,7 +510,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:10,2,1,1</value>
+      <value>main@2:3,2,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -588,7 +588,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:8,2,1,1</value>
+      <value>main@2:1,1,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -627,7 +627,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:10,0,1,1</value>
+      <value>main@2:3,1,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -662,11 +662,11 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1112, 1172)</value>
+      <value>(1104, 1076)</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:9,0,1,5</value>
+      <value>main@2:2,0,1,5</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -896,7 +896,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:0,3,1,1</value>
+      <value>main@2:0,2,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
