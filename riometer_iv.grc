@@ -226,7 +226,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(0, 516)</value>
+      <value>(824, 948)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -245,7 +245,7 @@ Sky Temp vs frequency</value>
     <key>variable</key>
     <param>
       <key>comment</key>
-      <value>The FFT frame rate</value>
+      <value></value>
     </param>
     <param>
       <key>_enabled</key>
@@ -857,7 +857,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 108)</value>
+      <value>(104, 156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1178,7 +1178,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(784, 436)</value>
+      <value>(752, 436)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3970,7 +3970,9 @@ to models.</value>
     </param>
     <param>
       <key>comment</key>
-      <value></value>
+      <value>REF side is tuned slightly away
+from SKY side, to prevent any
+possible LO beating</value>
     </param>
     <param>
       <key>affinity</key>
@@ -5497,7 +5499,9 @@ def impulses(p):
     <param>
       <key>comment</key>
       <value>-- Data logging
--- RFI excision</value>
+-- RFI excision
+-- Conversion to noise temps
+-- Frequency vs sky noise model</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -6142,7 +6146,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(992, 388)</value>
+      <value>(992, 380)</value>
     </param>
     <param>
       <key>_rotation</key>
