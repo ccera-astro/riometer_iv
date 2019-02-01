@@ -102,7 +102,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1280, 1180)</value>
+      <value>(720, 948)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -129,7 +129,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1224, 924)</value>
+      <value>(792, 1068)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -156,7 +156,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1320, 252)</value>
+      <value>(1600, 252)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -195,7 +195,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1128, 16)</value>
+      <value>(1400, 888)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -253,7 +253,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 292)</value>
+      <value>(896, 1068)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -436,7 +436,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1096, 260)</value>
+      <value>(608, 1004)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -662,7 +662,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1104, 1076)</value>
+      <value>(1056, 1084)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -709,7 +709,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1264, 1080)</value>
+      <value>(1536, 976)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -740,7 +740,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1264, 20)</value>
+      <value>(704, 1068)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -779,7 +779,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1088, 912)</value>
+      <value>(1536, 888)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1079,7 +1079,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(488, 788)</value>
+      <value>(848, 852)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1110,8 +1110,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>comment</key>
-      <value>This gets updated at 5Hz with
-the excised FFT data</value>
+      <value></value>
     </param>
     <param>
       <key>const</key>
@@ -1127,7 +1126,7 @@ the excised FFT data</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1088, 332)</value>
+      <value>(1152, 212)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1179,7 +1178,7 @@ the excised FFT data</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(752, 476)</value>
+      <value>(784, 436)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1231,7 +1230,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1024, 532)</value>
+      <value>(1224, 516)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1282,7 +1281,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1032, 700)</value>
+      <value>(1248, 708)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1333,7 +1332,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(808, 180)</value>
+      <value>(1184, 276)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1384,7 +1383,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(576, 420)</value>
+      <value>(1216, 348)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1431,7 +1430,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(568, 164)</value>
+      <value>(496, 164)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1474,7 +1473,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(488, 564)</value>
+      <value>(248, 572)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1517,7 +1516,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(672, 28)</value>
+      <value>(520, 900)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1568,7 +1567,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(672, 692)</value>
+      <value>(624, 700)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1624,7 +1623,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(800, 300)</value>
+      <value>(768, 172)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1671,7 +1670,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 92)</value>
+      <value>(896, 28)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1773,7 +1772,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(240, 36)</value>
+      <value>(272, 52)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1824,7 +1823,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(312, 460)</value>
+      <value>(64, 684)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1875,7 +1874,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 852)</value>
+      <value>(864, 780)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1926,7 +1925,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(840, 844)</value>
+      <value>(1056, 772)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1977,7 +1976,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(256, 944)</value>
+      <value>(368, 1064)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2075,7 +2074,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(984, 12)</value>
+      <value>(1536, 20)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2122,7 +2121,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(416, 32)</value>
+      <value>(464, 24)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2185,7 +2184,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(232, 536)</value>
+      <value>(240, 656)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2218,6 +2217,33 @@ at the same rate as the FFT</value>
     <param>
       <key>window</key>
       <value>win</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(488, 236)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>foo</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>fftmags</value>
     </param>
   </block>
   <block>
@@ -2428,7 +2454,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(208, 96)</value>
+      <value>(248, 216)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2503,7 +2529,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(232, 312)</value>
+      <value>(248, 384)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2655,105 +2681,6 @@ at the same rate as the FFT</value>
     <param>
       <key>num_tabs</key>
       <value>3</value>
-    </param>
-  </block>
-  <block>
-    <key>note</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value>Provides for 60s-averaged data,
-displaying in a 24-hour display.</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1104, 796)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>note_0</value>
-    </param>
-    <param>
-      <key>note</key>
-      <value></value>
-    </param>
-  </block>
-  <block>
-    <key>note</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value>We produce a spectral estimate for
-the SKY side of things
-
-This is then processed through RFI excision,
-and then power calculated from the result</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(248, 180)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>note_1</value>
-    </param>
-    <param>
-      <key>note</key>
-      <value></value>
-    </param>
-  </block>
-  <block>
-    <key>note</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value>The REF side isn't processed for
-RFI excision--there shouldn't be any!!!</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(392, 300)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>note_1_0</value>
-    </param>
-    <param>
-      <key>note</key>
-      <value></value>
     </param>
   </block>
   <block>
@@ -4238,7 +4165,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1312, 92)</value>
+      <value>(1496, 76)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -4509,7 +4436,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1304, 460)</value>
+      <value>(1504, 452)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -4780,7 +4707,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1288, 660)</value>
+      <value>(1504, 660)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -5614,7 +5541,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 228)</value>
+      <value>(432, 780)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -5665,7 +5592,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(616, 612)</value>
+      <value>(544, 628)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -5880,6 +5807,249 @@ def impulses(p):
       <value>1300</value>
     </param>
   </block>
+  <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(672, 828)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_sink_0</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>decimags</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(488, 356)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_sink_1</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>f_ref</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(488, 300)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_sink_2</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>f_sky</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(480, 460)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_sink_3</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>rfftmags</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(40, 612)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_0</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>f_ref</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(328, 900)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_1</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>fftmags</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(688, 44)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_2</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>decimags</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(256, 116)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_3</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>f_sky</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(480, 548)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_4</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>rfftmags</value>
+    </param>
+  </block>
   <connection>
     <source_block_id>analog_const_source_x_0</source_block_id>
     <sink_block_id>blocks_stream_to_vector_1</sink_block_id>
@@ -5924,19 +6094,19 @@ def impulses(p):
   </connection>
   <connection>
     <source_block_id>blocks_complex_to_mag_squared_0</source_block_id>
-    <sink_block_id>single_pole_iir_filter_xx_0</sink_block_id>
+    <sink_block_id>foo</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_complex_to_mag_squared_0_0</source_block_id>
-    <sink_block_id>single_pole_iir_filter_xx_0_0</sink_block_id>
+    <sink_block_id>virtual_sink_3</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_keep_one_in_n_0</source_block_id>
-    <sink_block_id>blocks_nlog10_ff_0_0</sink_block_id>
+    <sink_block_id>virtual_sink_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -6038,13 +6208,13 @@ def impulses(p):
   </connection>
   <connection>
     <source_block_id>low_pass_filter_0</source_block_id>
-    <sink_block_id>blocks_stream_to_vector_0</sink_block_id>
+    <sink_block_id>virtual_sink_2</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>low_pass_filter_0_0</source_block_id>
-    <sink_block_id>blocks_stream_to_vector_0_0</sink_block_id>
+    <sink_block_id>virtual_sink_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -6069,6 +6239,36 @@ def impulses(p):
   <connection>
     <source_block_id>single_pole_iir_filter_xx_0_0</source_block_id>
     <sink_block_id>blocks_keep_one_in_n_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_0</source_block_id>
+    <sink_block_id>blocks_stream_to_vector_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_1</source_block_id>
+    <sink_block_id>single_pole_iir_filter_xx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_2</source_block_id>
+    <sink_block_id>blocks_nlog10_ff_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_3</source_block_id>
+    <sink_block_id>blocks_stream_to_vector_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_4</source_block_id>
+    <sink_block_id>single_pole_iir_filter_xx_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
