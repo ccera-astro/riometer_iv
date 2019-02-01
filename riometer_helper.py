@@ -4,6 +4,7 @@ import math
 import numpy
 import random
 avg_fft = [0.0]*128
+last_out = [0.0]*128
 peakhold = [0.0]*128
 refval = -1.0
 last_time = time.time()
@@ -11,7 +12,10 @@ seconds = 0
 current_ratio = 1.0
 Tsky = 100.0
 
-def modified_fft(infft,prefix,refscale,rst):
+impulse_events = 0
+
+impulse_count = 0
+def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     global avg_fft
     global refval
     global last_time
@@ -19,6 +23,10 @@ def modified_fft(infft,prefix,refscale,rst):
     global current_ratio
     global Tsky
     global peakhold
+    global last_out
+    global impulse_count
+    global impulse_events
+
     dbdict = {}
     for v in infft:
         key = "%d" % v
@@ -53,15 +61,35 @@ def modified_fft(infft,prefix,refscale,rst):
     if (len(avg_fft) != len(outfft)):
         avg_fft = list(outfft)
         peakhold = list(infft)
+        last_out = list(outfft)
     
-    alpha = 0.05
-    beta = 1.0-alpha
-    new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
-    avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[beta]*len(outfft)))
+    #
+    # Try to detect impulse noise, and reject it
+    #
+    if (impulse_count <= 0):
+        for i in range(0,len(outfft)):
+            if (abs(outfft[i]-last_out[i]) > thresh):
+                impulse_count = duration
+                impulse_events += 1
+                break
+    
+    #
+    # Update averages, etc only if we aren't in an impulse-noise
+    #    blanking interval
+    #
+    if (impulse_count <= 0):
+        alpha = 0.025
+        beta = 1.0-alpha
+        new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
+        avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[beta]*len(outfft)))
+    
+    last_out = list(outfft)
+    
+    if (impulse_count > 0):
+        impulse_count -= 1
     
     if (rst):
-        for i in range(0,len(peakhold)):
-            peakhold[i] = infft[i]
+        peakhold = list(infft)
 
     for i in range(0,len(peakhold)):
         if (infft[i] > peakhold[i]):
@@ -165,7 +193,7 @@ def do_reference(ref_fft):
     return avg_rfft
 
 stripchart = [0.0]*128
-def power_ratio(pace,siz,reftemp,tsys):
+def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain):
     global stripchart
     global current_ratio
     global Tsky
@@ -176,10 +204,24 @@ def power_ratio(pace,siz,reftemp,tsys):
     #
     # Need to find Sky temp that satisfies:
     #
-    # ratio = (Tsky+Tsys)/(Tsys+reftemp)
+    # ratio = (Tsky+Tsys)/(Tsys_ref+reftemp)
+    # X = (Tsys_ref+reftemp)
+    # ratio*X = (Tsky+Tsys)
+    # (ratio*X)-Tsys = Tsky
     #
-    X = tsys+reftemp
+    # We know the ratio from actual measurements,
+    #  and all the other parameters except Tsky
+    #  are available as fixed parameters (guesstimates)
+    #
+    #
+    X = tsys_ref+reftemp
     Tsky = (current_ratio*X)-tsys
+    
+    #
+    # We divide the apparent Tsky by any LNA gain that may be behind it,
+    #  but not in-common with the REF side of the house.
+    #
+    Tsky /= math.pow(10.0, lnagain/10.0)
     
     #
     # Shift the "stripchart" buffer
@@ -199,7 +241,7 @@ def do_peak(pfft):
         peakhold = [-140.0]*len(pfft)
     return (peakhold)
 
-def annotate(prefix, reftemp, tsys, freq, bw, gain, notes):
+def annotate(prefix, reftemp, tsys, freq, bw, gain, itsys_ref, lnagain, notes):
     fn = prefix+"annotation-"
     ltp = time.gmtime(time.time())
     
@@ -210,6 +252,7 @@ def annotate(prefix, reftemp, tsys, freq, bw, gain, notes):
     fp.write("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
     fp.write("%.1f,%.1f," % (reftemp, tsys))
     fp.write("%.1f,%.1f,%.1f," % (freq, bw, gain))
+    fp.write("%.1f,%.1f" % (itsys_ref, lnagain))
     fp.write("%s\n" % notes)
     fp.close()
 
@@ -231,16 +274,19 @@ minutes_chart = [0.0]*DAILY_MINUTES
 mtsky = -1
 mcounter = 0
 def minute_data(p):
-	global minutes_chart
-	global Tsky
-	global mtsky
-	global mcounter
-	
-	mtsky += Tsky
-	mcounter += 1
-	if ((mcounter % 60) == 0):
-		mtsky /= 60.0
-		minutes_chart = [mtsky]+minutes_chart[0:DAILY_MINUTES-1]
-		mtsky = 0.0
+    global minutes_chart
+    global Tsky
+    global mtsky
+    global mcounter
+    
+    mtsky += Tsky
+    mcounter += 1
+    if ((mcounter % 60) == 0):
+        mtsky /= 60.0
+        minutes_chart = [mtsky]+minutes_chart[0:DAILY_MINUTES-1]
+        mtsky = 0.0
 
-	return minutes_chart
+    return minutes_chart
+
+def impulses(p):
+    return impulse_events
