@@ -772,60 +772,6 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(464, 1068)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>refdecim</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>25</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(368, 1068)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>reffrate</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>(samp_rate/fftsize)/refdecim</value>
-    </param>
-  </block>
-  <block>
     <key>variable_qtgui_push_button</key>
     <param>
       <key>comment</key>
@@ -896,7 +842,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>srate</value>
+      <value>srate/decim</value>
     </param>
   </block>
   <block>
@@ -1714,7 +1660,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(240, 60)</value>
+      <value>(240, 36)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1765,7 +1711,7 @@ at the same rate as the FFT</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(248, 460)</value>
+      <value>(312, 460)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1900,6 +1846,53 @@ at the same rate as the FFT</value>
     <param>
       <key>vlen</key>
       <value>1440</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(256, 944)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>decim</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Input Decimation</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>intx</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>1</value>
     </param>
   </block>
   <block>
@@ -2287,6 +2280,156 @@ at the same rate as the FFT</value>
     </param>
   </block>
   <block>
+    <key>low_pass_filter</key>
+    <param>
+      <key>beta</key>
+      <value>6.76</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>cutoff_freq</key>
+      <value>samp_rate/2.10</value>
+    </param>
+    <param>
+      <key>decim</key>
+      <value>decim</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>fir_filter_ccf</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(208, 96)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>gain</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>low_pass_filter_0</value>
+    </param>
+    <param>
+      <key>interp</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>samp_rate</key>
+      <value>srate</value>
+    </param>
+    <param>
+      <key>width</key>
+      <value>samp_rate/7.0</value>
+    </param>
+    <param>
+      <key>win</key>
+      <value>firdes.WIN_HAMMING</value>
+    </param>
+  </block>
+  <block>
+    <key>low_pass_filter</key>
+    <param>
+      <key>beta</key>
+      <value>6.76</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>cutoff_freq</key>
+      <value>samp_rate/2.10</value>
+    </param>
+    <param>
+      <key>decim</key>
+      <value>decim</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>fir_filter_ccf</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(232, 312)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>gain</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>low_pass_filter_0_0</value>
+    </param>
+    <param>
+      <key>interp</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>samp_rate</key>
+      <value>srate</value>
+    </param>
+    <param>
+      <key>width</key>
+      <value>samp_rate/7.0</value>
+    </param>
+    <param>
+      <key>win</key>
+      <value>firdes.WIN_HAMMING</value>
+    </param>
+  </block>
+  <block>
     <key>qtgui_tab_widget</key>
     <param>
       <key>alias</key>
@@ -2485,7 +2628,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(248, 364)</value>
+      <value>(328, 316)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3900,7 +4043,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>sample_rate</key>
-      <value>samp_rate</value>
+      <value>srate</value>
     </param>
     <param>
       <key>sync</key>
@@ -3982,7 +4125,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1296, 92)</value>
+      <value>(1312, 92)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -4042,7 +4185,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>label2</key>
-      <value>Excised Sky</value>
+      <value>Excised (+15dB)</value>
     </param>
     <param>
       <key>width2</key>
@@ -4170,7 +4313,7 @@ RFI excision--there shouldn't be any!!!</value>
     </param>
     <param>
       <key>name</key>
-      <value>Raw and Excised Spectrum</value>
+      <value>"Raw and Excised Spectrum: Bw=" + str(samp_rate/1.0e3)+"kHz"</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -5464,7 +5607,7 @@ def impulses(p):
     </param>
     <param>
       <key>value</key>
-      <value>300e3</value>
+      <value>910e3</value>
     </param>
   </block>
   <block>
@@ -5765,14 +5908,26 @@ def impulses(p):
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>osmosdr_source_0</source_block_id>
+    <source_block_id>low_pass_filter_0</source_block_id>
     <sink_block_id>blocks_stream_to_vector_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>osmosdr_source_0</source_block_id>
+    <source_block_id>low_pass_filter_0_0</source_block_id>
     <sink_block_id>blocks_stream_to_vector_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>osmosdr_source_0</source_block_id>
+    <sink_block_id>low_pass_filter_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>osmosdr_source_0</source_block_id>
+    <sink_block_id>low_pass_filter_0_0</sink_block_id>
     <source_key>1</source_key>
     <sink_key>0</sink_key>
   </connection>
