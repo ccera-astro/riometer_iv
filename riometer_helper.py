@@ -3,13 +3,42 @@ import time
 import math
 import numpy
 import random
+
+#
+# Store the averaged/integrated FFT results (post-excision) here
+#
 avg_fft = [0.0]*128
+
+#
+# Keep track of the most recent post-excision, pre-integration
+#  output, for impulse blanking.
+#
 last_out = [0.0]*128
+
+#
+# Keep track of peak-hold data, both for logging, and display
+#
 peakhold = [0.0]*128
+
+#
+# Current reference value
+#
 refval = -1.0
+
+#
+# For keeping track of logging at regular intervals
+#
 last_time = time.time()
 seconds = 0
+
+#
+# The current ratio between SKY and REF
+#
 current_ratio = 1.0
+
+#
+# The current Tsky estimate
+#
 Tsky = 100.0
 
 #
@@ -22,6 +51,8 @@ impulse_events = 0
 # A counter/timer for hold-off for impulse detection
 #
 impulse_count = 0
+
+
 def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     global avg_fft
     global refval
@@ -38,7 +69,7 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     # We build a dict of quantized-to-one-dB
     #   FFT bin values
     #
-    # We count the occurence, and use the largest one
+    # We count the occurence, and use the largest two
     #   as the "mode" of the dataset
     #
     dbdict = {}
@@ -49,6 +80,9 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
         else:
             dbdict[key] = 1
     
+    #
+    # Not quite ready
+    #
     if (infft[0] == -220.0 and infft[1] == -220.0):
         return ([-80.0]*len(infft))
     
@@ -68,9 +102,17 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     
     mode = float(mode)
     
-    outfft = [0.0]*len(infft)
     
+    #
+    # Setup for mode-based excision
+    #
+    outfft = [0.0]*len(infft)
     indx = 0
+    
+    #
+    # Anything that exceeds the mode estimate by 1.5dB or more,
+    #  we "smooth".
+    #
     for v in infft:
         if (v-mode >= 1.5):
             outfft[indx] = mode+random.uniform(-0.4,0.4)
@@ -78,7 +120,9 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
             outfft[indx] = v
         indx += 1
     
-    
+    #
+    # Handle buffer init/resize
+    #
     if (len(avg_fft) != len(outfft)):
         avg_fft = list(outfft)
         peakhold = list(infft)
@@ -86,14 +130,21 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     
     #
     # Try to detect impulse noise, and reject it
+    # If we aren't in the middle of a impulse event holdoff period,
+    #    check for impulse (value exceeds threshold)
     #
+    exceeded_bins = 0
     if (impulse_count <= 0):
         for i in range(0,len(outfft)):
             if (abs(outfft[i]-last_out[i]) > thresh):
-                impulse_count = duration
-                impulse_events += 1
-                break
-    
+                exceeded_bins += 1
+        #
+        # If more than 30% of the bins are in "exceeded" state
+        #   declare an impulse-noise event
+        #
+        if (exceeded_bins >= len(outfft)/3):
+            impulse_count = duration
+            impulse_events += 1
     #
     # Update averages, etc only if we aren't in an impulse-noise
     #    blanking interval
@@ -101,23 +152,37 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     if (impulse_count <= 0):
         alpha = 0.025
         beta = 1.0-alpha
+        
+        #
+        # Do single-pole IIR filter
+        #
         new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
         avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[beta]*len(outfft)))
     
+    #
+    # Always record the last excised FFT buffer
+    #
     last_out = list(outfft)
     
     if (impulse_count > 0):
         impulse_count -= 1
     
+    #
+    # If they pushed the "Reset Peak Hold" button in the UI
+    #
     if (rst):
         peakhold = list(infft)
 
+    #
+    # Do the peak-hold math
+    #
     for i in range(0,len(peakhold)):
         if (infft[i] > peakhold[i]):
             peakhold[i] = infft[i]
     
     #
-    # For display purposes only
+    # For display purposes only, bump the excised value up by 15dB
+    #  so that it constrasts with the input enough to be clear
     #
     outfft = numpy.add(avg_fft, [15.0]*len(avg_fft))
     
@@ -132,15 +197,25 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
         # Power estimates
         #
         #
-        # Every two seconds
+        # Every second
         #
         if (seconds != 0 and (seconds % 1 == 0)):
+            
+            #
+            # Compute the total power across avg_fft
+            #
             pvect = numpy.multiply(avg_fft, [0.1]*len(avg_fft))
             pvect = numpy.power([10.0]*len(avg_fft),pvect)
             pwr = numpy.sum(pvect)
             
+            #
+            # Pickup system time
+            #
             ltp = time.gmtime(time.time())
 
+            #
+            # Record data in a daily file
+            #
             fn = prefix+"rio-"
             fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
             fn += ".csv"
@@ -194,7 +269,14 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     return (outfft)
     
 
+#
+# A buffer for the averaged reference FFT
+#
 avg_rfft = [-220.0]*128
+
+#
+# Process the reference-side FFT
+#
 def do_reference(ref_fft):
     global refval
     global avg_rfft
@@ -202,17 +284,29 @@ def do_reference(ref_fft):
     alpha = 0.1
     beta = 1.0-alpha
     
+    #
+    # Handle re-size
+    #
     if (len(avg_rfft) != len(ref_fft)):
         avg_rfft = list(ref_fft)
     
+    #
+    # Single-pole IIR filter it
+    #
     tfft = numpy.multiply([alpha]*len(ref_fft),ref_fft)
     avg_rfft = numpy.add(tfft,numpy.multiply([beta]*len(avg_rfft),avg_rfft))
     
+    #
+    # Compute reference level from FFT data
+    #
     pvect = numpy.multiply(ref_fft, [0.1]*len(ref_fft))
     pvect = numpy.power([10.0]*len(ref_fft),pvect)
     refval = (alpha*numpy.sum(pvect))+(beta*refval)
     return avg_rfft
 
+#
+# A buffer for the converted-to-kelvin stripchart display
+#
 stripchart = [0.0]*128
 
 #
@@ -232,7 +326,6 @@ def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
     
     if (len(stripchart) != siz):
         stripchart = [0.0]*siz
-    
     #
     # Need to find Sky temp that satisfies:
     #
@@ -243,7 +336,8 @@ def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
     #
     # We know the ratio from actual measurements,
     #  and all the other parameters except Tsky
-    #  are available as fixed parameters (guesstimates)
+    #  are available as fixed parameters (guesstimates from
+    #  user input).
     #
     #
     X = tsys_ref+reftemp
@@ -255,9 +349,24 @@ def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
     #
     Tsky /= math.pow(10.0, lnagain/10.0)
     
+    #
+    # This can be used to "tweak" the sky-side estimate, using an
+    #  external calibrator source.  User enters CAL noise value, in dB ENR.
+    #
+    # This only really works well if the other parameters have been "dialed in"
+    #   fairly well.
+    #
     if (estimate > 0.0 and commit != 0):
+		#
+		# Convert from dB ENR to temperature
+		#
+        estimate = math.pow(10.0,estimate/10.0)
+        estimate *= 297.0
         skyratio = estimate/Tsky
     
+    #
+    # Adjust by tweakage ratio
+    #
     Tsky = Tsky * skyratio
 
     #
