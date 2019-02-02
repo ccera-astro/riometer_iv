@@ -1178,7 +1178,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(752, 436)</value>
+      <value>(1176, 404)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1230,7 +1230,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1224, 516)</value>
+      <value>(1184, 540)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2680,6 +2680,38 @@ to models.</value>
     <param>
       <key>num_tabs</key>
       <value>3</value>
+    </param>
+  </block>
+  <block>
+    <key>note</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value>Make zeros at the same rate as
+the FFTs</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(920, 172)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>note_0</value>
+    </param>
+    <param>
+      <key>note</key>
+      <value></value>
     </param>
   </block>
   <block>
@@ -5200,8 +5232,15 @@ seconds = 0
 current_ratio = 1.0
 Tsky = 100.0
 
+#
+# An event counter for impulse events that are getting
+#  (partially, at least) suppressed
+#
 impulse_events = 0
 
+#
+# A counter/timer for hold-off for impulse detection
+#
 impulse_count = 0
 def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     global avg_fft
@@ -5215,9 +5254,16 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     global impulse_count
     global impulse_events
 
+    #
+    # We build a dict of quantized-to-one-dB
+    #   FFT bin values
+    #
+    # We count the occurence, and use the largest one
+    #   as the "mode" of the dataset
+    #
     dbdict = {}
     for v in infft:
-        key = "%d" % v
+        key = int(v)
         if key in dbdict:
             dbdict[key] += 1
         else:
@@ -5226,20 +5272,27 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     if (infft[0] == -220.0 and infft[1] == -220.0):
         return ([-80.0]*len(infft))
     
-    maxkey = "??"
-    maxval = 0
-    for k in dbdict:
-        if dbdict[k] &gt; maxval:
-            maxval = dbdict[k]
-            maxkey = k
+    #
+    # Sort the list by values
+    # Returning the "keys" which are the quantized dB values
+    #
+    slist = sorted(dbdict, key=dbdict.__getitem__)
     
-    mode = float(maxkey)
+    #
+    # We estimate the "mode" by taking the top two values
+    #  (top two most-frequent quantized dB values)
+    #
+    mode = slist[len(slist)-1]
+    mode += slist[len(slist)-2]
+    mode /= 2
+    
+    mode = float(mode)
     
     outfft = [0.0]*len(infft)
     
     indx = 0
     for v in infft:
-        if (v-mode &gt;= 1.0):
+        if (v-mode &gt;= 1.5):
             outfft[indx] = mode+random.uniform(-0.4,0.4)
         else:
             outfft[indx] = v
@@ -5930,7 +5983,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(776, 276)</value>
+      <value>(776, 260)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6011,7 +6064,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(992, 44)</value>
+      <value>(984, 44)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6092,34 +6145,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(736, 372)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>virtual_source_5</value>
-    </param>
-    <param>
-      <key>stream_id</key>
-      <value>zeros</value>
-    </param>
-  </block>
-  <block>
-    <key>virtual_source</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1032, 524)</value>
+      <value>(992, 524)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6360,12 +6386,6 @@ def impulses(p):
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>virtual_source_5</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
     <source_block_id>virtual_source_5_0</source_block_id>
     <sink_block_id>blocks_add_const_vxx_0_0_0</sink_block_id>
     <source_key>0</source_key>
@@ -6374,6 +6394,12 @@ def impulses(p):
   <connection>
     <source_block_id>virtual_source_5_0_0</source_block_id>
     <sink_block_id>blocks_add_const_vxx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_5_0_0</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

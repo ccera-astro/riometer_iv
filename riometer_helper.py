@@ -12,8 +12,15 @@ seconds = 0
 current_ratio = 1.0
 Tsky = 100.0
 
+#
+# An event counter for impulse events that are getting
+#  (partially, at least) suppressed
+#
 impulse_events = 0
 
+#
+# A counter/timer for hold-off for impulse detection
+#
 impulse_count = 0
 def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     global avg_fft
@@ -27,9 +34,16 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     global impulse_count
     global impulse_events
 
+    #
+    # We build a dict of quantized-to-one-dB
+    #   FFT bin values
+    #
+    # We count the occurence, and use the largest one
+    #   as the "mode" of the dataset
+    #
     dbdict = {}
     for v in infft:
-        key = "%d" % v
+        key = int(v)
         if key in dbdict:
             dbdict[key] += 1
         else:
@@ -38,20 +52,27 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     if (infft[0] == -220.0 and infft[1] == -220.0):
         return ([-80.0]*len(infft))
     
-    maxkey = "??"
-    maxval = 0
-    for k in dbdict:
-        if dbdict[k] > maxval:
-            maxval = dbdict[k]
-            maxkey = k
+    #
+    # Sort the list by values
+    # Returning the "keys" which are the quantized dB values
+    #
+    slist = sorted(dbdict, key=dbdict.__getitem__)
     
-    mode = float(maxkey)
+    #
+    # We estimate the "mode" by taking the top two values
+    #  (top two most-frequent quantized dB values)
+    #
+    mode = slist[len(slist)-1]
+    mode += slist[len(slist)-2]
+    mode /= 2
+    
+    mode = float(mode)
     
     outfft = [0.0]*len(infft)
     
     indx = 0
     for v in infft:
-        if (v-mode >= 1.0):
+        if (v-mode >= 1.5):
             outfft[indx] = mode+random.uniform(-0.4,0.4)
         else:
             outfft[indx] = v
