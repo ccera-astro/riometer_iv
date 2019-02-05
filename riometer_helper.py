@@ -140,10 +140,10 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
             if (abs(outfft[i]-last_out[i]) > thresh):
                 exceeded_bins += 1
         #
-        # If more than 30% of the bins are in "exceeded" state
+        # If more than 25% of the bins are in "exceeded" state
         #   declare an impulse-noise event
         #
-        if (exceeded_bins >= len(outfft)/3):
+        if (exceeded_bins >= len(outfft)/4.0):
             impulse_count = duration
             impulse_events += 1
     #

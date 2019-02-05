@@ -2068,6 +2068,108 @@ to models.</value>
     </param>
   </block>
   <block>
+    <key>dc_blocker_xx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(600, 252)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>dc_blocker_xx_0</value>
+    </param>
+    <param>
+      <key>length</key>
+      <value>512</value>
+    </param>
+    <param>
+      <key>long_form</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>cc</value>
+    </param>
+  </block>
+  <block>
+    <key>dc_blocker_xx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(600, 316)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>dc_blocker_xx_0_0</value>
+    </param>
+    <param>
+      <key>length</key>
+      <value>512</value>
+    </param>
+    <param>
+      <key>long_form</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>cc</value>
+    </param>
+  </block>
+  <block>
     <key>parameter</key>
     <param>
       <key>alias</key>
@@ -5554,10 +5656,10 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
             if (abs(outfft[i]-last_out[i]) &gt; thresh):
                 exceeded_bins += 1
         #
-        # If more than 30% of the bins are in "exceeded" state
+        # If more than 25% of the bins are in "exceeded" state
         #   declare an impulse-noise event
         #
-        if (exceeded_bins &gt;= len(outfft)/3):
+        if (exceeded_bins &gt;= len(outfft)/4.0):
             impulse_count = duration
             impulse_events += 1
     #
@@ -6206,7 +6308,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 372)</value>
+      <value>(728, 372)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6233,7 +6335,7 @@ def impulses(p):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(648, 236)</value>
+      <value>(704, 188)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6612,6 +6714,18 @@ def impulses(p):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>dc_blocker_xx_0</source_block_id>
+    <sink_block_id>virtual_sink_2</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>dc_blocker_xx_0_0</source_block_id>
+    <sink_block_id>virtual_sink_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>fft_filter_xxx_0</source_block_id>
     <sink_block_id>fft_filter_xxx_0_0</sink_block_id>
     <source_key>0</source_key>
@@ -6619,13 +6733,13 @@ def impulses(p):
   </connection>
   <connection>
     <source_block_id>fft_filter_xxx_0_0</source_block_id>
-    <sink_block_id>virtual_sink_2</sink_block_id>
+    <sink_block_id>dc_blocker_xx_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
   <connection>
     <source_block_id>fft_filter_xxx_0_0_0</source_block_id>
-    <sink_block_id>virtual_sink_1</sink_block_id>
+    <sink_block_id>dc_blocker_xx_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
