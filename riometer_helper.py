@@ -94,11 +94,12 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     
     #
     # We estimate the "mode" by taking the top two values
-    #  (top two most-frequent quantized dB values)
+    #  (top two most-frequent quantized dB values), we
+    #  slightly bias the most-frequent value
     #
-    mode = slist[len(slist)-1]
-    mode += slist[len(slist)-2]
-    mode /= 2
+    mode = slist[len(slist)-1]*1.2
+    mode += slist[len(slist)-2]*0.8
+    mode /= 2.0
     
     mode = float(mode)
     
