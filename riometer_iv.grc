@@ -93,6 +93,33 @@
     <key>variable</key>
     <param>
       <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(920, 948)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>TEE_SKY</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>riometer_helper.estimate_Tsky(fast_pacer,ireftemp,itsys,itsys_ref,ilnagain,skyestimate,temp_commit)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
       <value>Based on an empirical model of 
 Sky Temp vs frequency</value>
     </param>
@@ -1123,33 +1150,6 @@ Sky Temp vs frequency</value>
     <param>
       <key>type</key>
       <value>real</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(920, 948)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>tee_skye</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>riometer_helper.estimate_Tsky(fast_pacer,ireftemp,itsys,itsys_ref,ilnagain,skyestimate,temp_commit)</value>
     </param>
   </block>
   <block>
@@ -6388,7 +6388,7 @@ def set_skyratio(r):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(0.4/frate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(1.0/frate))</value>
     </param>
     <param>
       <key>alias</key>
@@ -6439,7 +6439,7 @@ def set_skyratio(r):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(0.5/frate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(1.0/frate))</value>
     </param>
     <param>
       <key>alias</key>
