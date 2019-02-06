@@ -860,7 +860,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>25</value>
+      <value>20</value>
     </param>
   </block>
   <block>
@@ -1222,7 +1222,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>const</key>
-      <value>riometer_helper.modified_fft(fft_prober,prefix,refscale,reset_peak,0,ithresh,impulse_count)</value>
+      <value>riometer_helper.modified_fft(fft_prober,prefix,refscale,reset_peak,0,ithresh,impulse_count,ifreq,samp_rate)</value>
     </param>
     <param>
       <key>affinity</key>
@@ -5569,7 +5569,11 @@ impulse_events = 0
 impulse_count = 0
 
 
-def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
+exceeded_ocount = [0]*128
+exceeded_mtime = [0.0]*128
+exceeded_delta = [0.0]*128
+
+def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration,freq,bw):
     global avg_fft
     global refval
     global last_time
@@ -5580,6 +5584,9 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     global last_out
     global impulse_count
     global impulse_events
+    global exceeded_ocount
+    global exceeded_mtime
+    global exceeded_delta
 
     #
     # We build a dict of quantized-to-one-dB
@@ -5626,13 +5633,27 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     outfft = [0.0]*len(infft)
     indx = 0
     
+    if (len(exceeded_ocount) != len(infft)):
+        exceeded_ocount = [0]*len(infft)
+        exceeded_mtime = [0.0]*len(infft)
+        exceeded_delta = [0.0]*len(infft)
+    
     #
-    # Anything that exceeds the mode estimate by 1.5dB or more,
+    # Anything that exceeds the mode estimate by 1.75dB or more,
     #  we "smooth".
     #
+    now = time.time()
     for v in infft:
-        if (v-mode &gt;= 1.5):
+        if (v-mode &gt;= 1.75):
             outfft[indx] = mode+random.uniform(-0.4,0.4)
+            
+            #
+            # "Fresh" excision event
+            #
+            if (now - exceeded_mtime[indx] &gt;= 5.0):
+                exceeded_delta[indx] = now - exceeded_mtime[indx]
+                exceeded_mtime[indx] = now
+                exceeded_ocount[indx] += 1
         else:
             outfft[indx] = v
         indx += 1
@@ -5709,6 +5730,15 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
     if ((time.time() - last_time) &gt;= 1.0):
         last_time = time.time()
         seconds += 1
+        
+        #
+        # Pickup system time
+        #
+        ltp = time.gmtime(time.time())
+        
+        hdr_format = "%02d,%02d,%02d,%d,%d,"
+        hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, freq, bw)
+        hdr = hdr_format % hdr_contents
 
         #
         # Power estimates
@@ -5724,11 +5754,6 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
             pvect = numpy.multiply(avg_fft, [0.1]*len(avg_fft))
             pvect = numpy.power([10.0]*len(avg_fft),pvect)
             pwr = numpy.sum(pvect)
-            
-            #
-            # Pickup system time
-            #
-            ltp = time.gmtime(time.time())
 
             #
             # Record data in a daily file
@@ -5740,7 +5765,7 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
             fp = open(fn, "a")
             rv = refval * refscale
             rv = 1.0e-15 + rv
-            fp.write ("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
+            fp.write (hdr)
             fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, refval, pwr-rv, pwr/rv, Tsky))
             current_ratio = pwr/rv
             fp.close()
@@ -5751,40 +5776,78 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration):
         # Every 60 seconds
         #
         if (seconds != 0 and (seconds % 60 == 0)):
+			
+			#
+			# Raw spectrum
+			#
             fn = prefix+"spec-raw-"
             fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
             fn += ".csv"
             
             fp = open(fn, "a")
-            fp.write("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
+            fp.write(hdr)
             for v in infft:
-                fp.write("%.2f," % v)
+                fp.write("%.3f," % v)
             fp.write("\n")
             fp.close()
             
+            #
+            # Excised spectrum
+            #
             fn = prefix+"spec-excised-"
             fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
             fn += ".csv"
             
             fp = open(fn, "a")
+            fp.write(hdr)
             for v in avg_fft:
-                fp.write("%.2f," % v)
+                fp.write("%.3f," % v)
             fp.write("\n")
             fp.close()
             
+            #
+            # Peak-hold spectrum
+            #
             fn = prefix+"spec-peak-"
             fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
             fn += ".csv"
             
             fp = open(fn, "a")
-            fp.write("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
+            fp.write(hdr)
             for v in peakhold:
                 fp.write("%.2f," % v)
             fp.write("\n")
             fp.close()
-              
+            
+            #
+            # Bin-by-bin excision counts
+            #
+            fn = prefix+"spec-ecounts-"
+            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+            fn += ".csv"
+            
+            fp = open(fn, "a")
+            fp.write(hdr)
+            for v in exceeded_ocount:
+                fp.write("%d," % v)
+            fp.write("\n")
+            fp.close()
+            
+            #
+            # Bin-by-bin excision deltas (time between excision events)
+            #
+            fn = prefix+"spec-edeltas-"
+            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+            fn += ".csv"
+            
+            fp = open(fn, "a")
+            fp.write(hdr)
+            for v in exceeded_delta:
+                fp.write("%.2f," % v)
+            fp.write("\n")
+            fp.close()
+                
     return (outfft)
-    
 
 #
 # A buffer for the averaged reference FFT
@@ -5874,9 +5937,9 @@ def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
     #   fairly well.
     #
     if (estimate &gt; 0.0 and commit != 0):
-		#
-		# Convert from dB ENR to temperature
-		#
+        #
+        # Convert from dB ENR to temperature
+        #
         estimate = math.pow(10.0,estimate/10.0)
         estimate *= 297.0
         skyratio = estimate/Tsky
