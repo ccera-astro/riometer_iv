@@ -5907,10 +5907,24 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
         #
         new_fft = numpy.multiply(outfft,[ealpha]*len(outfft))
         avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[beta]*len(outfft)))
-    elif (random.randint(0,3) == 0):
+    
+    #
+    # This will cause us to frob on avg_fft with P = 0.25
+    #
+    elif (random.randint(0,4) == 0):
+		
+		#
+		# First, fold-in fuzz buffer
         new_fft = numpy.add(avg_fft, fuzz_buffer_01)
         avg_fft = numpy.add(new_fft, avg_fft)
         avg_fft = numpy.divide(avg_fft, [2.0]*len(avg_fft))
+        
+        #
+        # Then fold-in a tiny contribution from current data
+        #
+        diff = numpy.sub(avg_fft, last_out)
+        diff = numpy.add(avg_fft, numpy.multiply(diff,[0.0025]*len(diff)))
+        avg_fft = numpy.divide(diff, [2.0]*len(avg_fft))
     
     #
     # Always record the last excised FFT buffer
