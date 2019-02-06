@@ -16,30 +16,10 @@ avg_fft = [0.0]*128
 last_out = [0.0]*128
 
 #
-# Keep track of peak-hold data, both for logging, and display
-#
-peakhold = [0.0]*128
-
-#
-# Current reference value
-#
-refval = -1.0
-
-#
 # For keeping track of logging at regular intervals
 #
 last_time = time.time()
 seconds = 0
-
-#
-# The current ratio between SKY and REF
-#
-current_ratio = 1.0
-
-#
-# The current Tsky estimate
-#
-Tsky = 100.0
 
 #
 # An event counter for impulse events that are getting
@@ -53,24 +33,41 @@ impulse_events = 0
 impulse_count = 0
 
 
+#
+# Statistical counters, etc
+#
 exceeded_ocount = [0]*128
 exceeded_mtime = [0.0]*128
 exceeded_delta = [0.0]*128
 
-def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration,freq,bw):
+#
+# Cached alpha value for excised FFT
+#
+ealpha = -200.0
+#
+# This function used to be just about doing excisions, but it has morphed into
+#  much, much more
+#
+# It handles logging
+# It handles both types of excision, and keeps track of stats
+# It handles peak-hold computations
+# It handles declaring an antenna fault
+#
+# It handles some rapid-reponse UI stuff as well
+#
+# It does call-outs to other functions for a lot of the above
+#
+def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
     global avg_fft
-    global refval
     global last_time
     global seconds
-    global current_ratio
-    global Tsky
-    global peakhold
     global last_out
     global impulse_count
     global impulse_events
     global exceeded_ocount
     global exceeded_mtime
     global exceeded_delta
+    global ealpha
 
     #
     # We build a dict of quantized-to-one-dB
@@ -123,12 +120,12 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration,freq,bw):
         exceeded_delta = [0.0]*len(infft)
     
     #
-    # Anything that exceeds the mode estimate by 1.75dB or more,
+    # Anything that exceeds the mode estimate by 1.5dB or more,
     #  we "smooth".
     #
     now = time.time()
     for v in infft:
-        if (v-mode >= 1.75):
+        if (v-mode >= 1.5):
             outfft[indx] = mode+random.uniform(-0.4,0.4)
             
             #
@@ -147,7 +144,6 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration,freq,bw):
     #
     if (len(avg_fft) != len(outfft)):
         avg_fft = list(outfft)
-        peakhold = list(infft)
         last_out = list(outfft)
     
     #
@@ -171,14 +167,15 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration,freq,bw):
     # Update averages, etc only if we aren't in an impulse-noise
     #    blanking interval
     #
+    if (ealpha < 0.0):
+		ealpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
+    beta = 1.0-ealpha
     if (impulse_count <= 0):
-        alpha = 0.025
-        beta = 1.0-alpha
         
         #
         # Do single-pole IIR filter
         #
-        new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
+        new_fft = numpy.multiply(outfft,[ealpha]*len(outfft))
         avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[beta]*len(outfft)))
     
     #
@@ -188,25 +185,24 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration,freq,bw):
     
     if (impulse_count > 0):
         impulse_count -= 1
-    
-    #
-    # If they pushed the "Reset Peak Hold" button in the UI
-    #
-    if (rst):
-        peakhold = list(infft)
 
-    #
-    # Do the peak-hold math
-    #
-    for i in range(0,len(peakhold)):
-        if (infft[i] > peakhold[i]):
-            peakhold[i] = infft[i]
-    
     #
     # For display purposes only, bump the excised value up by 15dB
     #  so that it constrasts with the input enough to be clear
     #
     outfft = numpy.add(avg_fft, [15.0]*len(avg_fft))
+    
+    #
+    # Compute the total power across avg_fft
+    #
+    pvect = numpy.multiply(avg_fft, [0.1]*len(avg_fft))
+    pvect = numpy.power([10.0]*len(avg_fft),pvect)
+    pwr = numpy.sum(pvect)
+    
+    #
+    # Other things need to know
+    #
+    set_current_pwr(pwr)
     
     #
     # Update the seconds counter
@@ -231,105 +227,35 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration,freq,bw):
         # Every second
         #
         if (seconds != 0 and (seconds % 1 == 0)):
+            #
+            # Time to check on possible antenna faults
+            #
+            handle_normal_power(pwr,renormal)
             
             #
-            # Compute the total power across avg_fft
+            # Compute current_ratio
             #
-            pvect = numpy.multiply(avg_fft, [0.1]*len(avg_fft))
-            pvect = numpy.power([10.0]*len(avg_fft),pvect)
-            pwr = numpy.sum(pvect)
-
+            rv = get_refval()
+            if (rv == 0.0):
+                rv += 1.0e-15
+            
             #
-            # Record data in a daily file
+            # Do recording of powers/temps
             #
-            fn = prefix+"rio-"
-            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
-            fn += ".csv"
-
-            fp = open(fn, "a")
-            rv = refval * refscale
-            rv = 1.0e-15 + rv
-            fp.write (hdr)
-            fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, refval, pwr-rv, pwr/rv, Tsky))
-            current_ratio = pwr/rv
-            fp.close()
-        
+            handle_pwr_recording(pwr, rv, hdr, ltp, prefix)
         #
         # Spectral
         #
         # Every 60 seconds
         #
         if (seconds != 0 and (seconds % 60 == 0)):
-			
-			#
-			# Raw spectrum
-			#
-            fn = prefix+"spec-raw-"
-            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
-            fn += ".csv"
             
-            fp = open(fn, "a")
-            fp.write(hdr)
-            for v in infft:
-                fp.write("%.3f," % v)
-            fp.write("\n")
-            fp.close()
+            handle_spec_recording(infft,"spec-raw", ltp, hdr, prefix)
+            handle_spec_recording(avg_fft, "spec-excised", ltp, hdr, prefix)
+            handle_spec_recording(get_peakhold(), "spec-peak", ltp, hdr, prefix)
+            handle_spec_recording(exceeded_ocount, "spec-ecounts", ltp, hdr, prefix)
+            handle_spec_recording(exceeded_delta, "spec-edeltas", ltp, hdr, prefix)
             
-            #
-            # Excised spectrum
-            #
-            fn = prefix+"spec-excised-"
-            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
-            fn += ".csv"
-            
-            fp = open(fn, "a")
-            fp.write(hdr)
-            for v in avg_fft:
-                fp.write("%.3f," % v)
-            fp.write("\n")
-            fp.close()
-            
-            #
-            # Peak-hold spectrum
-            #
-            fn = prefix+"spec-peak-"
-            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
-            fn += ".csv"
-            
-            fp = open(fn, "a")
-            fp.write(hdr)
-            for v in peakhold:
-                fp.write("%.2f," % v)
-            fp.write("\n")
-            fp.close()
-            
-            #
-            # Bin-by-bin excision counts
-            #
-            fn = prefix+"spec-ecounts-"
-            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
-            fn += ".csv"
-            
-            fp = open(fn, "a")
-            fp.write(hdr)
-            for v in exceeded_ocount:
-                fp.write("%d," % v)
-            fp.write("\n")
-            fp.close()
-            
-            #
-            # Bin-by-bin excision deltas (time between excision events)
-            #
-            fn = prefix+"spec-edeltas-"
-            fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
-            fn += ".csv"
-            
-            fp = open(fn, "a")
-            fp.write(hdr)
-            for v in exceeded_delta:
-                fp.write("%.2f," % v)
-            fp.write("\n")
-            fp.close()
                 
     return (outfft)
 
@@ -339,14 +265,20 @@ def modified_fft(infft,prefix,refscale,rst,rst2,thresh,duration,freq,bw):
 avg_rfft = [-220.0]*128
 
 #
+# Cached alpha value
+#
+ralpha = -200.0
+
+#
 # Process the reference-side FFT
 #
-def do_reference(ref_fft):
-    global refval
+def do_reference(ref_fft,prate):
     global avg_rfft
+    global ralpha
     
-    alpha = 0.1
-    beta = 1.0-alpha
+    if (ralpha < 0.0):
+        ralpha = 1.0-math.pow(math.e,-2*(0.5/prate))
+    beta = 1.0-ralpha
     
     #
     # Handle re-size
@@ -357,7 +289,7 @@ def do_reference(ref_fft):
     #
     # Single-pole IIR filter it
     #
-    tfft = numpy.multiply([alpha]*len(ref_fft),ref_fft)
+    tfft = numpy.multiply([ralpha]*len(ref_fft),ref_fft)
     avg_rfft = numpy.add(tfft,numpy.multiply([beta]*len(avg_rfft),avg_rfft))
     
     #
@@ -365,7 +297,7 @@ def do_reference(ref_fft):
     #
     pvect = numpy.multiply(ref_fft, [0.1]*len(ref_fft))
     pvect = numpy.power([10.0]*len(ref_fft),pvect)
-    refval = (alpha*numpy.sum(pvect))+(beta*refval)
+    set_refval((ralpha*numpy.sum(pvect))+(beta*refval))
     return avg_rfft
 
 #
@@ -373,23 +305,24 @@ def do_reference(ref_fft):
 #
 stripchart = [0.0]*128
 
-#
-# We can use this to "force" a known calibration point using the UI
-#
-# For example, if the user plugs in a 10,000K noise source, and
-#  Tsky is only reading 5000, this can be used to instantaneously
-#  calculate an adjustment factor
-#
-skyratio = 1.0
-
-def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
+def chart_Tsky(pace,siz):
     global stripchart
-    global current_ratio
-    global Tsky
-    global skyratio
     
     if (len(stripchart) != siz):
         stripchart = [0.0]*siz
+
+    #
+    # Shift chart, place new value
+    #
+    stripchart = [get_Tsky()]+stripchart[0:len(stripchart)-1]
+
+    return (stripchart)
+
+#
+# Pretty much what the name suggests
+#
+def estimate_Tsky(pace,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
+    
     #
     # Need to find Sky temp that satisfies:
     #
@@ -405,13 +338,20 @@ def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
     #
     #
     X = tsys_ref+reftemp
-    Tsky = (current_ratio*X)-tsys
+    
+    rv = get_refval()
+    if (rv == 0):
+        rv += 1.0e-15
+    
+    pwr = get_current_pwr()
+    
+    tsky = ((pwr/rv)*X)-tsys
     
     #
     # We divide the apparent Tsky by any LNA gain that may be behind it,
     #  but not in-common with the REF side of the house.
     #
-    Tsky /= math.pow(10.0, lnagain/10.0)
+    tsky /= math.pow(10.0, lnagain/10.0)
     
     #
     # This can be used to "tweak" the sky-side estimate, using an
@@ -426,30 +366,14 @@ def power_ratio(pace,siz,reftemp,tsys,tsys_ref,lnagain,estimate,commit):
         #
         estimate = math.pow(10.0,estimate/10.0)
         estimate *= 297.0
-        skyratio = estimate/Tsky
-    
+        set_skyratio(estimate/tsky)
+
     #
     # Adjust by tweakage ratio
     #
-    Tsky = Tsky * skyratio
-
-    #
-    # Shift the "stripchart" buffer
-    #
-    for i in range(len(stripchart)-1,0,-1):
-        stripchart[i] = stripchart[i-1]
-    #
-    # Plonk the current Tsky value into the 0th position
-    #
-    stripchart[0] = Tsky
-    return (stripchart)
-    
-def do_peak(pfft):
-    global peakhold
-    
-    if (len(peakhold) != len(pfft)):
-        peakhold = [-140.0]*len(pfft)
-    return (peakhold)
+    tsky = tsky * get_skyratio()
+    set_Tsky(tsky)  
+    return (get_Tsky())
 
 def annotate(prefix, reftemp, tsys, freq, bw, gain, itsys_ref, lnagain, notes):
     fn = prefix+"annotation-"
@@ -479,17 +403,20 @@ def tsky_model(freq):
     a *= 9120.0
     return a
 
+#
+# A different strip-chart that shows 24 hours worth of data, updated once per
+#   minute
+#
 DAILY_MINUTES=1440
 minutes_chart = [0.0]*DAILY_MINUTES
 mtsky = -1
 mcounter = 0
 def minute_data(p):
     global minutes_chart
-    global Tsky
     global mtsky
     global mcounter
     
-    mtsky += Tsky
+    mtsky += get_Tsky()
     mcounter += 1
     if ((mcounter % 60) == 0):
         mtsky /= 60.0
@@ -500,3 +427,200 @@ def minute_data(p):
 
 def impulses(p):
     return impulse_events
+
+astate = False   
+def antenna_fault(state):
+    global astate
+    afault = state
+
+def get_fault(p):
+    global astate
+    return astate
+
+#
+# Keep track of peak-hold data, both for logging, and display
+#
+peakhold = [0.0]*128
+
+#
+# For auto-peak-reset on startup (in ticks)
+#
+auto_rst = 100
+auto_init = False
+
+def handle_peak_hold(fft,rst,ticks):
+    global auto_rst
+    global peakhold
+    global auto_init
+    
+    #
+    # Setup inital auto_rst value
+    #
+    if (auto_init == False):
+		auto_rst = 10*ticks
+		auto_init = True
+
+    #
+    # Resize if necessary
+    #
+    if (len(peakhold) < len(fft)):
+        peakhold = list(fft)
+        
+    #
+    # If they pushed the "Reset Peak Hold" button in the UI, OR
+    #   The auto-rst variable has dropped through zero
+    #
+    auto_rst -= 1
+    if (rst or (auto_rst == 0)):
+        peakhold = list(fft)
+    
+    #
+    # Do the peak-hold math
+    #
+    for i in range(0,len(peakhold)):
+        if (fft[i] > peakhold[i]):
+            peakhold[i] = fft[i]
+    
+    return (peakhold)
+
+def get_peakhold():
+    global peakhold
+    
+    return(peakhold)
+
+#
+# For auto normal_power setting (in seconds)
+#
+auto_normal = 30
+
+#
+# Expected power level -- for fault detection
+#
+normal_power = -1.0
+
+def handle_normal_power(pwr,renormal):
+    global auto_normal
+    global normal_power
+    
+    #
+    # Set "normal power level" after "auto_normal" has timed out
+    #
+    auto_normal -= 1
+    if (auto_normal == 0):
+        normal_power = pwr
+        antenna_fault(False)
+
+    #
+    # Reset possible fault
+    #
+    if (renormal):
+        normal_power = pwr
+        antenna_fault(False)
+    
+    #
+    # Try to detect a significant drop in antenna power, and
+    #   declare a probably antenna fault
+    #
+    if (pwr < (normal_power/3.5)):
+        antenna_fault(True)
+    else:
+        antenna_fault(False)
+
+def handle_pwr_recording(pwr,rv,hdr,ltp,prefix):
+    #
+    # Record data in a daily file
+    #
+    fn = prefix+"rio-"
+    fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+    fn += ".csv"
+
+    fp = open(fn, "a")
+    fp.write (hdr)
+    fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, rv, pwr-rv, pwr/rv, get_Tsky()))
+    fp.close()
+
+def handle_spec_recording(fft,variant,ltp,hdr,prefix):
+    #
+    # Spectral-type data
+    #
+    fn = prefix+variant+"-"
+    fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+    fn += ".csv"
+    
+    fp = open(fn, "a")
+    fp.write(hdr)
+    for v in fft:
+        fp.write("%.3f," % v)
+    fp.write("\n")
+    fp.close()
+    
+
+#
+# The current ratio between SKY and REF
+#
+current_ratio = 1.0
+
+#
+# Current pwr value
+#
+current_pwr = 0.0
+def set_current_pwr(p):
+    global current_pwr
+    
+    current_pwr = p
+
+def get_current_pwr():
+    global current_pwr
+    
+    return (current_pwr)
+    
+#
+# Current reference value
+#
+refval = -1.0
+
+def get_refval():
+    global refval
+    
+    return(refval)
+
+def set_refval(r):
+    global refval
+    
+    refval = r
+
+#
+# The current Tsky estimate
+#
+Tsky = 100.0
+
+def set_Tsky(t):
+    global Tsky
+    
+    Tsky = t
+
+def get_Tsky():
+    global Tsky
+    
+    return(Tsky)
+
+
+#
+# We can use this to "force" a known calibration point using the UI
+#
+# For example, if the user plugs in a 10,000K noise source, and
+#  Tsky is only reading 5000, this can be used to instantaneously
+#  calculate an adjustment factor
+#
+skyratio = 1.0
+
+def get_skyratio():
+    global skyratio
+    
+    return (skyratio)
+
+def set_skyratio(r):
+    global skyratio
+    
+    skyratio = r
+
