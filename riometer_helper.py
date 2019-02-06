@@ -15,11 +15,6 @@ avg_fft = [0.0]*128
 #
 last_out = [0.0]*128
 
-#
-# For keeping track of logging at regular intervals
-#
-last_time = time.time()
-seconds = 0
 
 #
 # An event counter for impulse events that are getting
@@ -45,22 +40,17 @@ exceeded_delta = [0.0]*128
 #
 ealpha = -200.0
 #
-# This function used to be just about doing excisions, but it has morphed into
-#  much, much more
+# Evaluate signal (as fft), and perform spectral excision
+#  and impulse removal, calculate current total-power estimate
+#  after all that has been done.
 #
-# It handles logging
+# Keep stats on these events
+#
+#
 # It handles both types of excision, and keeps track of stats
-# It handles peak-hold computations
-# It handles declaring an antenna fault
 #
-# It handles some rapid-reponse UI stuff as well
-#
-# It does call-outs to other functions for a lot of the above
-#
-def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
+def signal_evaluator(infft,prefix,thresh,duration,prate):
     global avg_fft
-    global last_time
-    global seconds
     global last_out
     global impulse_count
     global impulse_events
@@ -68,6 +58,14 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
     global exceeded_mtime
     global exceeded_delta
     global ealpha
+    
+    #
+    # We cache an alpha value, just so we don't have to do this
+    #   gnarly math at prate
+    #
+    if (ealpha < 0.0):
+        ealpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
+    beta = 1.0-ealpha
 
     #
     # We build a dict of quantized-to-one-dB
@@ -114,6 +112,9 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
     outfft = [0.0]*len(infft)
     indx = 0
     
+    #
+    # Re-size if necessary
+    #
     if (len(exceeded_ocount) != len(infft)):
         exceeded_ocount = [0]*len(infft)
         exceeded_mtime = [0.0]*len(infft)
@@ -131,7 +132,7 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
             #
             # "Fresh" excision event
             #
-            if (now - exceeded_mtime[indx] >= 5.0):
+            if ((now - exceeded_mtime[indx]) >= 5.0):
                 exceeded_delta[indx] = now - exceeded_mtime[indx]
                 exceeded_mtime[indx] = now
                 exceeded_ocount[indx] += 1
@@ -148,7 +149,7 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
     
     #
     # Try to detect impulse noise, and reject it
-    # If we aren't in the middle of a impulse event holdoff period,
+    # If we aren't in the middle of an impulse event holdoff period,
     #    check for impulse (value exceeds threshold)
     #
     exceeded_bins = 0
@@ -167,11 +168,8 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
     # Update averages, etc only if we aren't in an impulse-noise
     #    blanking interval
     #
-    if (ealpha < 0.0):
-		ealpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
-    beta = 1.0-ealpha
+    
     if (impulse_count <= 0):
-        
         #
         # Do single-pole IIR filter
         #
@@ -183,6 +181,9 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
     #
     last_out = list(outfft)
     
+    #
+    # Decrement impulse holdoff counter if necessary
+    #
     if (impulse_count > 0):
         impulse_count -= 1
 
@@ -200,9 +201,37 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
     pwr = numpy.sum(pvect)
     
     #
-    # Other things need to know
+    # Other subsystems need to know current value of pwr
     #
     set_current_pwr(pwr)
+    
+    return (outfft)
+
+def get_avg_fft():
+	global avg_fft
+	
+	return (avg_fft)
+
+def get_exceeded_ocount():
+	global exceeded_ocount
+	
+	return (exceeded_ocount)
+
+def get_exceeded_delta():
+	global exceeded_delta
+	
+	return(exceeded_delta)
+
+#
+# For keeping track of logging at regular intervals
+#
+last_time = time.time()
+seconds = 0
+
+def logging(infft,renormal,prefix,freq,bw):
+
+    global seconds
+    global last_time
     
     #
     # Update the seconds counter
@@ -230,11 +259,11 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
             #
             # Time to check on possible antenna faults
             #
-            handle_normal_power(pwr,renormal)
+            handle_normal_power(get_current_pwr(),renormal)
             
             #
-            # Compute current_ratio
-            #
+            # Tweak reference value so that div-by-zero doesn't
+            #   happen
             rv = get_refval()
             if (rv == 0.0):
                 rv += 1.0e-15
@@ -242,23 +271,18 @@ def signal_evaluator(infft,prefix,rst,thresh,duration,freq,bw,renormal,prate):
             #
             # Do recording of powers/temps
             #
-            handle_pwr_recording(pwr, rv, hdr, ltp, prefix)
+            handle_pwr_recording(get_current_pwr(), rv, hdr, ltp, prefix)
         #
         # Spectral
         #
         # Every 60 seconds
         #
         if (seconds != 0 and (seconds % 60 == 0)):
-            
             handle_spec_recording(infft,"spec-raw", ltp, hdr, prefix)
-            handle_spec_recording(avg_fft, "spec-excised", ltp, hdr, prefix)
+            handle_spec_recording(get_avg_fft(), "spec-excised", ltp, hdr, prefix)
             handle_spec_recording(get_peakhold(), "spec-peak", ltp, hdr, prefix)
-            handle_spec_recording(exceeded_ocount, "spec-ecounts", ltp, hdr, prefix)
-            handle_spec_recording(exceeded_delta, "spec-edeltas", ltp, hdr, prefix)
-            
-                
-    return (outfft)
-
+            handle_spec_recording(get_exceeded_ocount(), "spec-ecounts", ltp, hdr, prefix)
+            handle_spec_recording(get_exceeded_delta(), "spec-edeltas", ltp, hdr, prefix)
 #
 # A buffer for the averaged reference FFT
 #
@@ -457,8 +481,8 @@ def handle_peak_hold(fft,rst,ticks):
     # Setup inital auto_rst value
     #
     if (auto_init == False):
-		auto_rst = 10*ticks
-		auto_init = True
+        auto_rst = 10*ticks
+        auto_init = True
 
     #
     # Resize if necessary
