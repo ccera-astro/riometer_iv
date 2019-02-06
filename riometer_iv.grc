@@ -5744,6 +5744,12 @@ exceeded_mtime = [0.0]*128
 exceeded_delta = [0.0]*128
 
 #
+# For fuzzing during impulse-blanking
+#
+fuzz_buffer_01 = [0.1]*128
+fuzz_buffer_04 = [0.4]*128
+
+#
 # Cached alpha value for excised FFT
 #
 ealpha = -200.0
@@ -5766,6 +5772,8 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     global exceeded_mtime
     global exceeded_delta
     global ealpha
+    global fuzz_buffer_01
+    global fuzz_buffer_04
     
     #
     # We cache an alpha value, just so we don't have to do this
@@ -5774,6 +5782,22 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     if (ealpha &lt; 0.0):
         ealpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
     beta = 1.0-ealpha
+    
+    #
+    # (re)init fuzz buffers either
+    #  because they are too small, or we want to randomly
+    #  refresh them.
+    # The random() functions aren't particularly speedy, so we
+    #   only want to call them 'sometimes'.  So, we arrange for there
+    #   to be a probability of 0.2 that we'll refresh the fuzz buffers
+    #
+    if ((len(fuzz_buffer_01) &lt; len(infft)) or (random.randint(0,5) == 0)):
+        fuzz_buffer_01 = [0.0]*len(infft)
+        fuzz_buffer_04 = [0.0]*len(infft)
+        
+        for i in range(0,len(infft)):
+            fuzz_buffer_01[i] = random.uniform(-0.1,0.1)
+            fuzz_buffer_04[i] = random.uniform(-0.4,0.4)
 
     #
     # We build a dict of quantized-to-one-dB
@@ -5835,7 +5859,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     now = time.time()
     for v in infft:
         if (v-mode &gt;= 1.5):
-            outfft[indx] = mode+random.uniform(-0.4,0.4)
+            outfft[indx] = mode+fuzz_buffer_04[indx]
             
             #
             # "Fresh" excision event
@@ -5869,7 +5893,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
         # If more than 25% of the bins are in "exceeded" state
         #   declare an impulse-noise event
         #
-        if (exceeded_bins &gt;= len(outfft)/4.0):
+        if (exceeded_bins &gt;= (len(outfft)/4.0)):
             impulse_count = duration
             impulse_events += 1
     #
@@ -5883,6 +5907,10 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
         #
         new_fft = numpy.multiply(outfft,[ealpha]*len(outfft))
         avg_fft = numpy.add(new_fft, numpy.multiply(avg_fft,[beta]*len(outfft)))
+    elif (random.randint(0,3) == 0):
+        new_fft = numpy.add(avg_fft, fuzz_buffer_01)
+        avg_fft = numpy.add(new_fft, avg_fft)
+        avg_fft = numpy.divide(avg_fft, [2.0]*len(avg_fft))
     
     #
     # Always record the last excised FFT buffer
@@ -5916,19 +5944,19 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     return (outfft)
 
 def get_avg_fft():
-	global avg_fft
-	
-	return (avg_fft)
+    global avg_fft
+    
+    return (avg_fft)
 
 def get_exceeded_ocount():
-	global exceeded_ocount
-	
-	return (exceeded_ocount)
+    global exceeded_ocount
+    
+    return (exceeded_ocount)
 
 def get_exceeded_delta():
-	global exceeded_delta
-	
-	return(exceeded_delta)
+    global exceeded_delta
+    
+    return(exceeded_delta)
 
 #
 # For keeping track of logging at regular intervals
