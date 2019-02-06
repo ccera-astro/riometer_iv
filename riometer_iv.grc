@@ -946,7 +946,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>12</value>
+      <value>15</value>
     </param>
   </block>
   <block>
@@ -6366,7 +6366,9 @@ def set_skyratio(r):
       <value>-- Data logging
 -- RFI excision
 -- Conversion to noise temps
--- Frequency vs sky noise model</value>
+-- Frequency vs sky noise model
+-- Antenna fault evaluation
+-- Excision statistics tracking</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -6374,7 +6376,7 @@ def set_skyratio(r):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 932)</value>
+      <value>(48, 844)</value>
     </param>
     <param>
       <key>_rotation</key>
