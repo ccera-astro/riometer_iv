@@ -3,6 +3,7 @@ import time
 import math
 import numpy
 import random
+import ephem
 
 #
 # Store the averaged/integrated FFT results (post-excision) here
@@ -72,7 +73,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #   gnarly math at prate
     #
     if (ealpha < 0.0):
-        ealpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
+        ealpha = 1.0-(math.pow(math.e,-2*(3.0/prate)))
     beta = 1.0-ealpha
     
     #
@@ -204,9 +205,9 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     # This will cause us to frob on avg_fft with P = 0.25
     #
     elif (random.randint(0,4) == 0):
-		
-		#
-		# First, fold-in fuzz buffer
+        
+        #
+        # First, fold-in fuzz buffer
         new_fft = numpy.add(avg_fft, fuzz_buffer_01)
         avg_fft = numpy.add(new_fft, avg_fft)
         avg_fft = numpy.divide(avg_fft, [2.0]*len(avg_fft))
@@ -264,16 +265,54 @@ def get_exceeded_delta():
     
     return(exceeded_delta)
 
+def cur_sidereal(longitude):
+    longstr = "%02d" % int(longitude)
+    longstr = longstr + ":"
+    longitude = abs(longitude)
+    frac = longitude - int(longitude)
+    frac *= 60
+    mins = int(frac)
+    longstr += "%02d" % mins
+    longstr += ":00"
+    x = ephem.Observer()
+    x.date = ephem.now()
+    x.long = longstr
+    jdate = ephem.julian_date(x)
+    tokens=str(x.sidereal_time()).split(":")
+    hours=int(tokens[0])
+    minutes=int(tokens[1])
+    seconds=int(float(tokens[2]))
+    sidt = "%02d,%02d,%02d" % (hours, minutes, seconds)
+    return (sidt)
 #
 # For keeping track of logging at regular intervals
 #
 last_time = time.time()
 seconds = 0
-
-def logging(infft,renormal,prefix,freq,bw):
+fast_data_pHz = [0.0]*100
+fast_data_ndx = 0
+def logging(infft,renormal,prefix,freq,bw,prate,longitude):
 
     global seconds
     global last_time
+    global fast_data_pHz
+    global fast_data_ndx
+    
+    #
+    # Resize fast_data_pHz if necessary
+    #
+    if (len(fast_data_pHz) != prate):
+        fast_data_pHz = [[0.0,0.0]]*prate
+    
+    #
+    # We record fast data in a buffer, and that buffer only gets logged once per second
+    #
+    fast_data_pHz[fast_data_ndx % prate] = [get_current_pwr(), get_refval()]
+    
+    #
+    # It heads off to infinity
+    #
+    fast_data_ndx += 1
     
     #
     # Update the seconds counter
@@ -287,8 +326,8 @@ def logging(infft,renormal,prefix,freq,bw):
         #
         ltp = time.gmtime(time.time())
         
-        hdr_format = "%02d,%02d,%02d,%d,%d,"
-        hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, freq, bw)
+        hdr_format = "%02d,%02d,%02d,%s,%d,%d,"
+        hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), freq, bw)
         hdr = hdr_format % hdr_contents
 
         #
@@ -304,16 +343,32 @@ def logging(infft,renormal,prefix,freq,bw):
             handle_normal_power(get_current_pwr(),renormal)
             
             #
+            # Derive 1sec values from fast_pHz values
+            #
+            r = 0.0
+            p = 0.0
+            for v in fast_data_pHz:
+                r += v[1]
+                p += v[0]
+
+            #
+            # Reduce to average
+            #
+            r /= len(fast_data_pHz)
+            p /= len(fast_data_pHz)
+            
+            #
             # Tweak reference value so that div-by-zero doesn't
             #   happen
-            rv = get_refval()
+            
+            rv = r
             if (rv == 0.0):
                 rv += 1.0e-15
             
             #
             # Do recording of powers/temps
             #
-            handle_pwr_recording(get_current_pwr(), rv, hdr, ltp, prefix)
+            handle_pwr_recording(p, rv, hdr, ltp, prefix, fast_data_pHz)
         #
         # Spectral
         #
@@ -592,7 +647,7 @@ def handle_normal_power(pwr,renormal):
     else:
         antenna_fault(False)
 
-def handle_pwr_recording(pwr,rv,hdr,ltp,prefix):
+def handle_pwr_recording(pwr,rv,hdr,ltp,prefix,fdata):
     #
     # Record data in a daily file
     #
@@ -604,6 +659,20 @@ def handle_pwr_recording(pwr,rv,hdr,ltp,prefix):
     fp.write (hdr)
     fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, rv, pwr-rv, pwr/rv, get_Tsky()))
     fp.close()
+    
+    #
+    # Record fast data as well
+    #
+    fn = prefix+"fast-"
+    fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+    fn += ".csv"
+    fp = open(fn, "a")
+    fp.write(hdr)
+    for v in fdata:
+        fp.write ("(%.7f,%.7f)," % (v[0], v[1]) )
+    fp.write("\n")
+    fp.close()
+    
 
 def handle_spec_recording(fft,variant,ltp,hdr,prefix):
     #
