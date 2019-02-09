@@ -782,7 +782,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>tsys_ref</value>
+      <value>tsysref</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -6809,7 +6809,7 @@ def set_skyratio(r):
     </param>
     <param>
       <key>id</key>
-      <value>tsys_ref</value>
+      <value>tsysref</value>
     </param>
     <param>
       <key>label</key>
