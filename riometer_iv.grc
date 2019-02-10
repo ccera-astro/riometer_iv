@@ -6098,19 +6098,39 @@ def logging(infft,renormal,prefix,freq,bw,prate,longitude):
             handle_normal_power(get_current_pwr(),renormal)
             
             #
-            # Derive 1sec values from fast_pHz values
+            # Derive 1sec reference value from fast_pHz values
             #
             r = 0.0
-            p = 0.0
             for v in fast_data_pHz:
                 r += v[1]
-                p += v[0]
-
+            
             #
             # Reduce to average
             #
             r /= len(fast_data_pHz)
-            p /= len(fast_data_pHz)
+            
+            
+            #
+            # Implement a median filter for SKY data
+            #
+            
+            #
+            # First extract SKY values from fast_data_pHz
+            #
+            sortedp = [x[0] for x in fast_data_pHz]
+            
+            #
+            # Then sort
+            #
+            sortedp = sorted(sortedp)
+            
+            #
+            # Pull the mid 3 values and average them
+            #
+            p = sortedp[len(sortedp)/2]
+            p += sortedp[len(sortedp)/2+1]
+            p += sortedp[len(sortedp)/2-1]
+            p /= 3.0
             
             #
             # Tweak reference value so that div-by-zero doesn't
@@ -6118,7 +6138,7 @@ def logging(infft,renormal,prefix,freq,bw,prate,longitude):
             
             rv = r
             if (rv == 0.0):
-                rv += 1.0e-15
+                rv = 1.0e-15
             
             #
             # Do recording of powers/temps
