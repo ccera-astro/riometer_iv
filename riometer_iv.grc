@@ -667,7 +667,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>12</value>
+      <value>15</value>
     </param>
   </block>
   <block>
@@ -1075,7 +1075,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.logging(fast_pacer,reset_fault,prefix,ifreq,samp_rate,fprate,longitude,freqs)</value>
+      <value>riometer_helper.logging(pacer,prefix,ifreq,samp_rate,fprate,longitude,freqs)</value>
     </param>
   </block>
   <block>
@@ -1158,6 +1158,33 @@ Sky Temp vs frequency</value>
     <param>
       <key>type</key>
       <value>string</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1216, 1084)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>pHz_status</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>riometer_helper.do_pHz_data(fast_pacer,fprate)</value>
     </param>
   </block>
   <block>
@@ -1392,33 +1419,6 @@ Sky Temp vs frequency</value>
     <param>
       <key>value</key>
       <value>srate/decim</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1216, 1084)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>variable_0</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>[freq,freq2]</value>
     </param>
   </block>
   <block>
@@ -6351,11 +6351,23 @@ ealpha = -200.0
 # Keep stats on these events
 #
 #
-# The "which" input is used to return the relevant buffer, but
-#  the real-time *processing* is based on the frq_ndx variable
-#
+# We select/process buffers based on frq_ndx, so in effect, we're
+#  maintaining NCHAN parallel "state machines" that keep track of
+#  "stuff" happening with the incoming signals.
 #
 # It handles both types of excision, and keeps track of stats
+#
+#
+# **************************************************************
+# This function is the "meat" of what I think is an important and
+#   fresh approach to processing riometer RF data, for environemnts
+#   that will increasingly be very "crappy".
+#
+# The approach has been field tested and found to work very well, to
+#  the extent that in a situation where a conventional analog riometer
+#  produces "garbage" out, this approach produces quite-usable data.
+#
+# *****************************************************************
 #
 last_eval_ndx = 0
 eval_hold_off = -1
@@ -6380,17 +6392,17 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     # Handle buffer init/resize
     #
-    if (len(avg_fft[lndx]) != len(infft)):
-        avg_fft[0] = list(infft)
-        avg_fft[1] = list(infft)
-        last_out[1] = list(infft)
-        last_out[0] = list(infft)
-    
+    if (len(avg_fft[lndx]) != len(infft)):   
+        avg_fft = [list(infft)]*NCHAN
+        last_out = [list(infft)]*NCHAN
     #
     # Skip some of the initial values coming in, since there's
-    #  unavoidable FG latency that will render the first few
+    #  unavoidable flow-graph latency that will render the first few
     #  FFT frames we get somewhat ambiguous with respect to exactly
-    #  which frequency setting they belong to.
+    #  which frequency setting (frq_ndx) they belong to.  In *addition* to
+    #  that issue, the tuner produces glitches across the frequency transition.
+    #
+    # We do this whenever the frequency index changes
     #
     #
     if (lndx != last_eval_ndx):
@@ -6401,15 +6413,13 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
         eval_hold_off = eval_hold_off - 1
         return None
     
+    #
+    # We capture the "raw" FFT input here.
+    #  It's only ever really used for UI display purpose, but it's
+    #  probably slightly more efficient to capture it here than in
+    #  a separate polled function
+    #
     raw_fft[lndx] = list(infft)
-    
-    #
-    # We cache an alpha value, just so we don't have to do this
-    #   gnarly math at prate
-    #
-    if (ealpha &lt; 0.0):
-        ealpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
-    beta = 1.0-ealpha
     
     #
     # (re)init fuzz buffers either
@@ -6417,16 +6427,14 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #  refresh them.
     # The random() functions aren't particularly speedy, so we
     #   only want to call them 'sometimes'.  So, we arrange for there
-    #   to be a probability of 0.2 that we'll refresh the fuzz buffers
+    #   to be a probability of 0.333 that we'll refresh the fuzz buffers
     #
-    if ((len(fuzz_buffer_01) &lt; len(infft)) or (random.randint(0,5) == 0)):
-        fuzz_buffer_01 = [0.0]*len(infft)
-        fuzz_buffer_04 = [0.0]*len(infft)
-        
-        for i in range(0,len(infft)):
-            fuzz_buffer_01[i] = random.uniform(-0.1,0.1)
-            fuzz_buffer_04[i] = random.uniform(-0.4,0.4)
-
+    if ((len(fuzz_buffer_01) &lt; len(infft)) or (random.randint(0,3) == 0)):
+        #
+        # Such pythonic, wow
+        #
+        fuzz_buffer_01 = [(x*0)+random.uniform(-0.1,0.1) for x in range(len(infft))]
+        fuzz_buffer_04 = [(x*0)+random.uniform(-0.4,0.4) for x in range(len(infft))]
     #
     # We build a dict of quantized-to-one-dB
     #   FFT bin values
@@ -6459,10 +6467,9 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #  (top two most-frequent quantized dB values), we
     #  slightly bias the most-frequent value
     #
-    mode = slist[len(slist)-1]*1.2
-    mode += slist[len(slist)-2]*0.8
+    mode = slist[len(slist)-1]*1.3
+    mode += slist[len(slist)-2]*0.7
     mode /= 2.0
-    
     mode = float(mode)
     
     
@@ -6485,12 +6492,13 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #  we "smooth".
     #
     now = time.time()
+    indx = 0
     for v in infft:
         if (v-mode &gt;= 1.5):
             outfft[indx] = mode+fuzz_buffer_04[indx]
             
             #
-            # "Fresh" excision event
+            # Manage statistics for recording
             #
             if ((now - exceeded_mtime[lndx][indx]) &gt;= 5.0):
                 exceeded_delta[lndx][indx] = now - exceeded_mtime[lndx][indx]
@@ -6512,21 +6520,30 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
                 exceeded_bins += 1
         #
         # If more than 25% of the bins are in "exceeded" state
-        #   declare an impulse-noise event
+        #   declare an impulse-noise event.  Note that this is
+        #   AFTER spectral "lump" excision.
         #
         if (exceeded_bins &gt;= (len(outfft)/4.0)):
             impulse_count[lndx] = duration
             impulse_events[lndx] += 1
+    
+    #
+    # Set up "reasonable" IIR filter parameters
+    #
+    alpha = 1.0-(math.pow(math.e,-2*(0.5/prate)))
+    beta = 1.0-alpha
     #
     # Update averages, etc only if we aren't in an impulse-noise
     #    blanking interval
     #
-    
+    # The excised FFT is in "outfft"
+    # We use it to contribue to the avg_fft for this channel
+    #
     if (impulse_count[lndx] &lt;= 0):
         #
         # Do single-pole IIR filter
         #
-        new_fft = numpy.multiply(outfft,[ealpha]*len(outfft))
+        new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
         avg_fft[lndx] = numpy.add(new_fft, numpy.multiply(avg_fft[lndx],[beta]*len(outfft)))
     
     #
@@ -6536,6 +6553,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
         
         #
         # First, fold-in fuzz buffer
+        #
         new_fft = numpy.add(avg_fft[lndx], fuzz_buffer_01)
         avg_fft[lndx] = numpy.add(new_fft, avg_fft[lndx])
         avg_fft[lndx] = numpy.divide(avg_fft[lndx], [2.0]*len(avg_fft[lndx]))
@@ -6544,7 +6562,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
         # Then fold-in a tiny contribution from current data
         #
         diff = numpy.sub(avg_fft[lndx], last_out[lndx])
-        diff = numpy.add(avg_fft[lndx], numpy.multiply(diff,[0.0025]*len(diff)))
+        diff = numpy.add(avg_fft[lndx], numpy.multiply(diff,[0.0050]*len(diff)))
         avg_fft[lndx] = numpy.divide(diff, [2.0]*len(avg_fft[lndx]))
     
     #
@@ -6573,6 +6591,12 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     
     return None
 
+#
+# UI instances for getting raw FFT
+#
+# We fuzz the buffer in the case where the desired display channel is the current
+#  actual RF channel.  This is purely for UI pleasantness reasons.
+#
 def get_raw_fft_ui(p, which):
     global fuzz_buffer_04
     
@@ -6586,6 +6610,12 @@ def get_raw_fft(which):
     
     return raw_fft[which]
 
+#
+# Get the (excised) avg fft buffer for this channel
+#
+# Again, do some fuzzing for the UI if the desired channel
+#   and current RF channel aren't the same.
+#
 def get_avg_fft_ui(p,which):
     global fuzz_buffer_01
     
@@ -6611,6 +6641,9 @@ def get_exceeded_delta(which):
     
     return(exceeded_delta[which])
 
+#
+# We use pyephem to tell us what our LMST is--for logging purposes
+#
 def cur_sidereal(longitude):
     longstr = "%02d" % int(longitude)
     longstr = longstr + ":"
@@ -6635,35 +6668,29 @@ def cur_sidereal(longitude):
 #
 last_time = time.time()
 seconds = 0
-fast_data_pHz = [[0.0,0.0]*100]*NCHAN
+fast_data_pHz = [[0.0,0.0]*300]*NCHAN
 fast_data_ndx = [0]*NCHAN
 
-def logging(infft,renormal,prefix,freq,bw,prate,longitude,frqlist):
+def do_pHz_data(pacer,prate):
+    global frq_ndx
+    global fast_data_pHz
+    global fast_data_ndx
+    
+    lndx = frq_ndx
+    
+    fast_data_pHz[lndx][fast_data_ndx[lndx]] = [get_current_pwr(lndx),get_refval(lndx)]
+    fast_data_ndx[lndx] += 1
+
+
+#
+# Log data items
+#
+def logging(p,prefix,freq,bw,prate,longitude,frqlist):
 
     global seconds
     global last_time
     global fast_data_pHz
     global fast_data_ndx
-    global frq_ndx
-    
-    lndx = frq_ndx
-    
-    
-    #
-    # Resize fast_data_pHz if necessary
-    #
-    if (len(fast_data_pHz[0]) != prate):
-        fast_data_pHz[0] = [[0.0,0.0]]*prate
-        fast_data_pHz[1] = [[0.0,0.0]]*prate
-    #
-    # We record fast data in a buffer, and that buffer only gets logged once per second
-    #
-    fast_data_pHz[lndx][fast_data_ndx[lndx] % prate] = [get_current_pwr(lndx), get_refval(lndx)]
-    
-    #
-    # It heads off to infinity
-    #
-    fast_data_ndx[lndx] += 1
     
     #
     # Update the seconds counter
@@ -6691,66 +6718,77 @@ def logging(infft,renormal,prefix,freq,bw,prate,longitude,frqlist):
             #
             # Time to check on possible antenna faults
             #
-            handle_normal_power(get_current_pwr(lndx),renormal,lndx)
+            #handle_normal_power(get_current_pwr(lndx),renormal,lndx)
             
             #
             # Implement a median filter for SKY data
             #
             
-            #
-            # First extract SKY values from fast_data_pHz
-            #
-            sortedp = [x[0] for x in fast_data_pHz[lndx]]
-            
-            #
-            # Then the REF values
-            #
-            sortedr = [x[1] for x in fast_data_pHz[lndx]]
-            
-            #
-            # Then sort
-            #
-            sortedp = sorted(sortedp)
-            sortedr = sorted(sortedr)
-            
-            #
-            # Pull the middle 30%
-            #
-            ls = int(len(sortedp)/2)
-            mid = ls
-            start = int(mid-(ls/6))
-            end =  (mid+(ls/6))
+            for n in range(NCHAN):
+                #
+                # First extract SKY values from fast_data_pHz
+                #
+                pvect = fast_data_pHz[n]
+                pvect = pvect[0:fast_data_ndx[n]]
+                sortedp = [x[0] for x in pvect]
+                
+                #
+                # Then the REF values
+                #
+                rvect = fast_data_pHz[n]
+                rvect = rvect[0:fast_data_ndx[n]]
+                sortedr = [x[1] for x in rvect]
 
-            p = numpy.sum(sortedp[start:end])
-            p /= ((start-end)+1)
+                #
+                # Then sort
+                #
+                sortedp = sorted(sortedp)
+                sortedr = sorted(sortedr)
+                
+                #
+                # Pull the middle 30%
+                #
+                ls = int(len(sortedp)/2)
+                mid = ls
+                start = int(mid-(ls/6))
+                end =  (mid+(ls/6))
+
+                p = numpy.sum(sortedp[start:end])
+                p /= ((start-end)+1)
+                
+                r = numpy.sum(sortedr[start:end])
+                r /= ((start-end)+1)
             
-            r = numpy.sum(sortedr[start:end])
-            r /= ((start-end)+1)
-            
-            #
-            # Do recording of powers/temps
-            #
-            handle_pwr_recording(p, r, hdr, ltp, prefix, fast_data_pHz[lndx],lndx)
+                #
+                # Do recording of powers/temps
+                #
+                handle_pwr_recording(p, r, get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate)
+                
+                #
+                # Reset the fast data index
+                #
+                fast_data_ndx[n] = 0
         #
         # Spectral
         #
         # Every 60 seconds
         #
         if (seconds != 0 and (seconds % 60 == 0)):
-            handle_spec_recording(infft,"spec-raw", ltp, hdr, prefix)
-            handle_spec_recording(get_avg_fft(lndx), "spec-excised", ltp, hdr, prefix)
-            handle_spec_recording(get_peakhold(lndx), "spec-peak", ltp, hdr, prefix)
-            handle_spec_recording(get_exceeded_ocount(lndx), "spec-ecounts", ltp, hdr, prefix)
-            handle_spec_recording(get_exceeded_delta(lndx), "spec-edeltas", ltp, hdr, prefix)
+            for n in range(NCHAN):
+                handle_spec_recording(get_raw_fft(n),"spec-raw-%d-" % n, ltp, hdr, prefix)
+                handle_spec_recording(get_avg_fft(n), "spec-excised-%d-" % n, ltp, hdr, prefix)
+                handle_spec_recording(get_peakhold(n), "spec-peak-%d-" % n, ltp, hdr, prefix)
+                handle_spec_recording(get_exceeded_ocount(n), "spec-ecounts-%d-" % n, ltp, hdr, prefix)
+                handle_spec_recording(get_exceeded_delta(n), "spec-edeltas-%d-" % n, ltp, hdr, prefix)
 #
 # A buffer for the averaged reference FFT
 #
+# We don't actually use the NCHAN channels in this, because
+#   the reference is tuned to half-way between the two channels, and
+#   stays there.
+#
 avg_rfft = [[-220.0]*FFTSIZE]*NCHAN
 
-#
-# Cached alpha value
-#
-ralpha = -200.0
 
 def get_ref_fft(which):
     global avg_rfft
@@ -6767,33 +6805,24 @@ def get_ref_fft_ui(p,which):
 #   SOOO, while there are two reference buffers, we only ever use one of them
 #
 #
-last_ref_ndx = 0
-ref_hold_off = -1
+
 def do_reference(ref_fft,prate):
     global avg_rfft
-    global ralpha
-    global frq_ndx
-    global last_ref_ndx
-    global ref_hold_off
     
     lndx = 0
    
-    
-    if (ralpha &lt; 0.0):
-        ralpha = 1.0-math.pow(math.e,-2*(0.5/prate))
-    beta = 1.0-ralpha
+    alpha = 1.0-math.pow(math.e,-2*(0.5/prate))
+    beta = 1.0-alpha
     
     #
     # Handle re-size
     #
     if (len(avg_rfft[lndx]) != len(ref_fft)):
-        avg_rfft[0] = list(ref_fft)
-        avg_rfft[1] = list(ref_fft)
-    
+		avg_rfft = [ref_fft]*NCHAN
     #
     # Single-pole IIR filter it
     #
-    tfft = numpy.multiply([ralpha]*len(ref_fft),ref_fft)
+    tfft = numpy.multiply([alpha]*len(ref_fft),ref_fft)
     avg_rfft[lndx] = numpy.add(tfft,numpy.multiply([beta]*len(avg_rfft[lndx]),avg_rfft[lndx]))
     
     #
@@ -6802,14 +6831,14 @@ def do_reference(ref_fft,prate):
     pvect = numpy.multiply(ref_fft, [0.1]*len(ref_fft))
     pvect = numpy.power([10.0]*len(ref_fft),pvect)
     b = beta*get_refval(lndx)
-    set_refval((ralpha*numpy.sum(pvect))+b,lndx)
+    set_refval((alpha*numpy.sum(pvect))+b,lndx)
     
     return None
 
 #
 # A buffer for the converted-to-kelvin stripchart display
 #
-stripchart = [[0.0]*FFTSIZE]*2
+stripchart = [[0.0]*FFTSIZE]*NCHAN
 
 def chart_Tsky(pace,siz,which):
     global stripchart
@@ -6892,20 +6921,20 @@ def tsky_model(freq):
 #
 DAILY_MINUTES=1440
 minutes_chart = [[0.0]*DAILY_MINUTES]*NCHAN
-mtsky = -1
-mcounter = 0
+mtsky = [0]*NCHAN
+mcounter = [0]*NCHAN
 def minute_data(p,which):
     global minutes_chart
     global mtsky
     global mcounter
     
-    mtsky += get_Tsky(which)
-    mcounter += 1
-    if ((mcounter % 60) == 0):
-        mtsky /= 60.0
+    mtsky[which] += get_Tsky(which)
+    mcounter[which] += 1
+    if ((mcounter[which] % 60) == 0):
+        mtsky[which] /= 60.0
         m = minutes_chart[which]
-        minutes_chart[which] = [mtsky]+m[0:DAILY_MINUTES-1]
-        mtsky = 0.0
+        minutes_chart[which] = [mtsky[which]]+m[0:DAILY_MINUTES-1]
+        mtsky[which] = 0.0
 
     return minutes_chart[which]
 
@@ -6924,7 +6953,7 @@ def get_fault(p):
 #
 # Keep track of peak-hold data, both for logging, and display
 #
-peakhold = [[0.0]*FFTSIZE]*2
+peakhold = [[0.0]*FFTSIZE]*NCHAN
 
 #
 # For auto-peak-reset on startup (in ticks)
@@ -6952,16 +6981,15 @@ def handle_peak_hold(fft,ticks):
     # Resize if necessary
     #
     if (len(peakhold[lndx]) &lt; len(fft)):
-        peakhold[lndx] = fft
+        peakhold = [fft]*NCHAN
         
     #
-    # If they pushed the "Reset Peak Hold" button in the UI, OR
-    #   The auto-rst variable has dropped through zero
+    # Time for auto peak-hold reset (done on startup as a convenience)
     #
     auto_rst -= 1
     if (auto_rst == 0):
-        peakhold[0] = copy.deepcopy(get_raw_fft(0))
-        peakhold[1] = copy.deepcopy(get_raw_fft(1))
+		for n in range(NCHAN):
+			peakhold[n] = copy.deepcopy(get_raw_fft(n))
     
     #
     # Do the peak-hold math
@@ -7027,24 +7055,24 @@ def handle_normal_power(pwr,renormal,which):
     else:
         antenna_fault(False)
 
-def handle_pwr_recording(pwr,rv,hdr,ltp,prefix,fdata,which):
+def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
     #
     # Record data in a daily file
     #
-    fn = prefix+"rio-"
+    fn = prefix+"rio-%d-" % which
     fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
     fn += ".csv"
 
     fp = open(fn, "a")
     fp.write (hdr)
     rv = rv + 1.0e12
-    fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, rv, pwr-rv, pwr/rv, get_Tsky(which)))
+    fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
     fp.close()
     
     #
     # Record fast data as well
     #
-    fn = prefix+"fast-%dHz" % len(fdata)
+    fn = prefix+"fast-%dHz-%d-" % (prate,which)
     fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
     fn += ".csv"
     fp = open(fn, "a")
