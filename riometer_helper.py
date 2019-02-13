@@ -17,6 +17,7 @@ def get_fftsize():
 frq_ndx = 0
 
 schedule_counter = 0
+
 def do_freq_schedule(p,interval,freqs,xmlport):
     global schedule_counter
     global frq_ndx
@@ -130,6 +131,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     global eval_hold_off
     global raw_fft
     
+    
     lndx = frq_ndx
 
     #
@@ -148,9 +150,17 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     # We do this whenever the frequency index changes
     #
     #
+    # The ignore time, in seconds
+    ignoretime = 0.1
+    
+    #
+    # Map this into counts, since we get called at prate Hz (more or less)
+    #
+    ignorecount = prate*ignoretime
+    ignorecount = int(ignorecount)
     if (lndx != last_eval_ndx):
         last_eval_ndx = lndx
-        eval_hold_off = int(prate/4)+1
+        eval_hold_off = ignorecount
 
     if (eval_hold_off > 0):
         eval_hold_off = eval_hold_off - 1
