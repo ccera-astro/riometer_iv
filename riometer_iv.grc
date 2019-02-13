@@ -2232,7 +2232,7 @@ to models.</value>
     </param>
     <param>
       <key>n</key>
-      <value>frate/15</value>
+      <value>frate/20</value>
     </param>
     <param>
       <key>type</key>
@@ -2283,7 +2283,7 @@ to models.</value>
     </param>
     <param>
       <key>n</key>
-      <value>frate/15</value>
+      <value>frate/20</value>
     </param>
     <param>
       <key>type</key>
@@ -7893,7 +7893,7 @@ def get_Tsky(which):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(40, 996)</value>
+      <value>(40, 972)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7902,6 +7902,10 @@ def get_Tsky(which):
     <param>
       <key>id</key>
       <value>xmlrpc_server_0</value>
+    </param>
+    <param>
+      <key>logging</key>
+      <value>False</value>
     </param>
     <param>
       <key>port</key>
