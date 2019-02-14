@@ -140,7 +140,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.do_freq_schedule(fast_pacer,fprate/3,freqs,xmlport)</value>
+      <value>riometer_helper.do_freq_schedule(fast_pacer,fprate/2,freqs,xmlport)</value>
     </param>
   </block>
   <block>
