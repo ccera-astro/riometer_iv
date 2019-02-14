@@ -10,7 +10,7 @@
     </param>
     <param>
       <key>window_size</key>
-      <value>1700,1700</value>
+      <value>1900,1700</value>
     </param>
     <param>
       <key>category</key>
@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(936, 948)</value>
+      <value>(848, 996)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -128,7 +128,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1120, 948)</value>
+      <value>(968, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -155,7 +155,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1120, 1012)</value>
+      <value>(1072, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -182,7 +182,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1024, 884)</value>
+      <value>(784, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -209,7 +209,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1120, 884)</value>
+      <value>(872, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -236,7 +236,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(936, 884)</value>
+      <value>(696, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -264,7 +264,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(720, 948)</value>
+      <value>(584, 1268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -292,7 +292,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(696, 844)</value>
+      <value>(808, 1268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -350,7 +350,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(960, 1440)</value>
+      <value>(1248, 1196)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -445,7 +445,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1608, 236)</value>
+      <value>(1808, 236)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -484,7 +484,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1400, 976)</value>
+      <value>(1472, 1080)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -523,7 +523,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(792, 1476)</value>
+      <value>(1248, 1340)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -570,7 +570,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1400, 888)</value>
+      <value>(1472, 984)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -601,7 +601,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 948)</value>
+      <value>(744, 996)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -682,7 +682,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1400, 1060)</value>
+      <value>(1616, 1012)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -763,7 +763,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1280, 1276)</value>
+      <value>(984, 1068)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -794,7 +794,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1064, 1172)</value>
+      <value>(1400, 1188)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -833,7 +833,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(960, 1364)</value>
+      <value>(1680, 1364)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -899,7 +899,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(960, 1276)</value>
+      <value>(1392, 1276)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -938,7 +938,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1088, 1276)</value>
+      <value>(1688, 1276)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -977,7 +977,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1136, 1364)</value>
+      <value>(1520, 1276)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1016,7 +1016,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(640, 1260)</value>
+      <value>(1112, 1196)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1055,7 +1055,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 1276)</value>
+      <value>(1552, 1372)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1129,7 +1129,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1536, 1064)</value>
+      <value>(1608, 1080)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1164,7 +1164,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1056, 1084)</value>
+      <value>(1528, 1188)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1199,7 +1199,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1216, 1084)</value>
+      <value>(912, 1132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1238,7 +1238,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1536, 976)</value>
+      <value>(1328, 1080)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1269,7 +1269,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(520, 1004)</value>
+      <value>(632, 1196)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1308,7 +1308,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1536, 888)</value>
+      <value>(1328, 984)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1343,7 +1343,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 1456)</value>
+      <value>(1088, 1368)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1390,7 +1390,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(816, 1352)</value>
+      <value>(1400, 1368)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1468,7 +1468,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1184, 1172)</value>
+      <value>(1696, 1188)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1557,7 +1557,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(184, 996)</value>
+      <value>(720, 1196)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1596,7 +1596,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 732)</value>
+      <value>(864, 756)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1643,7 +1643,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1160, 156)</value>
+      <value>(1304, 156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1678,8 +1678,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>comment</key>
-      <value>This gets updated at 1Hz with a derived
-  Sky noise temperature estimate</value>
+      <value></value>
     </param>
     <param>
       <key>const</key>
@@ -1695,7 +1694,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1176, 380)</value>
+      <value>(1280, 372)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1730,8 +1729,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>comment</key>
-      <value>What the Tsky *should* roughly be, according
-to models.</value>
+      <value></value>
     </param>
     <param>
       <key>const</key>
@@ -1747,7 +1745,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1168, 588)</value>
+      <value>(1368, 524)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1798,7 +1796,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1248, 708)</value>
+      <value>(1448, 780)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1849,7 +1847,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1296, 812)</value>
+      <value>(1448, 884)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1884,8 +1882,7 @@ to models.</value>
     </param>
     <param>
       <key>comment</key>
-      <value>What the Tsky *should* roughly be, according
-to models.</value>
+      <value></value>
     </param>
     <param>
       <key>const</key>
@@ -1901,7 +1898,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1352, 548)</value>
+      <value>(1432, 596)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1936,8 +1933,7 @@ to models.</value>
     </param>
     <param>
       <key>comment</key>
-      <value>This gets updated at 1Hz with a derived
-  Sky noise temperature estimate</value>
+      <value></value>
     </param>
     <param>
       <key>const</key>
@@ -1953,7 +1949,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1192, 476)</value>
+      <value>(1312, 444)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2004,7 +2000,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1192, 228)</value>
+      <value>(1344, 228)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2055,7 +2051,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1232, 300)</value>
+      <value>(1400, 300)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2106,7 +2102,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1200, 84)</value>
+      <value>(1280, 76)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2196,7 +2192,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(248, 572)</value>
+      <value>(256, 620)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2290,7 +2286,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(808, 644)</value>
+      <value>(1040, 700)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2392,7 +2388,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1040, 28)</value>
+      <value>(1040, 20)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2443,7 +2439,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1048, 636)</value>
+      <value>(1264, 692)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2545,7 +2541,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 684)</value>
+      <value>(72, 692)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2596,7 +2592,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1040, 724)</value>
+      <value>(1072, 812)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2647,7 +2643,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(864, 468)</value>
+      <value>(992, 508)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2698,7 +2694,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1112, 812)</value>
+      <value>(1224, 884)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2753,7 +2749,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(904, 540)</value>
+      <value>(984, 596)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3240,7 +3236,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1544, 20)</value>
+      <value>(1744, 20)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3350,7 +3346,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(240, 656)</value>
+      <value>(224, 712)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3475,7 +3471,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(456, 1160)</value>
+      <value>(184, 1416)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3553,7 +3549,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 1424)</value>
+      <value>(24, 1520)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3600,7 +3596,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(456, 1344)</value>
+      <value>(24, 1608)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3647,7 +3643,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(88, 1424)</value>
+      <value>(24, 1424)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3694,7 +3690,7 @@ to models.</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(640, 1352)</value>
+      <value>(1104, 1280)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -5309,7 +5305,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1496, 76)</value>
+      <value>(1696, 76)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -5568,7 +5564,8 @@ possible LO beating</value>
     </param>
     <param>
       <key>comment</key>
-      <value></value>
+      <value>Two channels of Sky Temp Esimate
+Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>affinity</key>
@@ -5580,7 +5577,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1512, 340)</value>
+      <value>(1672, 380)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -5640,7 +5637,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>label2</key>
-      <value>Sky Model 1</value>
+      <value>CH2: Sky Noise Temp(K)</value>
     </param>
     <param>
       <key>width2</key>
@@ -5656,7 +5653,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>label3</key>
-      <value>Sky Model 2</value>
+      <value>Sky Model: CH1</value>
     </param>
     <param>
       <key>width3</key>
@@ -5672,7 +5669,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>label4</key>
-      <value>CH2: Sky Noise Temp(K)</value>
+      <value>Sky Model: CH2</value>
     </param>
     <param>
       <key>width4</key>
@@ -5851,7 +5848,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1504, 660)</value>
+      <value>(1712, 796)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -6114,7 +6111,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1240, 652)</value>
+      <value>(1488, 708)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6149,7 +6146,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(88, 1240)</value>
+      <value>(16, 1240)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6243,7 +6240,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 1432)</value>
+      <value>(192, 1608)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7444,7 +7441,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(552, 644)</value>
+      <value>(784, 668)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7534,7 +7531,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(88, 1336)</value>
+      <value>(16, 1328)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7581,7 +7578,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(264, 1248)</value>
+      <value>(184, 1240)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7628,7 +7625,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 1336)</value>
+      <value>(192, 1328)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7675,7 +7672,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 1248)</value>
+      <value>(192, 1504)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7799,7 +7796,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(480, 524)</value>
+      <value>(264, 548)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7853,7 +7850,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(872, 764)</value>
+      <value>(944, 868)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7988,7 +7985,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(480, 572)</value>
+      <value>(592, 676)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -8015,7 +8012,7 @@ def relay_event(bit,value,rport):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(696, 468)</value>
+      <value>(768, 580)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -8124,7 +8121,7 @@ def relay_event(bit,value,rport):
     <source_block_id>blocks_add_const_vxx_0_0_0</source_block_id>
     <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
     <source_key>0</source_key>
-    <sink_key>1</sink_key>
+    <sink_key>2</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_add_const_vxx_0_0_0_0</source_block_id>
@@ -8142,13 +8139,13 @@ def relay_event(bit,value,rport):
     <source_block_id>blocks_add_const_vxx_0_0_0_1</source_block_id>
     <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
     <source_key>0</source_key>
-    <sink_key>2</sink_key>
+    <sink_key>3</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_add_const_vxx_0_0_1</source_block_id>
     <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
     <source_key>0</source_key>
-    <sink_key>3</sink_key>
+    <sink_key>1</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_add_const_vxx_0_1</source_block_id>
