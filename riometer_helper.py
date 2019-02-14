@@ -151,13 +151,13 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.1
+    ignoretime = 0.075
     
     #
     # Map this into counts, since we get called at prate Hz (more or less)
     #
-    ignorecount = prate*ignoretime
-    ignorecount = int(ignorecount)
+    ignorecount = float(prate)*ignoretime
+    ignorecount = int(round(ignorecount))
     if (lndx != last_eval_ndx):
         last_eval_ndx = lndx
         eval_hold_off = ignorecount
@@ -469,11 +469,6 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         #
         if (seconds != 0 and (seconds % 1 == 0)):
             #
-            # Time to check on possible antenna faults
-            #
-            #handle_normal_power(get_current_pwr(lndx),renormal,lndx)
-            
-            #
             # Implement a median filter for SKY data
             #
             
@@ -571,7 +566,7 @@ def do_reference(ref_fft,prate):
     # Handle re-size
     #
     if (len(avg_rfft[lndx]) != len(ref_fft)):
-		avg_rfft = [ref_fft]*NCHAN
+        avg_rfft = [ref_fft]*NCHAN
     #
     # Single-pole IIR filter it
     #
@@ -741,8 +736,8 @@ def handle_peak_hold(fft,ticks):
     #
     auto_rst -= 1
     if (auto_rst == 0):
-		for n in range(NCHAN):
-			peakhold[n] = copy.deepcopy(get_raw_fft(n))
+        for n in range(NCHAN):
+            peakhold[n] = copy.deepcopy(get_raw_fft(n))
     
     #
     # Do the peak-hold math
@@ -773,7 +768,7 @@ def set_peakhold(which,fft):
 #
 # For auto normal_power setting (in seconds)
 #
-auto_normal = 30
+auto_normal = 45
 
 #
 # Expected power level -- for fault detection
@@ -801,9 +796,9 @@ def handle_normal_power(pwr,renormal,which):
     
     #
     # Try to detect a significant drop in antenna power, and
-    #   declare a probably antenna fault
+    #   declare a probable antenna fault
     #
-    if (pwr < (normal_power[which]/3.5)):
+    if (pwr <= (normal_power[which]/4.0)):
         antenna_fault(True)
     else:
         antenna_fault(False)
@@ -900,3 +895,118 @@ def get_Tsky(which):
     global Tsky
     
     return(Tsky[which])
+
+#
+# A dictionary for fault-related things like states for the state machine,
+#   blood for the blood god, etc.
+#
+fault_dict = {"IDLE" : 0, "MEASURING": 1, "FAULTED" : 2, "INTERVAL" : 15,
+    "NOISE" : 0, "ANTENNA_FLED" : 1}
+fault_state = fault_dict["IDLE"]
+
+smoothed_raw_power = 0.0
+last_raw_power = -1.0
+measure_counter = fault_dict["INTERVAL"]
+def do_fault_schedule(p,relayport):
+    global smoothed_raw_power
+    global last_raw_power
+    global fault_state
+    global fault_dict
+    
+    t = int(time.time())
+    
+    #
+    # Measure smoothed power between both channels
+    #
+    #
+    # First linearize them
+    #
+    pwr = 0.0
+    for n in range(NCHAN):
+        linear = numpy.power(10.0,numpy.divide(get_raw_fft(n),10.0))
+        pwr += numpy.sum(linear)
+    pwr /= NCHAN
+    
+    #
+    # Then smooth a bit
+    #
+    alpha = 0.25
+    beta = 1.0 - alpha
+    smoothed_raw_power = (alpha*pwr) + (beta*smoothed_raw_power)
+    if (last_raw_power < 0.0):
+        last_raw_power = smoothed_raw_power
+
+    #
+    # Transiton from IDLE to MEASURING every 60 minutes
+    #
+    if (fault_state == fault_dict["IDLE"] and (t % 3600) == 0):
+        fault_state = fault_dict["MEASURING"]
+        last_raw_power = smoothed_raw_power
+        measure_counter = fault_dict["INTERVAL"]
+        
+        #
+        # Turn diagnostic noise source ON
+        #
+        try:
+            relay_event(fault_dict["NOISE"],1,relayport)
+        except:
+            pass
+    
+    if (fault_state == fault_dict["MEASURING"]):
+        measure_counter -= 1
+        if (measure_counter <= 0):
+            fault_state = fault_dict["IDLE"]
+            
+            #
+            # Try turning diagnostic noise source OFF
+            #
+            try:
+                relay_event(fault_dict["NOISE"], 0, relayport)
+            except:
+                pass
+            
+            #
+            # Look for sudden increase in received power level
+            #  If the antenna/feedline are working correctly, there'll
+            #  be very little power reflected at the directional coupler
+            #  back towards the receiver port.
+            #
+            if (smoothed_raw_power/last_raw_power > 5.0):
+                #
+                # Try turning on the antenna fault LED
+                #
+                try:
+                    relay_event(fault_dict["ANTENNA_FLED"], 1, relayport)
+                    antenna_fault(True)
+                except:
+                    pass
+            else:
+                #
+                # Extinguish the antenna fault LED
+                #
+                try:
+                    relay_event(fault_dict["ANTENNA_FLED"], 0, relayport)
+                    antenna_fault(False)
+                except:
+                    pass
+    #
+    # Look for sudden drop in power--also a possible antenna fault
+    #
+    handle_normal_power(smoothed_raw_power,0,0)
+    if (get_fault(0) == True):
+        relay_event(fault_dict["ANTENNA_FLED"], 1, relayport)
+    else:
+        relay_event(fault_dict["ANTENNA_FLED"], 0, relayport)
+    
+    return None
+
+#
+# Pass XMLRPC into the (external) relay control server
+#           
+def relay_event(bit,value,rport):
+	try:
+		xmls = xmlrpclib.Server("http://localhost:%d/" % rport)
+		xmls.set_bit(bit,value)
+		
+	except:
+		pass
