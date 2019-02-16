@@ -904,10 +904,21 @@ fault_dict = {"IDLE" : 0, "MEASURING": 1, "FAULTED" : 2, "INTERVAL" : 15,
     "NOISE" : 0, "ANTENNA_FLED" : 1}
 fault_state = fault_dict["IDLE"]
 
+def get_measurement_state(p):
+    if fault_state == fault_dict["IDLE"]:
+        return "IDLE"
+    if fault_state == fault_dict["MEASURING"]:
+        return "MEASURING"
+    if fault_state == fault_dict["FAULTED"]:
+        return "FAULTED"
+    else:
+        return "UNKNOWN"
+
 smoothed_raw_power = 0.0
 last_raw_power = -1.0
 measure_counter = fault_dict["INTERVAL"]
-def do_fault_schedule(p,relayport):
+
+def do_fault_schedule(p,relayport,finterval):
     global smoothed_raw_power
     global last_raw_power
     global fault_state
@@ -940,7 +951,7 @@ def do_fault_schedule(p,relayport):
     #
     # Transiton from IDLE to MEASURING every 60 minutes
     #
-    if (fault_state == fault_dict["IDLE"] and (t % 3600) == 0):
+    if (fault_state == fault_dict["IDLE"] and (t % finterval) in [0,1,2,3]):
         fault_state = fault_dict["MEASURING"]
         last_raw_power = smoothed_raw_power
         measure_counter = fault_dict["INTERVAL"]
@@ -1005,9 +1016,9 @@ def do_fault_schedule(p,relayport):
 # Pass XMLRPC into the (external) relay control server
 #           
 def relay_event(bit,value,rport):
-	try:
-		xmls = xmlrpclib.Server("http://localhost:%d/" % rport)
-		xmls.set_bit(bit,value)
-		
-	except:
-		pass
+    try:
+        xmls = xmlrpclib.Server("http://localhost:%d/" % rport)
+        xmls.set_bit(bit,value)
+        
+    except:
+        pass
