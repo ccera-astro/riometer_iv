@@ -28,10 +28,9 @@ import os
 import time
 import math
 from pylibftdi import BitBangDevice
-from SimpleXMLRPCServer import SimpleXMLRPCServer
+import SimpleXMLRPCServer
 
 bits=[0]*8
-bbd = None
 def set_bit(b,v):
     global bits
     global bbd
@@ -40,12 +39,15 @@ def set_bit(b,v):
     msk = 0
     for x in range(8):
         if (bits[x] == 1):
-            mak |= 1<<x
+            msk |= 1<<x
     bbd.port = msk
-            
+
         
 
 def main():
+    global bbd
+    
+    bbd = None
     #
     # Create an FTDI BigBangDevice instance, based on serial number passed in
     #
@@ -64,7 +66,7 @@ def main():
     #
     # That worked, setup XMLRPC server
     #
-    server = SimpleXMLRPCServer(("localhost", int(sys.argv[1])),logRequests=False)
+    server = SimpleXMLRPCServer.SimpleXMLRPCServer(('localhost', int(sys.argv[1])), logRequests=False, allow_none=True)
     server.register_introspection_functions()
     server.register_function(set_bit, 'set_bit')
     server.serve_forever()

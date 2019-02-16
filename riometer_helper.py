@@ -912,6 +912,7 @@ def do_fault_schedule(p,relayport):
     global last_raw_power
     global fault_state
     global fault_dict
+    global measure_counter
     
     t = int(time.time())
     
