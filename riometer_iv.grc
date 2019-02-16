@@ -5609,7 +5609,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>width1</key>
-      <value>1</value>
+      <value>2</value>
     </param>
     <param>
       <key>alpha10</key>
@@ -5673,7 +5673,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>width4</key>
-      <value>1</value>
+      <value>2</value>
     </param>
     <param>
       <key>alpha5</key>
