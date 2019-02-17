@@ -151,8 +151,8 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.075
-    
+    ignoretime = 0.150
+
     #
     # Map this into counts, since we get called at prate Hz (more or less)
     #
@@ -165,12 +165,10 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     if (eval_hold_off > 0):
         eval_hold_off = eval_hold_off - 1
         return None
-    
+
     #
     # We capture the "raw" FFT input here.
-    #  It's only ever really used for UI display purpose, but it's
-    #  probably slightly more efficient to capture it here than in
-    #  a separate polled function
+    # It is used for display AND antenna-fault detection
     #
     raw_fft[lndx] = list(infft)
     
@@ -900,7 +898,7 @@ def get_Tsky(which):
 # A dictionary for fault-related things like states for the state machine,
 #   blood for the blood god, etc.
 #
-fault_dict = {"IDLE" : 0, "MEASURING": 1, "FAULTED" : 2, "INTERVAL" : 15,
+fault_dict = {"IDLE" : 0, "MEASURING": 1, "FAULTED" : 2, "INTERVAL" : 30,
     "NOISE" : 0, "ANTENNA_FLED" : 1}
 fault_state = fault_dict["IDLE"]
 
@@ -937,7 +935,6 @@ def do_fault_schedule(p,relayport,finterval):
     for n in range(NCHAN):
         linear = numpy.power(10.0,numpy.divide(get_raw_fft(n),10.0))
         pwr += numpy.sum(linear)
-    pwr /= NCHAN
     
     #
     # Then smooth a bit
@@ -949,7 +946,7 @@ def do_fault_schedule(p,relayport,finterval):
         last_raw_power = smoothed_raw_power
 
     #
-    # Transiton from IDLE to MEASURING every 60 minutes
+    # Transiton from IDLE to MEASURING every user-defined minutes
     #
     if (fault_state == fault_dict["IDLE"] and (t % finterval) in [0,1,2,3]):
         fault_state = fault_dict["MEASURING"]
@@ -983,7 +980,7 @@ def do_fault_schedule(p,relayport,finterval):
             #  be very little power reflected at the directional coupler
             #  back towards the receiver port.
             #
-            if (smoothed_raw_power/last_raw_power > 5.0):
+            if (smoothed_raw_power/last_raw_power > 3.0):
                 #
                 # Try turning on the antenna fault LED
                 #
