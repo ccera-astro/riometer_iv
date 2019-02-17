@@ -167,7 +167,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.do_fault_schedule(pacer,relayport,finterval)</value>
+      <value>riometer_helper.do_fault_schedule(tp_prober,relayport,finterval)</value>
     </param>
   </block>
   <block>
@@ -445,6 +445,33 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(824, 444)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>drate</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>srate/decim</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(1808, 236)</value>
     </param>
     <param>
@@ -682,7 +709,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1616, 1012)</value>
+      <value>(1248, 1004)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1492,6 +1519,49 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
+    <key>variable_function_probe</key>
+    <param>
+      <key>block_id</key>
+      <value>tp_probe</value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>function_args</key>
+      <value></value>
+    </param>
+    <param>
+      <key>function_name</key>
+      <value>level</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1624, 984)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tp_prober</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0.0</value>
+    </param>
+    <param>
+      <key>poll_rate</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
     <key>variable_qtgui_label</key>
     <param>
       <key>comment</key>
@@ -2259,6 +2329,49 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
+    <key>blocks_complex_to_mag_squared</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(624, 464)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_complex_to_mag_squared_1</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_keep_one_in_n</key>
     <param>
       <key>alias</key>
@@ -2358,6 +2471,57 @@ Sky Temp vs frequency</value>
     <param>
       <key>vlen</key>
       <value>fftsize</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_keep_one_in_n</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(544, 564)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_keep_one_in_n_2</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>n</key>
+      <value>10</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
     </param>
   </block>
   <block>
@@ -5583,7 +5747,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>name</key>
-      <value>"Raw and Excised Spectrum: Effective Bw=" + str(ebw)+"kHz"</value>
+      <value>"Spectrum: Bw ~=" + str(ebw)+"kHz"+",Fc=%.2f/%.2fMHz" % (freq/1.0e6, freq2/1.0e6)</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -5607,19 +5771,19 @@ possible LO beating</value>
     </param>
     <param>
       <key>x_axis_label</key>
-      <value>Frequency (MHz)</value>
+      <value>Frequency (kHz)</value>
     </param>
     <param>
       <key>x_start</key>
-      <value>(freqs[channel]-(samp_rate/2.0))/1.0e6</value>
+      <value>-(samp_rate/2)/1.0e3</value>
     </param>
     <param>
       <key>x_step</key>
-      <value>(samp_rate/fftsize)/1.0e6</value>
+      <value>(samp_rate/fftsize)/1.0e3</value>
     </param>
     <param>
       <key>x_units</key>
-      <value>MHz</value>
+      <value>kHz</value>
     </param>
     <param>
       <key>ymax</key>
@@ -6423,6 +6587,7 @@ import numpy
 import random
 import ephem
 import xmlrpclib
+import copy
 
 FFTSIZE=2048
 
@@ -6533,6 +6698,7 @@ ealpha = -200.0
 #
 last_eval_ndx = 0
 eval_hold_off = -1
+
 def signal_evaluator(infft,prefix,thresh,duration,prate):
     global avg_fft
     global last_out
@@ -6569,13 +6735,17 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.150
+    ignoretime = 0.100
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
     #
     ignorecount = float(prate)*ignoretime
     ignorecount = int(round(ignorecount))
+    
+    #
+    # Detect frequency change
+    #
     if (lndx != last_eval_ndx):
         last_eval_ndx = lndx
         eval_hold_off = ignorecount
@@ -7020,11 +7190,20 @@ def chart_Tsky(pace,siz,which):
 #
 # Pretty much what the name suggests
 #
+tscount=0
 def estimate_Tsky(pace,reftemp,tsys,tsys_ref):
-    global frq_ndx
+    global tscount
     
-    lndx = frq_ndx
     
+    tscount += 1
+
+	#
+	# We know that our pacer is running pretty fast, and we don't need
+	#   to do this all THAT often
+	#
+    if ((tscount % 3) != 0):
+        return None
+
     #
     # Need to find Sky temp that satisfies:
     #
@@ -7041,16 +7220,20 @@ def estimate_Tsky(pace,reftemp,tsys,tsys_ref):
     #
     X = tsys_ref+reftemp
     
-    rv = get_refval(lndx)
-    if (rv == 0):
-        rv = 1.0e-15
-    
-    pwr = get_current_pwr(lndx)
-    
-    tsky = ((pwr/rv)*X)-tsys
-    set_Tsky(tsky,lndx)  
+    for lndx in range(NCHAN):
+        rv = get_refval(lndx)
+        if (rv == 0):
+            rv = 1.0e-15
+        
+        pwr = get_current_pwr(lndx)
+        
+        tsky = ((pwr/rv)*X)-tsys
+        cts = get_Tsky(lndx)
+        set_Tsky((tsky+cts)/2.0,lndx)  
     
     return (None)
+
+
 def annotate(prefix, reftemp, tsys, freq, bw, gain, itsys_ref, lnagain, notes):
     fn = prefix+"annotation-"
     ltp = time.gmtime(time.time())
@@ -7125,8 +7308,7 @@ peakhold = [[0.0]*FFTSIZE]*NCHAN
 auto_rst=100
 auto_init=False
 
-import copy
-def handle_peak_hold(fft,ticks):
+def handle_peak_hold(infft,ticks):
     global auto_rst
     global peakhold
     global auto_init
@@ -7144,8 +7326,9 @@ def handle_peak_hold(fft,ticks):
     #
     # Resize if necessary
     #
-    if (len(peakhold[lndx]) &lt; len(fft)):
-        peakhold = [fft]*NCHAN
+    nfft = list(infft)
+    if (len(peakhold[lndx]) &lt; len(infft)):
+        peakhold = [nfft]*NCHAN
         
     #
     # Time for auto peak-hold reset (done on startup as a convenience)
@@ -7153,14 +7336,18 @@ def handle_peak_hold(fft,ticks):
     auto_rst -= 1
     if (auto_rst == 0):
         for n in range(NCHAN):
-            peakhold[n] = copy.deepcopy(get_raw_fft(n))
+            peakhold[n] = list(get_raw_fft(n))
     
     #
     # Do the peak-hold math
     #
     for i in range(0,len(peakhold[lndx])):
-        if (fft[i] &gt; peakhold[lndx][i]):
-            peakhold[lndx][i] = fft[i]
+        if (infft[i] &gt; peakhold[lndx][i]):
+            try:
+                peakhold[lndx][i] = infft[i]
+            except:
+                print "infft %d is %f!!!!!!!" % (i, infft[i])
+                print infft[i]
     
     return None
 
@@ -7334,7 +7521,7 @@ smoothed_raw_power = 0.0
 last_raw_power = -1.0
 measure_counter = fault_dict["INTERVAL"]
 
-def do_fault_schedule(p,relayport,finterval):
+def do_fault_schedule(tp,relayport,finterval):
     global smoothed_raw_power
     global last_raw_power
     global fault_state
@@ -7344,22 +7531,9 @@ def do_fault_schedule(p,relayport,finterval):
     t = int(time.time())
     
     #
-    # Measure smoothed power between both channels
+    # Power estimate comes from raw total-power estimator in flow-graph
     #
-    #
-    # First linearize them
-    #
-    pwr = 0.0
-    for n in range(NCHAN):
-        linear = numpy.power(10.0,numpy.divide(get_raw_fft(n),10.0))
-        pwr += numpy.sum(linear)
-    
-    #
-    # Then smooth a bit
-    #
-    alpha = 0.25
-    beta = 1.0 - alpha
-    smoothed_raw_power = (alpha*pwr) + (beta*smoothed_raw_power)
+    smoothed_raw_power = tp
     if (last_raw_power &lt; 0.0):
         last_raw_power = smoothed_raw_power
 
@@ -7568,6 +7742,57 @@ def relay_event(bit,value,rport):
     </param>
   </block>
   <block>
+    <key>single_pole_iir_filter_xx</key>
+    <param>
+      <key>alpha</key>
+      <value>1.0-(math.pow(math.e,-2.0*(0.5/drate)))</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(600, 508)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>single_pole_iir_filter_xx_1</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
     <key>parameter</key>
     <param>
       <key>alias</key>
@@ -7659,6 +7884,41 @@ def relay_event(bit,value,rport):
     <param>
       <key>value</key>
       <value>3.5</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_probe_signal_x</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(592, 616)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tp_probe</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
     </param>
   </block>
   <block>
@@ -8154,6 +8414,33 @@ def relay_event(bit,value,rport):
     </param>
   </block>
   <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(448, 460)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_6</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>f_sky</value>
+    </param>
+  </block>
+  <block>
     <key>xmlrpc_server</key>
     <param>
       <key>addr</key>
@@ -8277,6 +8564,12 @@ def relay_event(bit,value,rport):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_complex_to_mag_squared_1</source_block_id>
+    <sink_block_id>single_pole_iir_filter_xx_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_keep_one_in_n_0</source_block_id>
     <sink_block_id>virtual_sink_0</sink_block_id>
     <source_key>0</source_key>
@@ -8285,6 +8578,12 @@ def relay_event(bit,value,rport):
   <connection>
     <source_block_id>blocks_keep_one_in_n_0_0</source_block_id>
     <sink_block_id>blocks_nlog10_ff_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_keep_one_in_n_2</source_block_id>
+    <sink_block_id>tp_probe</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -8451,6 +8750,12 @@ def relay_event(bit,value,rport):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>single_pole_iir_filter_xx_1</source_block_id>
+    <sink_block_id>blocks_keep_one_in_n_2</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>virtual_source_0</source_block_id>
     <sink_block_id>blocks_stream_to_vector_0_0</sink_block_id>
     <source_key>0</source_key>
@@ -8501,6 +8806,12 @@ def relay_event(bit,value,rport):
   <connection>
     <source_block_id>virtual_source_5_0_0</source_block_id>
     <sink_block_id>blocks_add_const_vxx_0_1_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_6</source_block_id>
+    <sink_block_id>blocks_complex_to_mag_squared_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

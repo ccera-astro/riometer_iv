@@ -5,6 +5,7 @@ import numpy
 import random
 import ephem
 import xmlrpclib
+import copy
 
 FFTSIZE=2048
 
@@ -115,6 +116,7 @@ ealpha = -200.0
 #
 last_eval_ndx = 0
 eval_hold_off = -1
+
 def signal_evaluator(infft,prefix,thresh,duration,prate):
     global avg_fft
     global last_out
@@ -151,13 +153,17 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.150
+    ignoretime = 0.100
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
     #
     ignorecount = float(prate)*ignoretime
     ignorecount = int(round(ignorecount))
+    
+    #
+    # Detect frequency change
+    #
     if (lndx != last_eval_ndx):
         last_eval_ndx = lndx
         eval_hold_off = ignorecount
@@ -602,11 +608,20 @@ def chart_Tsky(pace,siz,which):
 #
 # Pretty much what the name suggests
 #
+tscount=0
 def estimate_Tsky(pace,reftemp,tsys,tsys_ref):
-    global frq_ndx
+    global tscount
     
-    lndx = frq_ndx
     
+    tscount += 1
+
+	#
+	# We know that our pacer is running pretty fast, and we don't need
+	#   to do this all THAT often
+	#
+    if ((tscount % 3) != 0):
+        return None
+
     #
     # Need to find Sky temp that satisfies:
     #
@@ -623,16 +638,20 @@ def estimate_Tsky(pace,reftemp,tsys,tsys_ref):
     #
     X = tsys_ref+reftemp
     
-    rv = get_refval(lndx)
-    if (rv == 0):
-        rv = 1.0e-15
-    
-    pwr = get_current_pwr(lndx)
-    
-    tsky = ((pwr/rv)*X)-tsys
-    set_Tsky(tsky,lndx)  
+    for lndx in range(NCHAN):
+        rv = get_refval(lndx)
+        if (rv == 0):
+            rv = 1.0e-15
+        
+        pwr = get_current_pwr(lndx)
+        
+        tsky = ((pwr/rv)*X)-tsys
+        cts = get_Tsky(lndx)
+        set_Tsky((tsky+cts)/2.0,lndx)  
     
     return (None)
+
+
 def annotate(prefix, reftemp, tsys, freq, bw, gain, itsys_ref, lnagain, notes):
     fn = prefix+"annotation-"
     ltp = time.gmtime(time.time())
@@ -707,8 +726,7 @@ peakhold = [[0.0]*FFTSIZE]*NCHAN
 auto_rst=100
 auto_init=False
 
-import copy
-def handle_peak_hold(fft,ticks):
+def handle_peak_hold(infft,ticks):
     global auto_rst
     global peakhold
     global auto_init
@@ -726,8 +744,9 @@ def handle_peak_hold(fft,ticks):
     #
     # Resize if necessary
     #
-    if (len(peakhold[lndx]) < len(fft)):
-        peakhold = [fft]*NCHAN
+    nfft = list(infft)
+    if (len(peakhold[lndx]) < len(infft)):
+        peakhold = [nfft]*NCHAN
         
     #
     # Time for auto peak-hold reset (done on startup as a convenience)
@@ -735,14 +754,18 @@ def handle_peak_hold(fft,ticks):
     auto_rst -= 1
     if (auto_rst == 0):
         for n in range(NCHAN):
-            peakhold[n] = copy.deepcopy(get_raw_fft(n))
+            peakhold[n] = list(get_raw_fft(n))
     
     #
     # Do the peak-hold math
     #
     for i in range(0,len(peakhold[lndx])):
-        if (fft[i] > peakhold[lndx][i]):
-            peakhold[lndx][i] = fft[i]
+        if (infft[i] > peakhold[lndx][i]):
+            try:
+                peakhold[lndx][i] = infft[i]
+            except:
+                print "infft %d is %f!!!!!!!" % (i, infft[i])
+                print infft[i]
     
     return None
 
@@ -916,7 +939,7 @@ smoothed_raw_power = 0.0
 last_raw_power = -1.0
 measure_counter = fault_dict["INTERVAL"]
 
-def do_fault_schedule(p,relayport,finterval):
+def do_fault_schedule(tp,relayport,finterval):
     global smoothed_raw_power
     global last_raw_power
     global fault_state
@@ -926,22 +949,9 @@ def do_fault_schedule(p,relayport,finterval):
     t = int(time.time())
     
     #
-    # Measure smoothed power between both channels
+    # Power estimate comes from raw total-power estimator in flow-graph
     #
-    #
-    # First linearize them
-    #
-    pwr = 0.0
-    for n in range(NCHAN):
-        linear = numpy.power(10.0,numpy.divide(get_raw_fft(n),10.0))
-        pwr += numpy.sum(linear)
-    
-    #
-    # Then smooth a bit
-    #
-    alpha = 0.25
-    beta = 1.0 - alpha
-    smoothed_raw_power = (alpha*pwr) + (beta*smoothed_raw_power)
+    smoothed_raw_power = tp
     if (last_raw_power < 0.0):
         last_raw_power = smoothed_raw_power
 
