@@ -1,0 +1,24 @@
+#!/bin/sh
+date=`date +%Y%m%d%H%%M`
+LOGFILE=$HOME/riomter-$date.log
+DATADISK=/media/riometer/otherdisk
+riometer_iv.py --device "rtl=SKY,buflen=4096 rtl=REF,buflen=4096" --freq 30.0e6 --freq2 38.2e6 --tsys 490 --tsysref 490 \
+  --reftemp 465e3 --srate 1.2e6 --decim 4 --rfgain 40 \
+  --refgain 40 --urate 25 --prefix $DATADISK/riometer/riometer_data/ --finterval 600 >>$LOGFILE 2>&1 &
+  
+riometer_pid=$!
+  
+relay_server.py 12345 'A904TA1U' >/dev/null 2>&1 &
+relay_pid=$!
+
+
+while true
+do
+	kill -0 $riometer_pid >/dev/null 2>&1
+	if [ $? -ne 0 ]
+	then
+		kill $relay_pid
+		exit
+	fi
+	sleep 3
+done
