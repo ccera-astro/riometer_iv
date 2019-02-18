@@ -10,3 +10,7 @@ install: riometer_iv.py
 	cp riometer_iv.py /usr/local/bin
 	cp riometer_helper.py /usr/local/bin
 	cp relay_server.py /usr/local/bin
+
+commit: clean
+	git commit -a
+	git push
