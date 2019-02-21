@@ -7,7 +7,21 @@ import ephem
 import xmlrpclib
 import copy
 
+#
+# FFT size
+#
 FFTSIZE=2048
+
+#
+# Number of virtual channels
+#
+NCHAN=2
+
+#
+# Size of the median filter
+#
+MSIZE=7
+
 
 def get_fftsize():
     return FFTSIZE
@@ -16,7 +30,6 @@ def get_fftsize():
 # IMPORTANT: We use this to keep track of which virtual (switched) channel we're looking at
 #
 frq_ndx = 0
-
 schedule_counter = 0
 
 def do_freq_schedule(p,interval,freqs,xmlport):
@@ -34,13 +47,8 @@ def do_freq_schedule(p,interval,freqs,xmlport):
             rpcHandle = xmlrpclib.Server("http://localhost:%d/" % xmlport)
             rpcHandle.set_ifreq(freqs[frq_ndx])
         except:
+            printf ("There was by us by the XMLRPC problem the occurrence")
             frq_ndx = old_frq_ndx
-
-
-#
-# Number of virtual channels
-#
-NCHAN=2
 
 #
 # Store the averaged/integrated FFT results (post-excision) here
@@ -51,14 +59,6 @@ avg_fft = [[0.0]*FFTSIZE]*NCHAN
 # Store the RAW FFT
 #
 raw_fft = [[-120.0]*FFTSIZE]*NCHAN
-
-
-#
-# Keep track of the most recent post-excision, pre-integration
-#  output, for impulse blanking.
-#
-last_out = [[0.0]*FFTSIZE]*NCHAN
-
 
 #
 # An event counter for impulse events that are getting
@@ -119,7 +119,6 @@ eval_hold_off = -1
 
 def signal_evaluator(infft,prefix,thresh,duration,prate):
     global avg_fft
-    global last_out
     global impulse_count
     global impulse_events
     global exceeded_ocount
@@ -141,7 +140,6 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     if (len(avg_fft[lndx]) != len(infft)):
         avg_fft = [list(infft)]*NCHAN
-        last_out = [list(infft)]*NCHAN
     #
     # Skip some of the initial values coming in, since there's
     #  unavoidable flow-graph latency that will render the first few
@@ -245,13 +243,13 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
         exceeded_delta = [[0.0]*len(infft)]*NCHAN
 
     #
-    # Anything that exceeds the mode estimate by 1.5dB or more,
+    # Anything that exceeds the mode estimate by 2.0dB or more,
     #  we "smooth".
     #
     now = time.time()
     indx = 0
     for v in infft:
-        if (v-mode >= 1.5):
+        if (v-mode >= 2.0):
             outfft[indx] = mode+fuzz_buffer_04[indx]
 
             #
@@ -265,86 +263,43 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
             outfft[indx] = v
         indx += 1
 
-    #
-    # Try to detect impulse noise, and reject it
-    # If we aren't in the middle of an impulse event holdoff period,
-    #    check for impulse (value exceeds threshold)
-    #
-    exceeded_bins = 0
-    if (impulse_count[lndx] <= 0):
-        for i in range(0,len(outfft)):
-            if (abs(outfft[i]-last_out[lndx][i]) > thresh):
-                exceeded_bins += 1
-        #
-        # If more than 25% of the bins are in "exceeded" state
-        #   declare an impulse-noise event.  Note that this is
-        #   AFTER spectral "lump" excision.
-        #
-        if (exceeded_bins >= (len(outfft)/4.0)):
-            impulse_count[lndx] = duration
-            impulse_events[lndx] += 1
 
     #
     # Set up "reasonable" IIR filter parameters
     #
     alpha = 1.0-(math.pow(math.e,-2*(0.5/prate)))
     beta = 1.0-alpha
-    #
-    # Update averages, etc only if we aren't in an impulse-noise
-    #    blanking interval
+    
     #
     # The excised FFT is in "outfft"
     # We use it to contribue to the avg_fft for this channel
     #
-    if (impulse_count[lndx] <= 0):
-        #
-        # Do single-pole IIR filter
-        #
+    # Do single-pole IIR filter
+    #
+    
+    #
+    # We median-filter the excised FFt, and then use it to update avg_fft
+    #
+    filtered = median_filter(outfft,lndx,MSIZE)
+    
+    #
+    # The median filter only returns an output once every 5 cycles
+    #
+    if (filtered != None):
         new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
         avg_fft[lndx] = numpy.add(new_fft, numpy.multiply(avg_fft[lndx],[beta]*len(outfft)))
 
-    #
-    # This will cause us to frob on avg_fft with P = 0.3
-    #
-    elif (random.randint(0,3) == 0):
+        #
+        # Compute the total power across avg_fft
+        #
+        pvect = numpy.multiply(avg_fft[lndx], [0.1]*len(avg_fft[lndx]))
+        pvect = numpy.power([10.0]*len(avg_fft[lndx]),pvect)
+        pwr = numpy.sum(pvect)
 
         #
-        # First, fold-in fuzz buffer
+        # Other subsystems need to know current value of pwr
         #
-        new_fft = numpy.add(avg_fft[lndx], fuzz_buffer_01)
-        avg_fft[lndx] = numpy.add(new_fft, avg_fft[lndx])
-        avg_fft[lndx] = numpy.divide(avg_fft[lndx], [2.0]*len(avg_fft[lndx]))
-
-        #
-        # Then fold-in a tiny contribution from current data
-        #
-        diff = numpy.sub(avg_fft[lndx], last_out[lndx])
-        diff = numpy.add(avg_fft[lndx], numpy.multiply(diff,[0.0050]*len(diff)))
-        avg_fft[lndx] = numpy.divide(diff, [2.0]*len(avg_fft[lndx]))
-
-    #
-    # Always record the last excised FFT buffer
-    #
-    last_out[lndx] = list(outfft)
-
-    #
-    # Decrement impulse holdoff counter if necessary
-    #
-    if (impulse_count[lndx] > 0):
-        impulse_count[lndx] -= 1
-
-
-    #
-    # Compute the total power across avg_fft
-    #
-    pvect = numpy.multiply(avg_fft[lndx], [0.1]*len(avg_fft[lndx]))
-    pvect = numpy.power([10.0]*len(avg_fft[lndx]),pvect)
-    pwr = numpy.sum(pvect)
-
-    #
-    # Other subsystems need to know current value of pwr
-    #
-    set_current_pwr(pwr,lndx)
+        set_current_pwr(pwr,lndx)
 
     return None
 
@@ -1117,3 +1072,50 @@ def relay_event(bit,value,rport):
 
     except:
         pass
+
+MAXCHAN=4
+
+medians = None
+fndxs = [0]*NCHAN
+cur_flen = 0
+
+def median_filter(fft,which,flen):
+    global medians
+    global fndxs
+    global cur_flen
+    
+    #
+    # Build medians array when necessary
+    #
+    if (cur_flen != flen):
+        medians = [[[0.0]*FFTSIZE]*flen]*NCHAN
+        curf_flen = flen
+    
+    #
+    # Determine which filter we're heading into
+    #
+    filt = medians[which]
+    
+    #
+    # Stuff it into the right location
+    #
+    filt[fndxs[which]] = fft
+    
+    fndxs[which] += 1
+    
+    #
+    # Time to sort the list, and return the median
+    #  value
+    #
+    if (fndxs[which] >= 5):
+        fndxs[which] = 0
+        npa = numpy.array(filt)
+        numpy.ndarray.sort(npa,axis=0)
+        return list(npa[int(flen/2)])
+    else:
+        return None
+        
+        
+    
+    
+    
