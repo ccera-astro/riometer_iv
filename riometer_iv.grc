@@ -7873,7 +7873,7 @@ def median_filter(fft,which,flen):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(5.0/frate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(3.0/frate))</value>
     </param>
     <param>
       <key>alias</key>
