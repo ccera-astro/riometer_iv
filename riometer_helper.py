@@ -211,7 +211,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     # Not quite ready
     #
     if (infft[0] == -220.0 and infft[1] == -220.0):
-        return ([-80.0]*len(infft))
+        return None
 
     #
     # Sort the list by values

@@ -128,7 +128,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(968, 932)</value>
+      <value>(1080, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -136,11 +136,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>FScheduler</value>
+      <value>FaultScheduler</value>
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.do_freq_schedule(fast_pacer,fprate/2,freqs,xmlport)</value>
+      <value>riometer_helper.do_fault_schedule(tp_prober,relayport,finterval)</value>
     </param>
   </block>
   <block>
@@ -155,7 +155,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1072, 932)</value>
+      <value>(968, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -163,11 +163,11 @@
     </param>
     <param>
       <key>id</key>
-      <value>FaultScheduler</value>
+      <value>FreqScheduler</value>
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.do_fault_schedule(tp_prober,relayport,finterval)</value>
+      <value>riometer_helper.do_freq_schedule(fast_pacer,fprate/2,freqs,xmlport)</value>
     </param>
   </block>
   <block>
@@ -655,7 +655,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(744, 996)</value>
+      <value>(600, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6933,7 +6933,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     # Not quite ready
     #
     if (infft[0] == -220.0 and infft[1] == -220.0):
-        return ([-80.0]*len(infft))
+        return None
 
     #
     # Sort the list by values
