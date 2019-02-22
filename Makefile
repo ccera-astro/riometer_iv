@@ -5,6 +5,7 @@ clean:
 	rm -f riometer_iv.py
 	rm -f *.pyc
 	rm -f *.csv
+	rm -f foobly
 
 install: riometer_iv.py
 	cp riometer_iv.py /usr/local/bin

@@ -30,25 +30,17 @@ def get_fftsize():
 # IMPORTANT: We use this to keep track of which virtual (switched) channel we're looking at
 #
 frq_ndx = 0
-schedule_counter = 0
 
-def do_freq_schedule(p,interval,freqs,xmlport):
+def do_freq_schedule(p,freqs):
     global schedule_counter
     global frq_ndx
 
-    schedule_counter += 1
-    if (schedule_counter >= interval):
-        nv = frq_ndx + 1
-        nv = nv % NCHAN
-        old_frq_ndx = frq_ndx
-        frq_ndx = nv
-        schedule_counter = 0
-        try:
-            rpcHandle = xmlrpclib.Server("http://localhost:%d/" % xmlport)
-            rpcHandle.set_ifreq(freqs[frq_ndx])
-        except:
-            printf ("There was by us by the XMLRPC problem the occurrence")
-            frq_ndx = old_frq_ndx
+    nv = frq_ndx + 1
+    nv = nv % NCHAN
+    old_frq_ndx = frq_ndx
+    frq_ndx = nv
+    
+    return(freqs[frq_ndx])
 
 #
 # Store the averaged/integrated FFT results (post-excision) here

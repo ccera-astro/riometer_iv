@@ -155,7 +155,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(968, 932)</value>
+      <value>(352, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -167,7 +167,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.do_freq_schedule(fast_pacer,fprate/swrate,freqs,xmlport)</value>
+      <value>riometer_helper.do_freq_schedule(freq_pacer,freqs)</value>
     </param>
   </block>
   <block>
@@ -263,7 +263,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(696, 932)</value>
+      <value>(640, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -655,7 +655,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(600, 932)</value>
+      <value>(520, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -779,6 +779,49 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
+    <key>variable_function_probe</key>
+    <param>
+      <key>block_id</key>
+      <value>tp_probe</value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>function_args</key>
+      <value></value>
+    </param>
+    <param>
+      <key>function_name</key>
+      <value>level</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1744, 1080)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>freq_pacer</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>poll_rate</key>
+      <value>swrate</value>
+    </param>
+  </block>
+  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -829,7 +872,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>freq</value>
+      <value>FreqScheduler</value>
     </param>
   </block>
   <block>
@@ -848,7 +891,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1400, 1188)</value>
+      <value>(1792, 1452)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -6752,25 +6795,17 @@ def get_fftsize():
 # IMPORTANT: We use this to keep track of which virtual (switched) channel we're looking at
 #
 frq_ndx = 0
-schedule_counter = 0
 
-def do_freq_schedule(p,interval,freqs,xmlport):
+def do_freq_schedule(p,freqs):
     global schedule_counter
     global frq_ndx
 
-    schedule_counter += 1
-    if (schedule_counter &gt;= interval):
-        nv = frq_ndx + 1
-        nv = nv % NCHAN
-        old_frq_ndx = frq_ndx
-        frq_ndx = nv
-        schedule_counter = 0
-        try:
-            rpcHandle = xmlrpclib.Server("http://localhost:%d/" % xmlport)
-            rpcHandle.set_ifreq(freqs[frq_ndx])
-        except:
-            printf ("There was by us by the XMLRPC problem the occurrence")
-            frq_ndx = old_frq_ndx
+    nv = frq_ndx + 1
+    nv = nv % NCHAN
+    old_frq_ndx = frq_ndx
+    frq_ndx = nv
+    
+    return(freqs[frq_ndx])
 
 #
 # Store the averaged/integrated FFT results (post-excision) here
