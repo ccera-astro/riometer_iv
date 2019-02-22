@@ -105,7 +105,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,thresh,duration,prate):
+def signal_evaluator(infft,prefix,prate):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -117,6 +117,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     global last_eval_ndx
     global eval_hold_off
     global raw_fft
+    global gated
 
 
     lndx = frq_ndx
@@ -161,6 +162,14 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     # It is used for display AND antenna-fault detection
     #
     raw_fft[lndx] = list(infft)
+    
+    #
+    # We don't do anything further if input has been GATED by
+    #
+    # The strong-impulse detector function
+    #
+    if (gated):
+        return
 
     #
     # (re)init fuzz buffers either
@@ -1097,8 +1106,61 @@ def median_filter(fft,which,flen):
         return list(npa[int(flen/2)])
     else:
         return None
-        
-        
+
+#
+# A gating function on total-power value
+#
+# Maintain last TP value--VERY raw, from early
+#  in the flow-graph
+#
+last_tp_value = 0.0 
+last_tp_is_valid = 200 
+gate_counter = 0
+gated=False
+gate_timer=0
+def do_gating(tp):
+    global last_tp_value
+    global last_tp_is_valid
+    global gate_counter
+    global gated
+    global gate_timer
+
+    alpha = 0.01
+    beta = 1.0 - alpha
     
+    #
+    # This prevents us from being gated forever
+    #
+    if (gate_timer < 50):
+        if (last_tp_is_valid <= 0):
+            if (tp > (5.0 * last_tp_value)):
+                
+                #
+                # We only count an initial gating
+                #
+                if (gated == False):
+                    gate_counter += 1
+                gated=True
+                gate_timer +=1
+                return (True,gate_counter)
+    else:
+        last_tp_value = tp
+    #
+    # Just update last_tp_value, applying smoothing as we go
+    #
+    last_tp_value = (tp*alpha) + (beta*last_tp_value)
+    gate_timer = 0
+    gated = False
+    
+    #
+    # We need a bit of time to determine what the average value actually
+    #  is
+    #
+    last_tp_is_valid -= 1
+    
+    return (False,gate_counter)
+    
+    
+     
     
     

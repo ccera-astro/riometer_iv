@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(848, 996)</value>
+      <value>(1072, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -113,7 +113,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.signal_evaluator(fft_prober,prefix,ithresh,impulse_count,poll_rate)</value>
+      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate)</value>
     </param>
   </block>
   <block>
@@ -128,7 +128,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1080, 932)</value>
+      <value>(960, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -155,7 +155,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(352, 932)</value>
+      <value>(576, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -182,7 +182,147 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1024, 996)</value>
+      <value>(1072, 996)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>Gater</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>riometer_helper.do_gating(fast_tp_probe)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_qtgui_label</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>Gater[0]</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>formatter</key>
+      <value>None</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1248, 1420)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>main@2:5,3,1,1</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>Gating</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>GATED</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>bool</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_qtgui_label</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>Gater[1]</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>formatter</key>
+      <value>None</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1248, 1500)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>main@2:5,2,1,1</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>Gating_0</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>GATE Count</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>int</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(400, 932)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>Logging</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>riometer_helper.logging(pacer,prefix,ifreq,samp_rate,fprate,longitude,freqs)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(488, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -263,7 +403,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(640, 932)</value>
+      <value>(688, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -558,6 +698,49 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
+    <key>variable_function_probe</key>
+    <param>
+      <key>block_id</key>
+      <value>tp_probe</value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>function_args</key>
+      <value></value>
+    </param>
+    <param>
+      <key>function_name</key>
+      <value>level</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1760, 984)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>fast_tp_probe</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0.0</value>
+    </param>
+    <param>
+      <key>poll_rate</key>
+      <value>10</value>
+    </param>
+  </block>
+  <block>
     <key>variable_qtgui_label</key>
     <param>
       <key>comment</key>
@@ -655,7 +838,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(520, 932)</value>
+      <value>(824, 1196)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -833,7 +1016,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(816, 1196)</value>
+      <value>(704, 1196)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -891,7 +1074,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1792, 1452)</value>
+      <value>(1696, 1372)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -912,72 +1095,6 @@ Sky Temp vs frequency</value>
     <param>
       <key>type</key>
       <value>real</value>
-    </param>
-  </block>
-  <block>
-    <key>variable_qtgui_entry</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>impulse</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1680, 1364)</value>
-    </param>
-    <param>
-      <key>gui_hint</key>
-      <value>main@2:0,0,1,1</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>iimpulse</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Impulse Holdoff Time (Secs)</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>real</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(608, 1004)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>impulse_count</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>int(poll_rate*iimpulse)</value>
     </param>
   </block>
   <block>
@@ -1066,45 +1183,6 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>thresh</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1520, 1276)</value>
-    </param>
-    <param>
-      <key>gui_hint</key>
-      <value>main@2:0,1,1,1</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ithresh</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Impulse Noise Threshold (dB)</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>real</value>
-    </param>
-  </block>
-  <block>
-    <key>variable_qtgui_entry</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
       <value>tsys</value>
     </param>
     <param>
@@ -1173,33 +1251,6 @@ Sky Temp vs frequency</value>
     <param>
       <key>type</key>
       <value>real</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(800, 1132)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>logstat</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>riometer_helper.logging(pacer,prefix,ifreq,samp_rate,fprate,longitude,freqs)</value>
     </param>
   </block>
   <block>
@@ -1479,7 +1530,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 1196)</value>
+      <value>(608, 1196)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1745,49 +1796,6 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
-    <key>variable_qtgui_label</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>"%d %d" % (riometer_helper.impulses(pacer,0),riometer_helper.impulses(pacer,1))</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>formatter</key>
-      <value>None</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1696, 1188)</value>
-    </param>
-    <param>
-      <key>gui_hint</key>
-      <value>main@2:0,2,1,1</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>variable_qtgui_label_0_0</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Impulse Events</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>string</value>
-    </param>
-  </block>
-  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -1839,33 +1847,6 @@ Sky Temp vs frequency</value>
     <param>
       <key>value</key>
       <value>sum(map(lambda x:x*x, win))</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(720, 1196)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>xmlport</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>14204</value>
     </param>
   </block>
   <block>
@@ -6870,7 +6851,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,thresh,duration,prate):
+def signal_evaluator(infft,prefix,prate):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -6882,6 +6863,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     global last_eval_ndx
     global eval_hold_off
     global raw_fft
+    global gated
 
 
     lndx = frq_ndx
@@ -6926,6 +6908,14 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     # It is used for display AND antenna-fault detection
     #
     raw_fft[lndx] = list(infft)
+    
+    #
+    # We don't do anything further if input has been GATED by
+    #
+    # The strong-impulse detector function
+    #
+    if (gated):
+        return
 
     #
     # (re)init fuzz buffers either
@@ -7862,9 +7852,62 @@ def median_filter(fft,which,flen):
         return list(npa[int(flen/2)])
     else:
         return None
-        
-        
+
+#
+# A gating function on total-power value
+#
+# Maintain last TP value--VERY raw, from early
+#  in the flow-graph
+#
+last_tp_value = 0.0 
+last_tp_is_valid = 200 
+gate_counter = 0
+gated=False
+gate_timer=0
+def do_gating(tp):
+    global last_tp_value
+    global last_tp_is_valid
+    global gate_counter
+    global gated
+    global gate_timer
+
+    alpha = 0.01
+    beta = 1.0 - alpha
     
+    #
+    # This prevents us from being gated forever
+    #
+    if (gate_timer &lt; 50):
+        if (last_tp_is_valid &lt;= 0):
+            if (tp &gt; (5.0 * last_tp_value)):
+                
+                #
+                # We only count an initial gating
+                #
+                if (gated == False):
+                    gate_counter += 1
+                gated=True
+                gate_timer +=1
+                return (True,gate_counter)
+    else:
+        last_tp_value = tp
+    #
+    # Just update last_tp_value, applying smoothing as we go
+    #
+    last_tp_value = (tp*alpha) + (beta*last_tp_value)
+    gate_timer = 0
+    gated = False
+    
+    #
+    # We need a bit of time to determine what the average value actually
+    #  is
+    #
+    last_tp_is_valid -= 1
+    
+    return (False,gate_counter)
+    
+    
+     
     
     
 </value>
@@ -8001,7 +8044,7 @@ def median_filter(fft,which,flen):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-(math.pow(math.e,-2.0*(0.5/drate)))</value>
+      <value>1.0-(math.pow(math.e,-2.0*(1.0/drate)))</value>
     </param>
     <param>
       <key>alias</key>
@@ -8140,53 +8183,6 @@ def median_filter(fft,which,flen):
     <param>
       <key>value</key>
       <value>4</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(16, 1328)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>thresh</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Impulse Threshold (dB)</value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>hide</key>
-      <value>none</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>eng_float</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>3.5</value>
     </param>
   </block>
   <block>
