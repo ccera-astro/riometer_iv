@@ -8743,45 +8743,6 @@ def median_filter(fft,which,flen):
       <value>f_sky</value>
     </param>
   </block>
-  <block>
-    <key>xmlrpc_server</key>
-    <param>
-      <key>addr</key>
-      <value>localhost</value>
-    </param>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(40, 972)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>xmlrpc_server_0</value>
-    </param>
-    <param>
-      <key>logging</key>
-      <value>False</value>
-    </param>
-    <param>
-      <key>port</key>
-      <value>xmlport</value>
-    </param>
-  </block>
   <connection>
     <source_block_id>analog_const_source_x_0</source_block_id>
     <sink_block_id>blocks_stream_to_vector_1</sink_block_id>
