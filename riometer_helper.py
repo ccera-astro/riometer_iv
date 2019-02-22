@@ -20,7 +20,7 @@ NCHAN=2
 #
 # Size of the median filter
 #
-MSIZE=7
+MSIZE=5
 
 
 def get_fftsize():
@@ -66,10 +66,6 @@ raw_fft = [[-120.0]*FFTSIZE]*NCHAN
 #
 impulse_events=[0]*NCHAN
 
-#
-# A counter/timer for hold-off for impulse detection
-#
-impulse_count=[0]*NCHAN
 
 #
 # Statistical counters, etc
@@ -119,8 +115,6 @@ eval_hold_off = -1
 
 def signal_evaluator(infft,prefix,thresh,duration,prate):
     global avg_fft
-    global impulse_count
-    global impulse_events
     global exceeded_ocount
     global exceeded_mtime
     global exceeded_delta
@@ -151,7 +145,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.100
+    ignoretime = 0.125
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -267,7 +261,8 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     # Set up "reasonable" IIR filter parameters
     #
-    alpha = 1.0-(math.pow(math.e,-2*(0.5/prate)))
+    alpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
+    alpha *= MSIZE
     beta = 1.0-alpha
     
     #
@@ -278,7 +273,7 @@ def signal_evaluator(infft,prefix,thresh,duration,prate):
     #
     
     #
-    # We median-filter the excised FFt, and then use it to update avg_fft
+    # We median-filter the excised FFF, and then use it to update avg_fft
     #
     filtered = median_filter(outfft,lndx,MSIZE)
     
@@ -722,10 +717,6 @@ def get_sky_metrics(p):
     global sky_metrics
     
     return sky_metrics
-
-
-
-
 
 
 def impulses(p,which):
