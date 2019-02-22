@@ -7879,7 +7879,7 @@ def do_gating(tp):
     #
     if (gate_timer &lt; 50):
         if (last_tp_is_valid &lt;= 0):
-            if (tp &gt; (5.0 * last_tp_value)):
+            if (tp &gt; (10.0 * last_tp_value)):
                 
                 #
                 # We only count an initial gating
