@@ -1,10 +1,10 @@
 #!/bin/sh
-date=`date +%Y%m%d%H%%M`
-LOGFILE=$HOME/riomter-$date.log
+date=`date +%Y%m%d%H%M`
+LOGFILE=$HOME/riometer-$date.log
 DATADISK=/media/riometer/otherdisk
-riometer_iv.py --device "rtl=SKY,buflen=4096 rtl=REF,buflen=4096" --freq 30.0e6 --freq2 38.2e6 --tsys 490 --tsysref 490 \
+riometer_iv.py --device "rtl=SKY,buflen=4096 rtl=REF,buflen=4096" --freq 30.0e6 --freq2 38.2e6 --tsys 420 --tsysref 420 \
   --reftemp 465e3 --srate 1.2e6 --decim 4 --rfgain 40 \
-  --refgain 40 --urate 25 --prefix $DATADISK/riometer/riometer_data/ --finterval 600 >>$LOGFILE 2>&1 &
+  --refgain 40 --urate 50 --prefix $DATADISK/riometer/riometer_data/ --finterval 3600 --swrate 0.4 >>$LOGFILE 2>&1 &
   
 riometer_pid=$!
   
