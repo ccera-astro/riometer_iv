@@ -20,7 +20,7 @@ NCHAN=2
 #
 # Size of the median filter
 #
-MSIZE=5
+MSIZE=9
 
 
 def get_fftsize():
@@ -1122,11 +1122,16 @@ def median_filter(fft,which,flen):
     # Time to sort the list, and return the median
     #  value
     #
-    if (fndxs[which] >= 5):
+    if (fndxs[which] >= flen):
         fndxs[which] = 0
         npa = numpy.array(filt)
         numpy.ndarray.sort(npa,axis=0)
-        return list(npa[int(flen/2)])
+        lista = list(npa[int(flen/2)])
+        listb = list(npa[int(flen/2)-1])
+        listc = list(npa[int(flen/2)+1])
+        out = numpy.add(lista,listb)
+        out = numpy.add(out,listc)
+        return list(numpy.divide(out,[3.0]*FFTSIZE))
     else:
         return None
 
