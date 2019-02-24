@@ -405,6 +405,9 @@ def do_pHz_data(pacer,prate):
 
     fast_data_pHz[lndx][fast_data_ndx[lndx]] = [get_current_pwr(lndx),get_refval(lndx)]
     fast_data_ndx[lndx] += 1
+    
+    if (fast_data_ndx[lndx] >= prate):
+        fast_data_ndx[lndx] = 0
 
 #
 # Log data items
@@ -428,9 +431,6 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         #
         ltp = time.gmtime(time.time())
 
-        hdr_format = "%02d,%02d,%02d,%s,%d,%d,"
-        hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), freq, bw)
-        hdr = hdr_format % hdr_contents
 
         #
         # Power estimates
@@ -439,54 +439,14 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         # Every second
         #
         if (seconds != 0 and (seconds % 1 == 0)):
-            #
-            # Implement a median filter for SKY data
-            #
-
             for n in range(NCHAN):
-                #
-                # First extract SKY values from fast_data_pHz
-                #
-                pvect = fast_data_pHz[n]
-                pvect = pvect[0:fast_data_ndx[n]]
-                sortedp = [x[0] for x in pvect]
-
-                #
-                # Then the REF values
-                #
-                rvect = fast_data_pHz[n]
-                rvect = rvect[0:fast_data_ndx[n]]
-                sortedr = [x[1] for x in rvect]
-
-                #
-                # Then sort
-                #
-                sortedp = sorted(sortedp)
-                sortedr = sorted(sortedr)
-
-                #
-                # Pull the middle 30%
-                #
-                ls = int(len(sortedp)/2)
-                mid = ls
-                start = int(mid-(ls/6))
-                end =  (mid+(ls/6))
-
-                p = numpy.sum(sortedp[start:end])
-                p /= ((start-end)+1)
-
-                r = numpy.sum(sortedr[start:end])
-                r /= ((start-end)+1)
-
+                hdr_format = "%02d,%02d,%02d,%s,%d,%d,"
+                hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), frqlist[n], bw)
+                hdr = hdr_format % hdr_contents
                 #
                 # Do recording of powers/temps
                 #
-                handle_pwr_recording(p, r, get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate)
-
-                #
-                # Reset the fast data index
-                #
-                fast_data_ndx[n] = 0
+                handle_pwr_recording(get_current_pwr(n), get_refval(0), get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate)
         #
         # Spectral
         #
@@ -829,8 +789,8 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
 
     fp = open(fn, "a")
     fp.write (hdr)
-    rv = rv + 1.0e12
-    fp.write ("%e,%e,%e,%e,%.2f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
+    rv = rv + 1.0e-15
+    fp.write ("%.3e,%.3e,%.3e,%.3e,%.2f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
     fp.close()
 
     #
@@ -861,7 +821,7 @@ def handle_spec_recording(fft,variant,ltp,hdr,prefix):
     fp = open(fn, "a")
     fp.write(hdr)
     for v in fft:
-        fp.write("%.3f," % v)
+        fp.write("%.2f," % v)
     fp.write("\n")
     fp.close()
 
