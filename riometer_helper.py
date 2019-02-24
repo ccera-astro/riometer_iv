@@ -165,7 +165,6 @@ def signal_evaluator(infft,prefix,prate):
     
     #
     # We don't do anything further if input has been GATED by
-    #
     # The strong-impulse detector function
     #
     if (gated):
@@ -221,8 +220,32 @@ def signal_evaluator(infft,prefix,prate):
     mode += slist[len(slist)-2]*0.7
     mode /= 2.0
     mode = float(mode)
-
-
+    
+    #
+    # Find reasonable minimum
+    #
+    # Lop-off the edge roll-off
+    #
+    parta=infft[int(FFTSIZE*0.17):int(FFTSIZE/2.05)]
+    partb=infft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
+    minny = sorted(parta+partb)
+    minny = sum(minny[0:10])
+    minny /= 10.0
+    
+    #
+    # Fold minny and mode together, with a bias towards
+    #  "mode"
+    #
+    #
+    # The basic strategy is to try to come up with some estimate for the
+    #   notional "noise floor", since that's what we're measuring--the slowly
+    #   varying "noise floor".  Anything that exceeds this significantly is likely
+    #   not "noise floor" but something else, and we can use this estimate to
+    #   excise those artifacts prior to further processing.
+    #
+    mode = (mode*1.4) + (minny*0.6)
+    mode /= 2.0
+    
     #
     # Setup for mode-based excision
     #
@@ -238,13 +261,13 @@ def signal_evaluator(infft,prefix,prate):
         exceeded_delta = [[0.0]*len(infft)]*NCHAN
 
     #
-    # Anything that exceeds the mode estimate by 2.0dB or more,
+    # Anything that exceeds the mode estimate by 2.2dB or more,
     #  we "smooth".
     #
     now = time.time()
     indx = 0
     for v in infft:
-        if (v-mode >= 2.0):
+        if (v-mode >= 2.2):
             outfft[indx] = mode+fuzz_buffer_04[indx]
 
             #
