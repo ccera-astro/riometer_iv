@@ -6883,7 +6883,7 @@ def signal_evaluator(infft,prefix,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.2
+    ignoretime = 0.250
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -7575,7 +7575,7 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
     fp = open(fn, "a")
     fp.write (hdr)
     rv = rv + 1.0e12
-    fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
+    fp.write ("%e,%e,%e,%e,%.2f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
     fp.close()
 
     #
