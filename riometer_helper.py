@@ -1095,8 +1095,6 @@ def median_filter(fft,which,flen):
     #
     if (fndxs[which] >= flen):
         fndxs[which] = 0
-        ign = flen/6.5
-        ign = int(round(ign))
         npa = numpy.array(filt)
         out = numpy.median(npa,axis=0)
         out = list(out)
