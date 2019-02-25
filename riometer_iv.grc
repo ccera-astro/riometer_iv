@@ -7740,7 +7740,11 @@ current_ratio = 1.0
 # Current pwr value
 #
 current_pwr = [0.0]*NCHAN
-PMEDIAN=37
+
+#
+# A place to hold an L=PMEDIAN median filter for each channel
+#
+PMEDIAN=17
 current_pwr_filter = [[-1.0]*PMEDIAN]*NCHAN
 def set_current_pwr(p,which):
     global current_pwr
