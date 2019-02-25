@@ -105,7 +105,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate):
+def signal_evaluator(infft,prefix,prate,swrate):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -138,7 +138,7 @@ def signal_evaluator(infft,prefix,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.250
+    ignoretime = 0.25*swrate
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
