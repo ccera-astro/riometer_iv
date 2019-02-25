@@ -369,7 +369,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>Model_Temps</value>
+      <value>ModelTemp1</value>
     </param>
     <param>
       <key>label</key>
@@ -412,7 +412,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>Model_Temps_0</value>
+      <value>ModelTemp2</value>
     </param>
     <param>
       <key>label</key>
@@ -443,7 +443,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1688, 1556)</value>
+      <value>(1688, 1548)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -455,7 +455,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>Model_Temps_0_0</value>
+      <value>ModelTemp3</value>
     </param>
     <param>
       <key>label</key>
@@ -1231,7 +1231,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1696, 1372)</value>
+      <value>(1680, 1372)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1465,7 +1465,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1712, 1460)</value>
+      <value>(1696, 1468)</value>
     </param>
     <param>
       <key>_rotation</key>
