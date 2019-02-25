@@ -15,7 +15,7 @@ FFTSIZE=2048
 #
 # Number of virtual channels
 #
-NCHAN=2
+NCHAN=3
 
 #
 # Size of the median filter
@@ -440,13 +440,14 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         #
         if (seconds != 0 and (seconds % 1 == 0)):
             for n in range(NCHAN):
-                hdr_format = "%02d,%02d,%02d,%s,%d,%d,"
+                hdr_format = "%02d,%02d,%02d,%s,%d,%d"
                 hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), frqlist[n], bw)
                 hdr = hdr_format % hdr_contents
                 #
                 # Do recording of powers/temps
                 #
-                handle_pwr_recording(get_current_pwr(n), get_refval(0), get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate)
+                mtemp = tsky_model(frqlist[n])
+                handle_pwr_recording(get_current_pwr(n), get_refval(0), get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate,mtemp)
         #
         # Spectral
         #
@@ -779,7 +780,7 @@ def set_peakhold(which,fft):
 #
 # Write data files with all total-power related data
 #
-def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
+def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate,mtemp):
     #
     # Record data in a daily file
     #
@@ -790,7 +791,13 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
     fp = open(fn, "a")
     fp.write (hdr)
     rv = rv + 1.0e-15
-    fp.write ("%.3e,%.3e,%.3e,%.3e,%.2f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
+    #
+    # We write an extended record, with model sky temp every 10 seconds
+    #
+    if (int(time.time()) % 10 == 0):
+        fp.write ("%.3e,%.3e,%.3e,%.3e,%.2f,%d\n" % (pwr, rv, pwr-rv, pwr/rv, tsky, mtemp/2.0))
+    else:
+        fp.write("%.3e,%.3e,%.3e,%.3e,%.2f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
     fp.close()
 
     #
@@ -835,7 +842,7 @@ current_ratio = 1.0
 # Current pwr value
 #
 current_pwr = [0.0]*NCHAN
-PMEDIAN=15
+PMEDIAN=37
 current_pwr_filter = [[-1.0]*PMEDIAN]*NCHAN
 def set_current_pwr(p,which):
     global current_pwr
