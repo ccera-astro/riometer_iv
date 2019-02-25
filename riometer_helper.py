@@ -302,7 +302,7 @@ def signal_evaluator(infft,prefix,prate,swrate):
     filtered = median_filter(outfft,lndx,MSIZE)
     
     #
-    # The median filter only returns an output once every 5 cycles
+    # The median filter only returns an output once every MSIZE cycles
     #
     if (filtered != None):
         new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
@@ -835,10 +835,23 @@ current_ratio = 1.0
 # Current pwr value
 #
 current_pwr = [0.0]*NCHAN
+PMEDIAN=15
+current_pwr_filter = [[-1.0]*PMEDIAN]*NCHAN
 def set_current_pwr(p,which):
     global current_pwr
 
-    current_pwr[which] = p
+    if (current_pwr_filter[which][0] < 0):
+        current_pwr_filter[which] = [p]*PMEDIAN
+    
+    #
+    # Do the shift
+    #
+    current_pwr_filter[which] = [p]+current_pwr_filter[which][0:PMEDIAN-1]
+    
+    #
+    # Median filter
+    #
+    current_pwr[which] = numpy.median(current_pwr_filter[which])
 
 def get_current_pwr(which):
     global current_pwr
@@ -1048,8 +1061,6 @@ def relay_event(bit,value,rport):
     except:
         pass
 
-MAXCHAN=4
-
 medians = None
 fndxs = [0]*NCHAN
 cur_flen = 0
@@ -1084,14 +1095,13 @@ def median_filter(fft,which,flen):
     #
     if (fndxs[which] >= flen):
         fndxs[which] = 0
+        ign = flen/6.5
+        ign = int(round(ign))
         npa = numpy.array(filt)
-        numpy.ndarray.sort(npa,axis=0)
-        lista = list(npa[int(flen/2)])
-        listb = list(npa[int(flen/2)-1])
-        listc = list(npa[int(flen/2)+1])
-        out = numpy.add(lista,listb)
-        out = numpy.add(out,listc)
-        return list(numpy.divide(out,[3.0]*FFTSIZE))
+        out = numpy.median(npa,axis=0)
+        out = list(out)
+        return out
+        
     else:
         return None
 
