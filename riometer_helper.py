@@ -15,12 +15,12 @@ FFTSIZE=2048
 #
 # Number of virtual channels
 #
-NCHAN=2
+NCHAN=3
 
 #
 # Size of the median filter
 #
-MSIZE=5
+MSIZE=9
 
 
 def get_fftsize():
@@ -105,7 +105,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate):
+def signal_evaluator(infft,prefix,prate,swrate):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -138,7 +138,7 @@ def signal_evaluator(infft,prefix,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.300
+    ignoretime = 0.20*(1.0/swrate)
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -165,7 +165,6 @@ def signal_evaluator(infft,prefix,prate):
     
     #
     # We don't do anything further if input has been GATED by
-    #
     # The strong-impulse detector function
     #
     if (gated):
@@ -221,8 +220,32 @@ def signal_evaluator(infft,prefix,prate):
     mode += slist[len(slist)-2]*0.7
     mode /= 2.0
     mode = float(mode)
-
-
+    
+    #
+    # Find reasonable minimum
+    #
+    # Lop-off the edge roll-off
+    #
+    parta=infft[int(FFTSIZE*0.17):int(FFTSIZE/2.05)]
+    partb=infft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
+    minny = sorted(parta+partb)
+    minny = sum(minny[0:10])
+    minny /= 10.0
+    
+    #
+    # Fold minny and mode together, with a bias towards
+    #  "mode"
+    #
+    #
+    # The basic strategy is to try to come up with some estimate for the
+    #   notional "noise floor", since that's what we're measuring--the slowly
+    #   varying "noise floor".  Anything that exceeds this significantly is likely
+    #   not "noise floor" but something else, and we can use this estimate to
+    #   excise those artifacts prior to further processing.
+    #
+    mode = (mode*1.4) + (minny*0.6)
+    mode /= 2.0
+    
     #
     # Setup for mode-based excision
     #
@@ -238,13 +261,13 @@ def signal_evaluator(infft,prefix,prate):
         exceeded_delta = [[0.0]*len(infft)]*NCHAN
 
     #
-    # Anything that exceeds the mode estimate by 2.0dB or more,
+    # Anything that exceeds the mode estimate by 2.2dB or more,
     #  we "smooth".
     #
     now = time.time()
     indx = 0
     for v in infft:
-        if (v-mode >= 2.0):
+        if (v-mode >= 2.2):
             outfft[indx] = mode+fuzz_buffer_04[indx]
 
             #
@@ -279,7 +302,7 @@ def signal_evaluator(infft,prefix,prate):
     filtered = median_filter(outfft,lndx,MSIZE)
     
     #
-    # The median filter only returns an output once every 5 cycles
+    # The median filter only returns an output once every MSIZE cycles
     #
     if (filtered != None):
         new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
@@ -382,6 +405,9 @@ def do_pHz_data(pacer,prate):
 
     fast_data_pHz[lndx][fast_data_ndx[lndx]] = [get_current_pwr(lndx),get_refval(lndx)]
     fast_data_ndx[lndx] += 1
+    
+    if (fast_data_ndx[lndx] >= prate):
+        fast_data_ndx[lndx] = 0
 
 #
 # Log data items
@@ -405,9 +431,6 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         #
         ltp = time.gmtime(time.time())
 
-        hdr_format = "%02d,%02d,%02d,%s,%d,%d,"
-        hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), freq, bw)
-        hdr = hdr_format % hdr_contents
 
         #
         # Power estimates
@@ -416,54 +439,15 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         # Every second
         #
         if (seconds != 0 and (seconds % 1 == 0)):
-            #
-            # Implement a median filter for SKY data
-            #
-
             for n in range(NCHAN):
-                #
-                # First extract SKY values from fast_data_pHz
-                #
-                pvect = fast_data_pHz[n]
-                pvect = pvect[0:fast_data_ndx[n]]
-                sortedp = [x[0] for x in pvect]
-
-                #
-                # Then the REF values
-                #
-                rvect = fast_data_pHz[n]
-                rvect = rvect[0:fast_data_ndx[n]]
-                sortedr = [x[1] for x in rvect]
-
-                #
-                # Then sort
-                #
-                sortedp = sorted(sortedp)
-                sortedr = sorted(sortedr)
-
-                #
-                # Pull the middle 30%
-                #
-                ls = int(len(sortedp)/2)
-                mid = ls
-                start = int(mid-(ls/6))
-                end =  (mid+(ls/6))
-
-                p = numpy.sum(sortedp[start:end])
-                p /= ((start-end)+1)
-
-                r = numpy.sum(sortedr[start:end])
-                r /= ((start-end)+1)
-
+                hdr_format = "%02d,%02d,%02d,%s,%d,%d"
+                hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), frqlist[n], bw)
+                hdr = hdr_format % hdr_contents
                 #
                 # Do recording of powers/temps
                 #
-                handle_pwr_recording(p, r, get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate)
-
-                #
-                # Reset the fast data index
-                #
-                fast_data_ndx[n] = 0
+                mtemp = tsky_model(frqlist[n])
+                handle_pwr_recording(get_current_pwr(n), get_refval(0), get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate,mtemp)
         #
         # Spectral
         #
@@ -796,7 +780,7 @@ def set_peakhold(which,fft):
 #
 # Write data files with all total-power related data
 #
-def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
+def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate,mtemp):
     #
     # Record data in a daily file
     #
@@ -806,8 +790,14 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
 
     fp = open(fn, "a")
     fp.write (hdr)
-    rv = rv + 1.0e12
-    fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
+    rv = rv + 1.0e-15
+    #
+    # We write an extended record, with model sky temp every 10 seconds
+    #
+    if (int(time.time()) % 10 == 0):
+        fp.write ("%.3e,%.3e,%.3e,%.3e,%.2f,%d\n" % (pwr, rv, pwr-rv, pwr/rv, tsky, mtemp/2.0))
+    else:
+        fp.write("%.3e,%.3e,%.3e,%.3e,%.2f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
     fp.close()
 
     #
@@ -838,7 +828,7 @@ def handle_spec_recording(fft,variant,ltp,hdr,prefix):
     fp = open(fn, "a")
     fp.write(hdr)
     for v in fft:
-        fp.write("%.3f," % v)
+        fp.write("%.2f," % v)
     fp.write("\n")
     fp.close()
 
@@ -852,10 +842,27 @@ current_ratio = 1.0
 # Current pwr value
 #
 current_pwr = [0.0]*NCHAN
+
+#
+# A place to hold an L=PMEDIAN median filter for each channel
+#
+PMEDIAN=17
+current_pwr_filter = [[-1.0]*PMEDIAN]*NCHAN
 def set_current_pwr(p,which):
     global current_pwr
 
-    current_pwr[which] = p
+    if (current_pwr_filter[which][0] < 0):
+        current_pwr_filter[which] = [p]*PMEDIAN
+    
+    #
+    # Do the shift
+    #
+    current_pwr_filter[which] = [p]+current_pwr_filter[which][0:PMEDIAN-1]
+    
+    #
+    # Median filter
+    #
+    current_pwr[which] = numpy.median(current_pwr_filter[which])
 
 def get_current_pwr(which):
     global current_pwr
@@ -1065,8 +1072,6 @@ def relay_event(bit,value,rport):
     except:
         pass
 
-MAXCHAN=4
-
 medians = None
 fndxs = [0]*NCHAN
 cur_flen = 0
@@ -1099,11 +1104,13 @@ def median_filter(fft,which,flen):
     # Time to sort the list, and return the median
     #  value
     #
-    if (fndxs[which] >= 5):
+    if (fndxs[which] >= flen):
         fndxs[which] = 0
         npa = numpy.array(filt)
-        numpy.ndarray.sort(npa,axis=0)
-        return list(npa[int(flen/2)])
+        out = numpy.median(npa,axis=0)
+        out = list(out)
+        return out
+        
     else:
         return None
 
@@ -1133,7 +1140,7 @@ def do_gating(tp):
     #
     if (gate_timer < 50):
         if (last_tp_is_valid <= 0):
-            if (tp > (10.0 * last_tp_value)):
+            if (tp > (12.0 * last_tp_value)):
                 
                 #
                 # We only count an initial gating

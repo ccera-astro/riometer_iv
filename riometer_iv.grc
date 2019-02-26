@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.12'?>
+<?grc format='1' created='3.7.13'?>
 <flow_graph>
   <timestamp>Tue Jan 22 11:50:07 2019</timestamp>
   <block>
@@ -50,7 +50,7 @@
     </param>
     <param>
       <key>max_nouts</key>
-      <value>64</value>
+      <value>28</value>
     </param>
     <param>
       <key>qt_qss_theme</key>
@@ -113,7 +113,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate)</value>
+      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate,swrate)</value>
     </param>
   </block>
   <block>
@@ -338,6 +338,135 @@
     </param>
   </block>
   <block>
+    <key>variable_qtgui_label</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"%.1fK" % Tant_e</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>formatter</key>
+      <value>None</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1544, 1548)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>main@2:7,0,1,1</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ModelTemp1</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Sky Model CH1</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_qtgui_label</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"%.1fK" % Tant_e2</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>formatter</key>
+      <value>None</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1544, 1628)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>main@2:7,1,1,1</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ModelTemp2</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Sky Model CH2</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_qtgui_label</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"%.1fK" % Tant_e3</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>formatter</key>
+      <value>None</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1688, 1548)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value>main@2:7,2,1,1</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ModelTemp3</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Sky Model CH3</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+  </block>
+  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -431,7 +560,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(584, 1268)</value>
+      <value>(680, 1268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -478,6 +607,34 @@ Sky Temp vs frequency</value>
     <key>variable</key>
     <param>
       <key>comment</key>
+      <value>Based on an empirical model of 
+Sky Temp vs frequency</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(680, 1388)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>Tant_e3</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>(riometer_helper.tsky_model(freq3)/2.0)+290</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
       <value></value>
     </param>
     <param>
@@ -517,7 +674,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1248, 1196)</value>
+      <value>(1248, 1164)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -541,7 +698,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>label2</key>
-      <value></value>
+      <value>CH3</value>
     </param>
     <param>
       <key>label3</key>
@@ -561,7 +718,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>num_opts</key>
-      <value>2</value>
+      <value>3</value>
     </param>
     <param>
       <key>option0</key>
@@ -1016,7 +1173,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 1196)</value>
+      <value>(928, 1140)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1028,7 +1185,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>[freq,freq2]</value>
+      <value>[freq,freq2,freq3]</value>
     </param>
   </block>
   <block>
@@ -1074,7 +1231,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1696, 1372)</value>
+      <value>(1680, 1372)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1308,7 +1465,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1720, 1476)</value>
+      <value>(1696, 1468)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1331,7 +1488,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>value</key>
-      <value>"CH1: %.2f CH2: %.2f" % (metrics[0], metrics[1])</value>
+      <value>"%.1f %.1f %.1f" % (metrics[0], metrics[1], metrics[2])</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1347,7 +1504,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>gui_hint</key>
-      <value>main@2:6,4,1,1</value>
+      <value>main@2:7,3,1,1</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1406,7 +1563,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>poll_rate</key>
-      <value>5</value>
+      <value>5 if slow == 0 else 0.5</value>
     </param>
   </block>
   <block>
@@ -1460,7 +1617,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(912, 1132)</value>
+      <value>(304, 932)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1468,7 +1625,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>id</key>
-      <value>pHz_status</value>
+      <value>pHz</value>
     </param>
     <param>
       <key>value</key>
@@ -1916,7 +2073,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -1967,11 +2124,11 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1280, 372)</value>
+      <value>(1368, 372)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1980,57 +2137,6 @@ Sky Temp vs frequency</value>
     <param>
       <key>id</key>
       <value>blocks_add_const_vxx_0_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>3600</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_add_const_vxx</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>const</key>
-      <value>[Tant_e]*3600</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1368, 524)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_add_const_vxx_0_0_0</value>
     </param>
     <param>
       <key>type</key>
@@ -2069,11 +2175,11 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1448, 780)</value>
+      <value>(1448, 756)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2120,11 +2226,11 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1448, 884)</value>
+      <value>(1448, 828)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2159,11 +2265,11 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>comment</key>
-      <value></value>
+      <value>1-minute data, spanning 24 hours</value>
     </param>
     <param>
       <key>const</key>
-      <value>[Tant_e2]*3600</value>
+      <value>riometer_helper.minute_data(pacer,2)</value>
     </param>
     <param>
       <key>affinity</key>
@@ -2171,11 +2277,11 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1432, 596)</value>
+      <value>(1496, 908)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2183,7 +2289,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>id</key>
-      <value>blocks_add_const_vxx_0_0_0_1</value>
+      <value>blocks_add_const_vxx_0_0_0_0_0_0</value>
     </param>
     <param>
       <key>type</key>
@@ -2199,7 +2305,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>vlen</key>
-      <value>3600</value>
+      <value>1440</value>
     </param>
   </block>
   <block>
@@ -2222,11 +2328,11 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1312, 444)</value>
+      <value>(1392, 444)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2265,6 +2371,57 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>const</key>
+      <value>riometer_helper.chart_Tsky(pacer,3600,2)</value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1376, 516)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_add_const_vxx_0_0_1_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>3600</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_add_const_vxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>const</key>
       <value>riometer_helper.get_ref_fft_ui(mid_pacer,channel)</value>
     </param>
     <param>
@@ -2273,7 +2430,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2324,7 +2481,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2375,7 +2532,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2536,6 +2693,61 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
+    <key>blocks_keep_m_in_n</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(224, 52)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_keep_m_in_n_0</value>
+    </param>
+    <param>
+      <key>m</key>
+      <value>3*fftsize</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>n</key>
+      <value>(4+(slow*1))*fftsize</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>offset</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_keep_one_in_n</key>
     <param>
       <key>alias</key>
@@ -2631,6 +2843,57 @@ Sky Temp vs frequency</value>
     <param>
       <key>type</key>
       <value>float</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>fftsize</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_keep_one_in_n</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(64, 756)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_keep_one_in_n_1</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>n</key>
+      <value>2+(slow*1)</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
     </param>
     <param>
       <key>vlen</key>
@@ -2842,6 +3105,147 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
+    <key>blocks_null_sink</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>bus_conns</key>
+      <value>[[0,],]</value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1072, 436)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_null_sink_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>num_inputs</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>fftsize</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_null_sink</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>bus_conns</key>
+      <value>[[0,],]</value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1544, 628)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_null_sink_0_0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>num_inputs</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>3600</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_null_sink</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>bus_conns</key>
+      <value>[[0,],]</value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1368, 944)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_null_sink_1</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>num_inputs</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1440</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_stream_to_vector</key>
     <param>
       <key>alias</key>
@@ -2861,7 +3265,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 52)</value>
+      <value>(320, 4)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3654,7 +4058,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(464, 24)</value>
+      <value>(464, 16)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3918,6 +4322,53 @@ Sky Temp vs frequency</value>
     <param>
       <key>value</key>
       <value>38.2e6</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(344, 1416)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>freq3</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Third Frequency</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>eng_float</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>25.1e6</value>
     </param>
   </block>
   <block>
@@ -5527,9 +5978,8 @@ the FFTs</value>
     </param>
     <param>
       <key>comment</key>
-      <value>REF side is tuned slightly away
-from SKY side, to prevent any
-possible LO beating</value>
+      <value>REF side is tuned half-way between the
+two SKY frequencies</value>
     </param>
     <param>
       <key>affinity</key>
@@ -5719,7 +6169,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -5911,7 +6361,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>name</key>
-      <value>"Spectrum: Bw ~=" + str(ebw)+"kHz"+",Fc=%.2f/%.2fMHz" % (freq/1.0e6, freq2/1.0e6)</value>
+      <value>"Spectrum: Bw ~=" + str(ebw)+"kHz"+",Fc=%.2f/%.2fMHz/%.2fMHz" % (freq/1.0e6, freq2/1.0e6,freq3/1.0e6)</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -5982,8 +6432,7 @@ possible LO beating</value>
     </param>
     <param>
       <key>comment</key>
-      <value>Two channels of Sky Temp Esimate
-Two channels of "modelled estimate"</value>
+      <value>Three channels of Tsky estimate</value>
     </param>
     <param>
       <key>affinity</key>
@@ -5991,7 +6440,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -6051,7 +6500,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>color2</key>
-      <value>"dark red"</value>
+      <value>"red"</value>
     </param>
     <param>
       <key>label2</key>
@@ -6067,11 +6516,11 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>color3</key>
-      <value>"green"</value>
+      <value>"magenta"</value>
     </param>
     <param>
       <key>label3</key>
-      <value>Sky Model: CH1</value>
+      <value>CH3: Sky Noise Temp(K)</value>
     </param>
     <param>
       <key>width3</key>
@@ -6187,7 +6636,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>nconnections</key>
-      <value>4</value>
+      <value>3</value>
     </param>
     <param>
       <key>ref_level</key>
@@ -6199,7 +6648,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>update_time</key>
-      <value>0.1</value>
+      <value>0.3</value>
     </param>
     <param>
       <key>vlen</key>
@@ -6262,11 +6711,11 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1712, 796)</value>
+      <value>(1720, 716)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -6342,7 +6791,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>label3</key>
-      <value></value>
+      <value>CH3: 60s avg</value>
     </param>
     <param>
       <key>width3</key>
@@ -6458,7 +6907,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>nconnections</key>
-      <value>2</value>
+      <value>3</value>
     </param>
     <param>
       <key>ref_level</key>
@@ -6470,7 +6919,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>update_time</key>
-      <value>1.0</value>
+      <value>5.0</value>
     </param>
     <param>
       <key>vlen</key>
@@ -6529,7 +6978,7 @@ Two channels of "modelled estimate"</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1488, 708)</value>
+      <value>(1456, 692)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6761,12 +7210,12 @@ FFTSIZE=2048
 #
 # Number of virtual channels
 #
-NCHAN=2
+NCHAN=3
 
 #
 # Size of the median filter
 #
-MSIZE=5
+MSIZE=9
 
 
 def get_fftsize():
@@ -6851,7 +7300,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate):
+def signal_evaluator(infft,prefix,prate,swrate):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -6884,7 +7333,7 @@ def signal_evaluator(infft,prefix,prate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.300
+    ignoretime = 0.20*(1.0/swrate)
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -6911,7 +7360,6 @@ def signal_evaluator(infft,prefix,prate):
     
     #
     # We don't do anything further if input has been GATED by
-    #
     # The strong-impulse detector function
     #
     if (gated):
@@ -6967,8 +7415,32 @@ def signal_evaluator(infft,prefix,prate):
     mode += slist[len(slist)-2]*0.7
     mode /= 2.0
     mode = float(mode)
-
-
+    
+    #
+    # Find reasonable minimum
+    #
+    # Lop-off the edge roll-off
+    #
+    parta=infft[int(FFTSIZE*0.17):int(FFTSIZE/2.05)]
+    partb=infft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
+    minny = sorted(parta+partb)
+    minny = sum(minny[0:10])
+    minny /= 10.0
+    
+    #
+    # Fold minny and mode together, with a bias towards
+    #  "mode"
+    #
+    #
+    # The basic strategy is to try to come up with some estimate for the
+    #   notional "noise floor", since that's what we're measuring--the slowly
+    #   varying "noise floor".  Anything that exceeds this significantly is likely
+    #   not "noise floor" but something else, and we can use this estimate to
+    #   excise those artifacts prior to further processing.
+    #
+    mode = (mode*1.4) + (minny*0.6)
+    mode /= 2.0
+    
     #
     # Setup for mode-based excision
     #
@@ -6984,13 +7456,13 @@ def signal_evaluator(infft,prefix,prate):
         exceeded_delta = [[0.0]*len(infft)]*NCHAN
 
     #
-    # Anything that exceeds the mode estimate by 2.0dB or more,
+    # Anything that exceeds the mode estimate by 2.2dB or more,
     #  we "smooth".
     #
     now = time.time()
     indx = 0
     for v in infft:
-        if (v-mode &gt;= 2.0):
+        if (v-mode &gt;= 2.2):
             outfft[indx] = mode+fuzz_buffer_04[indx]
 
             #
@@ -7025,7 +7497,7 @@ def signal_evaluator(infft,prefix,prate):
     filtered = median_filter(outfft,lndx,MSIZE)
     
     #
-    # The median filter only returns an output once every 5 cycles
+    # The median filter only returns an output once every MSIZE cycles
     #
     if (filtered != None):
         new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
@@ -7128,6 +7600,9 @@ def do_pHz_data(pacer,prate):
 
     fast_data_pHz[lndx][fast_data_ndx[lndx]] = [get_current_pwr(lndx),get_refval(lndx)]
     fast_data_ndx[lndx] += 1
+    
+    if (fast_data_ndx[lndx] &gt;= prate):
+        fast_data_ndx[lndx] = 0
 
 #
 # Log data items
@@ -7151,9 +7626,6 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         #
         ltp = time.gmtime(time.time())
 
-        hdr_format = "%02d,%02d,%02d,%s,%d,%d,"
-        hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), freq, bw)
-        hdr = hdr_format % hdr_contents
 
         #
         # Power estimates
@@ -7162,54 +7634,15 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         # Every second
         #
         if (seconds != 0 and (seconds % 1 == 0)):
-            #
-            # Implement a median filter for SKY data
-            #
-
             for n in range(NCHAN):
-                #
-                # First extract SKY values from fast_data_pHz
-                #
-                pvect = fast_data_pHz[n]
-                pvect = pvect[0:fast_data_ndx[n]]
-                sortedp = [x[0] for x in pvect]
-
-                #
-                # Then the REF values
-                #
-                rvect = fast_data_pHz[n]
-                rvect = rvect[0:fast_data_ndx[n]]
-                sortedr = [x[1] for x in rvect]
-
-                #
-                # Then sort
-                #
-                sortedp = sorted(sortedp)
-                sortedr = sorted(sortedr)
-
-                #
-                # Pull the middle 30%
-                #
-                ls = int(len(sortedp)/2)
-                mid = ls
-                start = int(mid-(ls/6))
-                end =  (mid+(ls/6))
-
-                p = numpy.sum(sortedp[start:end])
-                p /= ((start-end)+1)
-
-                r = numpy.sum(sortedr[start:end])
-                r /= ((start-end)+1)
-
+                hdr_format = "%02d,%02d,%02d,%s,%d,%d"
+                hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), frqlist[n], bw)
+                hdr = hdr_format % hdr_contents
                 #
                 # Do recording of powers/temps
                 #
-                handle_pwr_recording(p, r, get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate)
-
-                #
-                # Reset the fast data index
-                #
-                fast_data_ndx[n] = 0
+                mtemp = tsky_model(frqlist[n])
+                handle_pwr_recording(get_current_pwr(n), get_refval(0), get_Tsky(n), hdr, ltp, prefix, fast_data_pHz[n][0:fast_data_ndx[n]],n,prate,mtemp)
         #
         # Spectral
         #
@@ -7542,7 +7975,7 @@ def set_peakhold(which,fft):
 #
 # Write data files with all total-power related data
 #
-def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
+def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate,mtemp):
     #
     # Record data in a daily file
     #
@@ -7552,8 +7985,14 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate):
 
     fp = open(fn, "a")
     fp.write (hdr)
-    rv = rv + 1.0e12
-    fp.write ("%.7f,%.7f,%.7f,%e,%.1f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
+    rv = rv + 1.0e-15
+    #
+    # We write an extended record, with model sky temp every 10 seconds
+    #
+    if (int(time.time()) % 10 == 0):
+        fp.write ("%.3e,%.3e,%.3e,%.3e,%.2f,%d\n" % (pwr, rv, pwr-rv, pwr/rv, tsky, mtemp/2.0))
+    else:
+        fp.write("%.3e,%.3e,%.3e,%.3e,%.2f\n" % (pwr, rv, pwr-rv, pwr/rv, tsky))
     fp.close()
 
     #
@@ -7584,7 +8023,7 @@ def handle_spec_recording(fft,variant,ltp,hdr,prefix):
     fp = open(fn, "a")
     fp.write(hdr)
     for v in fft:
-        fp.write("%.3f," % v)
+        fp.write("%.2f," % v)
     fp.write("\n")
     fp.close()
 
@@ -7598,10 +8037,27 @@ current_ratio = 1.0
 # Current pwr value
 #
 current_pwr = [0.0]*NCHAN
+
+#
+# A place to hold an L=PMEDIAN median filter for each channel
+#
+PMEDIAN=17
+current_pwr_filter = [[-1.0]*PMEDIAN]*NCHAN
 def set_current_pwr(p,which):
     global current_pwr
 
-    current_pwr[which] = p
+    if (current_pwr_filter[which][0] &lt; 0):
+        current_pwr_filter[which] = [p]*PMEDIAN
+    
+    #
+    # Do the shift
+    #
+    current_pwr_filter[which] = [p]+current_pwr_filter[which][0:PMEDIAN-1]
+    
+    #
+    # Median filter
+    #
+    current_pwr[which] = numpy.median(current_pwr_filter[which])
 
 def get_current_pwr(which):
     global current_pwr
@@ -7811,8 +8267,6 @@ def relay_event(bit,value,rport):
     except:
         pass
 
-MAXCHAN=4
-
 medians = None
 fndxs = [0]*NCHAN
 cur_flen = 0
@@ -7845,11 +8299,13 @@ def median_filter(fft,which,flen):
     # Time to sort the list, and return the median
     #  value
     #
-    if (fndxs[which] &gt;= 5):
+    if (fndxs[which] &gt;= flen):
         fndxs[which] = 0
         npa = numpy.array(filt)
-        numpy.ndarray.sort(npa,axis=0)
-        return list(npa[int(flen/2)])
+        out = numpy.median(npa,axis=0)
+        out = list(out)
+        return out
+        
     else:
         return None
 
@@ -7879,7 +8335,7 @@ def do_gating(tp):
     #
     if (gate_timer &lt; 50):
         if (last_tp_is_valid &lt;= 0):
-            if (tp &gt; (10.0 * last_tp_value)):
+            if (tp &gt; (12.0 * last_tp_value)):
                 
                 #
                 # We only count an initial gating
@@ -7993,7 +8449,7 @@ def do_gating(tp):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(5.0/frate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(2.0/frate))</value>
     </param>
     <param>
       <key>alias</key>
@@ -8089,6 +8545,53 @@ def do_gating(tp):
     <param>
       <key>vlen</key>
       <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(384, 1504)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>slow</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>For slow machines without GUI</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>intx</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
     </param>
   </block>
   <block>
@@ -8764,12 +9267,6 @@ def do_gating(tp):
     <sink_key>0</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_add_const_vxx_0_0_0</source_block_id>
-    <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>2</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_add_const_vxx_0_0_0_0</source_block_id>
     <sink_block_id>qtgui_vector_sink_f_1</sink_block_id>
     <source_key>0</source_key>
@@ -8782,16 +9279,22 @@ def do_gating(tp):
     <sink_key>1</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_add_const_vxx_0_0_0_1</source_block_id>
-    <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
+    <source_block_id>blocks_add_const_vxx_0_0_0_0_0_0</source_block_id>
+    <sink_block_id>qtgui_vector_sink_f_1</sink_block_id>
     <source_key>0</source_key>
-    <sink_key>3</sink_key>
+    <sink_key>2</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_add_const_vxx_0_0_1</source_block_id>
     <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_add_const_vxx_0_0_1_0</source_block_id>
+    <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>2</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_add_const_vxx_0_1</source_block_id>
@@ -8830,6 +9333,12 @@ def do_gating(tp):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_keep_m_in_n_0</source_block_id>
+    <sink_block_id>blocks_stream_to_vector_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_keep_one_in_n_0</source_block_id>
     <sink_block_id>virtual_sink_0</sink_block_id>
     <source_key>0</source_key>
@@ -8838,6 +9347,12 @@ def do_gating(tp):
   <connection>
     <source_block_id>blocks_keep_one_in_n_0_0</source_block_id>
     <sink_block_id>blocks_nlog10_ff_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_keep_one_in_n_1</source_block_id>
+    <sink_block_id>fft_vxx_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -8885,7 +9400,7 @@ def do_gating(tp):
   </connection>
   <connection>
     <source_block_id>blocks_stream_to_vector_0_0</source_block_id>
-    <sink_block_id>fft_vxx_0_0</sink_block_id>
+    <sink_block_id>blocks_keep_one_in_n_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -8914,6 +9429,18 @@ def do_gating(tp):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_throttle_0</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0_0_0_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_throttle_0</source_block_id>
+    <sink_block_id>blocks_null_sink_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_throttle_0_0</source_block_id>
     <sink_block_id>blocks_add_const_vxx_0_0</sink_block_id>
     <source_key>0</source_key>
@@ -8921,19 +9448,19 @@ def do_gating(tp):
   </connection>
   <connection>
     <source_block_id>blocks_throttle_0_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_throttle_0_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_0_0_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_throttle_0_0</source_block_id>
     <sink_block_id>blocks_add_const_vxx_0_0_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_throttle_0_0</source_block_id>
+    <sink_block_id>blocks_add_const_vxx_0_0_1_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_throttle_0_0</source_block_id>
+    <sink_block_id>blocks_null_sink_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -9035,7 +9562,7 @@ def do_gating(tp):
   </connection>
   <connection>
     <source_block_id>virtual_source_3</source_block_id>
-    <sink_block_id>blocks_stream_to_vector_0</sink_block_id>
+    <sink_block_id>blocks_keep_m_in_n_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -9066,6 +9593,12 @@ def do_gating(tp):
   <connection>
     <source_block_id>virtual_source_5_0_0</source_block_id>
     <sink_block_id>blocks_add_const_vxx_0_1_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_5_0_0</source_block_id>
+    <sink_block_id>blocks_null_sink_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>

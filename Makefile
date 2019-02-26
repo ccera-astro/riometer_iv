@@ -9,6 +9,7 @@ clean:
 
 install: riometer_iv.py
 	cp riometer_iv.py /usr/local/bin
+	chmod 755 /usr/local/bin/riometer_iv.py
 	cp riometer_helper.py /usr/local/bin
 	cp relay_server.py /usr/local/bin
 	cp start_riometer $(HOME)
