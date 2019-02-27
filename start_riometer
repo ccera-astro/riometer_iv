@@ -2,15 +2,9 @@
 date=`date +%Y%m%d%H%M`
 LOGFILE=$HOME/riometer-$date.log
 DATADISK=/media/riometer/otherdisk
-<<<<<<< HEAD
 riometer_iv.py --device "rtl=SKY,buflen=4096 rtl=REF,buflen=4096" --freq 30.0e6 --freq2 38.2e6 --tsys 420 --tsysref 420 \
   --reftemp 465e3 --srate 1.2e6 --decim 4 --rfgain 40 \
   --refgain 40 --urate 50 --prefix $DATADISK/riometer/riometer_data/ --finterval 3600 --swrate 0.4 >>$LOGFILE 2>&1 &
-=======
-riometer_iv.py --device "rtl=SKY,buflen=4096 rtl=REF,buflen=4096" --freq 30.0e6 --freq2 38.2e6 --tsys 350 --tsysref 350 \
-  --reftemp 148e3 --srate 1.2e6 --decim 4 --rfgain 40 \
-  --refgain 40 --urate 50 --prefix $DATADISK/riometer/riometer_data/ --finterval 3600 --swrate 0.6666 >>$LOGFILE 2>&1 &
->>>>>>> b6008baa79c8cf730816b65e66a7067cbf7b41f7
   
 riometer_pid=$!
   
