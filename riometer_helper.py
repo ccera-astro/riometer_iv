@@ -6,6 +6,7 @@ import random
 import ephem
 import xmlrpclib
 import copy
+import os
 
 #
 # FFT size
@@ -138,7 +139,7 @@ def signal_evaluator(infft,prefix,prate,swrate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.20*(1.0/swrate)
+    ignoretime = 0.285
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -460,6 +461,11 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
                 handle_spec_recording(get_peakhold(n), "spec-peak-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_ocount(n), "spec-ecounts-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_delta(n), "spec-edeltas-%d-" % n, ltp, hdr, prefix)
+            #
+            # This assumes that prefix points to a directory
+            #
+            clean(prefix)
+
 #
 # A buffer for the averaged reference FFT
 #
@@ -1166,8 +1172,46 @@ def do_gating(tp):
     last_tp_is_valid -= 1
     
     return (False,gate_counter)
+
+#
+# Used to clean directory of "old" data
+#
+import fnmatch
+def clean(direct):
+    #
+    # Filename prefixes we care about
+    #
+    fileprefixes = ["rio", "spec", "fast", "annotation"]
     
+    #
+    # Suffix
+    #
+    suffix = ".csv"
     
-     
+    #
+    #
+    # Handle old data
+    #
+    DAY=86400
+    WEEK=7
     
+    #
+    # Establish parameters for removal
+    #
+    end = int(time.time()) - ((DAY*WEEK)*1.5)
     
+    #
+    # Walk tree, based on pattern
+    #
+    for dirName, subdirList, fileList in os.walk(direct):
+        for fname in fileList:
+            for fp in fileprefixes:
+                filepat = "%s*.%s" % (fp, suffix)
+                if fnmatch.fnmatch(fname, filepat):
+                    actualfn = os.path.join(dirName,fname)
+                    try:
+						stat = os.stat(actualfn)
+						if (stat.st_mtime < end):
+							os.remove(actualfn)
+                    except:
+						pass
