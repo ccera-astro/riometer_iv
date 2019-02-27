@@ -862,7 +862,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1472, 1080)</value>
+      <value>(1600, 1080)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1574,7 +1574,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1608, 1080)</value>
+      <value>(1464, 1080)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1609,7 +1609,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1528, 1188)</value>
+      <value>(1528, 1284)</value>
     </param>
     <param>
       <key>gui_hint</key>
