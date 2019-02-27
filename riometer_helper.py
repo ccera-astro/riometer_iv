@@ -461,10 +461,6 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
                 handle_spec_recording(get_peakhold(n), "spec-peak-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_ocount(n), "spec-ecounts-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_delta(n), "spec-edeltas-%d-" % n, ltp, hdr, prefix)
-            #
-            # This assumes that prefix points to a directory
-            #
-            clean(prefix)
 
 #
 # A buffer for the averaged reference FFT
@@ -1206,7 +1202,7 @@ def clean(direct):
     for dirName, subdirList, fileList in os.walk(direct):
         for fname in fileList:
             for fp in fileprefixes:
-                filepat = "%s*.%s" % (fp, suffix)
+                filepat = "%s*%s" % (fp, suffix)
                 if fnmatch.fnmatch(fname, filepat):
                     actualfn = os.path.join(dirName,fname)
                     try:
