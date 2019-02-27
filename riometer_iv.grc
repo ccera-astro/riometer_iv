@@ -101,6 +101,33 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(296, 996)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>Cleanup</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>[slow_pacer,riometer_helper.clean(prefix)]</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(1072, 932)</value>
     </param>
     <param>
@@ -835,7 +862,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1472, 1080)</value>
+      <value>(1600, 1080)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1547,7 +1574,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1608, 1080)</value>
+      <value>(1464, 1080)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1582,7 +1609,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1528, 1188)</value>
+      <value>(1528, 1284)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -7201,6 +7228,7 @@ import random
 import ephem
 import xmlrpclib
 import copy
+import os
 
 #
 # FFT size
@@ -7333,7 +7361,7 @@ def signal_evaluator(infft,prefix,prate,swrate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.20*(1.0/swrate)
+    ignoretime = 0.285
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -7655,6 +7683,7 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
                 handle_spec_recording(get_peakhold(n), "spec-peak-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_ocount(n), "spec-ecounts-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_delta(n), "spec-edeltas-%d-" % n, ltp, hdr, prefix)
+
 #
 # A buffer for the averaged reference FFT
 #
@@ -8361,11 +8390,49 @@ def do_gating(tp):
     last_tp_is_valid -= 1
     
     return (False,gate_counter)
+
+#
+# Used to clean directory of "old" data
+#
+import fnmatch
+def clean(direct):
+    #
+    # Filename prefixes we care about
+    #
+    fileprefixes = ["rio", "spec", "fast", "annotation"]
     
+    #
+    # Suffix
+    #
+    suffix = ".csv"
     
-     
+    #
+    #
+    # Handle old data
+    #
+    DAY=86400
+    WEEK=7
     
+    #
+    # Establish parameters for removal
+    #
+    end = int(time.time()) - ((DAY*WEEK)*1.5)
     
+    #
+    # Walk tree, based on pattern
+    #
+    for dirName, subdirList, fileList in os.walk(direct):
+        for fname in fileList:
+            for fp in fileprefixes:
+                filepat = "%s*%s" % (fp, suffix)
+                if fnmatch.fnmatch(fname, filepat):
+                    actualfn = os.path.join(dirName,fname)
+                    try:
+						stat = os.stat(actualfn)
+						if (stat.st_mtime &lt; end):
+							os.remove(actualfn)
+                    except:
+						pass
 </value>
     </param>
     <param>
