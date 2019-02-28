@@ -3,6 +3,7 @@
 # These variables can be modified to change the way the riometer
 #  app runs
 #
+numcpus=`cat /proc/cpuinfo|grep -i ogomi|wc -l`
 
 #
 # Where does data go?
@@ -29,7 +30,15 @@ REFTEMP=165e3
 #  For Odroid XU4 (and better) systems, 1.2e6 works out well
 #
 #
-SRATE=300e3
+cputype=`uname -m`
+if [ $numcpus -ge 6 -o $cputype = 'x86_64' ]
+then
+	SRATE=902000
+	BUFLEN=8192
+else
+	SRATE=300000
+	BUFLEN=4096
+fi
 
 #
 # Decimation factor
@@ -37,16 +46,24 @@ SRATE=300e3
 # This gives you your final sample-rate==SRATE/DECIM
 #
 # The final pre-detector bandwidth is about 75% of this
+# We're going to target 150kHz, regardless
 #
 #
-DECIM=2
+BW=150000
+d=`expr $SRATE / $BW`
+DECIM=$d
 
 #
 # Set this to 1 indicate "this is a slow computer"
 #
 # DEFINITELY turn this on for Odroid C1
 #
-SLOW=1
+if [ $numcpus -ge 6 -o $cputype = 'x86_64' ]
+then
+    SLOW=0
+else
+    SLOW=1
+fi
 
 #
 # Internal update rate (Hz)
@@ -58,8 +75,18 @@ SLOW=1
 #  faster than 50 isn't really practical
 #
 #
-URATE=30
+if [ $numcpus -ge 6 -o $cputype = 'x86_64' ]
+then
+    URATE=50
+else
+    URATE=30
+fi
 
+#
+# Probably shouldn't modify below here unless you know what you're doing
+#
+#######################################################################################################################
+#######################################################################################################################
 #
 # We may come up before NTP has had a chance to synchronize system time,
 #  so, wait a bit
@@ -74,7 +101,7 @@ do
 	date=`date +%Y%m%d%H%M`
 	LOGFILE=$HOME/riometer-$date.log
 	DATADISK=/media/riometer/otherdisk
-	riometer_iv.py --device "rtl=SKY,buflen=4096 rtl=REF,buflen=4096" --freq $F1 \
+	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" --freq $F1 \
 	   --freq1 $F2 --freq2 $F3 --tsys 400 --tsysref 400 \
 	  --reftemp 165e3 --srate $SRATE --decim $DECIM --rfgain 40 \
 	  --refgain 40 --urate $URATE --prefix $DATAPLACE/ --finterval 3600 --swrate 0.75 --slow $SLOW >>$LOGFILE 2>&1
