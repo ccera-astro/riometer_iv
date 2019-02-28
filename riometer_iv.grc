@@ -322,7 +322,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(584, 1004)</value>
+      <value>(400, 996)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -642,7 +642,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(808, 1268)</value>
+      <value>(688, 1396)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -670,7 +670,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(680, 1388)</value>
+      <value>(688, 1508)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4312,7 +4312,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>label</key>
-      <value>Frequency</value>
+      <value>First Frequency</value>
     </param>
     <param>
       <key>short_id</key>
@@ -4454,100 +4454,6 @@ Sky Temp vs frequency</value>
     <param>
       <key>import</key>
       <value>import math</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(24, 1520)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>impulse</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Impulse Noise Holdoff Time (Secs)</value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>hide</key>
-      <value>none</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>eng_float</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>2.5</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(24, 1608)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>lnagain</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Gain of SKY side LNA</value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>hide</key>
-      <value>none</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>eng_float</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>0</value>
     </param>
   </block>
   <block>
@@ -5212,7 +5118,7 @@ the FFTs</value>
     </param>
     <param>
       <key>freq1</key>
-      <value>(freq+freq2)/2.0</value>
+      <value>(max(freqs)+min(freqs))/2.0</value>
     </param>
     <param>
       <key>gain_mode1</key>
@@ -7667,8 +7573,13 @@ def get_exit_required(p):
     if (os.path.exists("stop_riometer")):
         os.kill(os.getpid(),signal.SIGTERM)
         return True
-    else:
-        return False
+    elif (os.path.exists("restart_riometer")):
+        try:
+            os.remove("restart_riometer")
+            os.kill(os.getpid(),signal.SIGTERM)
+        except:
+            pass
+    return False
 
 #
 # Log data items
@@ -8763,7 +8674,7 @@ def clean(direct):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(360, 1328)</value>
+      <value>(184, 1328)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -8892,7 +8803,7 @@ def clean(direct):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 1328)</value>
+      <value>(8, 1328)</value>
     </param>
     <param>
       <key>_rotation</key>

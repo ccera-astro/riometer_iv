@@ -418,8 +418,13 @@ def get_exit_required(p):
     if (os.path.exists("stop_riometer")):
         os.kill(os.getpid(),signal.SIGTERM)
         return True
-    else:
-        return False
+    elif (os.path.exists("restart_riometer")):
+        try:
+            os.remove("restart_riometer")
+            os.kill(os.getpid(),signal.SIGTERM)
+        except:
+            pass
+    return False
 
 #
 # Log data items

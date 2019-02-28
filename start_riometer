@@ -27,7 +27,7 @@ fi
 #
 F1=30.0e6
 F2=38.2e6
-F3=25.0e6
+F3=25.05e6
 
 #
 # REF noise temperature estimate
@@ -131,7 +131,10 @@ do
 	if [ -e stop_riometer ]
 	then
 		rm -f stop_riometer
+		echo Stopping riometer restart loop
 		break
 	fi
-	sleep 15
+	echo Restarting riometer in 10 seconds
+	sleep 10
+	echo Restart in progress
 done
