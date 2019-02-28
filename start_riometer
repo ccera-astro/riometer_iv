@@ -5,10 +5,22 @@
 #
 numcpus=`cat /proc/cpuinfo|grep -i ogomi|wc -l`
 
+single=False
+
+if [ $# -ge 1 ]
+then
+	single=True
+fi
+
 #
 # Where does data go?
 #
-DATAPLACE=/mnt/riometer_data
+if [ -e /mnt/riometer_data ]
+then
+	DATAPLACE=/mnt/riometer_data
+else
+	DATAPLACE="."
+fi
 
 #
 # The three SKY frequencies
@@ -91,7 +103,10 @@ fi
 # We may come up before NTP has had a chance to synchronize system time,
 #  so, wait a bit
 #
-sleep 20
+if [ $single = False ]
+then
+    sleep 20
+fi
 
 #
 # Loop forever restarting the app if it crashes
@@ -99,18 +114,23 @@ sleep 20
 while true
 do
 	date=`date +%Y%m%d%H%M`
-	LOGFILE=$HOME/riometer-$date.log
+	LOGFILE=riometer-$date.log
 	DATADISK=/media/riometer/otherdisk
 	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" --freq $F1 \
-	   --freq1 $F2 --freq2 $F3 --tsys 400 --tsysref 400 \
+	   --freq2 $F2 --freq3 $F3 --tsys 400 --tsysref 400 \
 	  --reftemp 165e3 --srate $SRATE --decim $DECIM --rfgain 40 \
 	  --refgain 40 --urate $URATE --prefix $DATAPLACE/ --finterval 3600 --swrate 0.75 --slow $SLOW >>$LOGFILE 2>&1
 	
+	if [ $single = True ]
+	then
+		break
+	fi
 	#
 	# To force manual exit of this loop
 	#
 	if [ -e stop_riometer ]
 	then
+		rm -f stop_riometer
 		break
 	fi
 	sleep 15

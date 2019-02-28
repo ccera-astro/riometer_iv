@@ -6,6 +6,8 @@ clean:
 	rm -f *.pyc
 	rm -f *.csv
 	rm -f foobly
+	rm -f *.log
+	rm -f stop_riometer
 
 install: riometer_iv.py
 	cp riometer_iv.py /usr/local/bin
