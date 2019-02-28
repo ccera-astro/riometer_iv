@@ -7,6 +7,9 @@ import ephem
 import xmlrpclib
 import copy
 import os
+import signal
+
+
 
 #
 # FFT size
@@ -139,7 +142,7 @@ def signal_evaluator(infft,prefix,prate,swrate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.325
+    ignoretime = 0.285
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -410,6 +413,14 @@ def do_pHz_data(pacer,prate):
     if (fast_data_ndx[lndx] >= prate):
         fast_data_ndx[lndx] = 0
 
+def get_exit_required(p):
+    
+    if (os.path.exists("stop_riometer")):
+        os.kill(os.getpid(),signal.SIGTERM)
+        return True
+    else:
+        return False
+
 #
 # Log data items
 #
@@ -419,6 +430,7 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
     global last_time
     global fast_data_pHz
     global fast_data_ndx
+
 
     #
     # Update the seconds counter
@@ -791,7 +803,7 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate,mtemp):
     fn += ".csv"
 
     fp = open(fn, "a")
-    fp.write (hdr+",")
+    fp.write (hdr)
     rv = rv + 1.0e-15
     #
     # We write an extended record, with model sky temp every 10 seconds
@@ -809,7 +821,7 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate,mtemp):
     fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
     fn += ".csv"
     fp = open(fn, "a")
-    fp.write(hdr+",")
+    fp.write(hdr)
     for v in fdata:
         fp.write ("(%.7f,%.7f)," % (v[0], v[1]) )
     fp.write("\n")
@@ -1206,8 +1218,8 @@ def clean(direct):
                 if fnmatch.fnmatch(fname, filepat):
                     actualfn = os.path.join(dirName,fname)
                     try:
-						stat = os.stat(actualfn)
-						if (stat.st_mtime < end):
-							os.remove(actualfn)
+                        stat = os.stat(actualfn)
+                        if (stat.st_mtime < end):
+                            os.remove(actualfn)
                     except:
-						pass
+                        pass

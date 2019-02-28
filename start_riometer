@@ -1,24 +1,65 @@
 #!/bin/sh
-date=`date +%Y%m%d%H%M`
-LOGFILE=$HOME/riometer-$date.log
-DATADISK=/media/riometer/otherdisk
-riometer_iv.py --device "rtl=SKY,buflen=4096 rtl=REF,buflen=4096" --freq 30.0e6 --freq2 38.2e6 --tsys 420 --tsysref 420 \
-  --reftemp 465e3 --srate 1.2e6 --decim 4 --rfgain 40 \
-  --refgain 40 --urate 50 --prefix $DATADISK/riometer/riometer_data/ --finterval 3600 --swrate 0.4 >>$LOGFILE 2>&1 &
-  
-riometer_pid=$!
-  
-relay_server.py 12345 'A904TA1U' >/dev/null 2>&1 &
-relay_pid=$!
+#
+# Where does data go?
+#
+DATAPLACE=/mnt/riometer_data
 
+#
+# The three SKY frequencies
+#
+F1=30.0e6
+F2=38.2e6
+F3=25.0e6
 
+#
+# REF noise temperature estimate
+#
+REFTEMP=165e3
+
+#
+# Sample rate:  For Odroid C1, 300e3 is max possible
+#
+SRATE=300e3
+
+# Decimation factor
+#
+DECIM=2
+
+#
+# Set this to 1 indicate "this is a slow computer"
+#
+SLOW=1
+
+#
+# Internal update rate (Hz)
+#
+URATE=30
+
+#
+# We may come up before NTP has had a chance to syncrhonize system time,
+#  so, wait a bit
+#
+sleep 20
+
+#
+# Loop forever restarting the app if it crashes
+#
 while true
 do
-	kill -0 $riometer_pid >/dev/null 2>&1
-	if [ $? -ne 0 ]
+	date=`date +%Y%m%d%H%M`
+	LOGFILE=$HOME/riometer-$date.log
+	DATADISK=/media/riometer/otherdisk
+	riometer_iv.py --device "rtl=SKY,buflen=4096 rtl=REF,buflen=4096" --freq $F1 \
+	   --freq1 $F2 --freq2 $F3 --tsys 400 --tsysref 400 \
+	  --reftemp 165e3 --srate $SRATE --decim $DECIM --rfgain 40 \
+	  --refgain 40 --urate $URATE --prefix $DATAPLACE/ --finterval 3600 --swrate 0.75 --slow $SLOW >>$LOGFILE 2>&1
+	
+	#
+	# To force manual exit of this loop
+	#
+	if [ -e stop_riometer ]
 	then
-		kill $relay_pid
-		exit
+		break
 	fi
-	sleep 3
+	sleep 15
 done
