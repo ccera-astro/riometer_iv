@@ -1,5 +1,10 @@
 #!/bin/sh
 #
+# These variables can be modified to change the way the riometer
+#  app runs
+#
+
+#
 # Where does data go?
 #
 DATAPLACE=/mnt/riometer_data
@@ -14,29 +19,49 @@ F3=25.0e6
 #
 # REF noise temperature estimate
 #
+# THIS will definitely require some tweaking
+#
+#
 REFTEMP=165e3
 
 #
 # Sample rate:  For Odroid C1, 300e3 is max possible
+#  For Odroid XU4 (and better) systems, 1.2e6 works out well
+#
 #
 SRATE=300e3
 
+#
 # Decimation factor
+#
+# This gives you your final sample-rate==SRATE/DECIM
+#
+# The final pre-detector bandwidth is about 75% of this
+#
 #
 DECIM=2
 
 #
 # Set this to 1 indicate "this is a slow computer"
 #
+# DEFINITELY turn this on for Odroid C1
+#
 SLOW=1
 
 #
 # Internal update rate (Hz)
 #
+# Sets how often signals are evaluated internally, and fresh
+#  internal estimates produced for REF side and SKY side data.
+#
+# For Odroid XU4 and faster, this can be 50
+#  faster than 50 isn't really practical
+#
+#
 URATE=30
 
 #
-# We may come up before NTP has had a chance to syncrhonize system time,
+# We may come up before NTP has had a chance to synchronize system time,
 #  so, wait a bit
 #
 sleep 20
