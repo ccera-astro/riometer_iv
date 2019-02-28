@@ -808,7 +808,7 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate,mtemp):
     fn += ".csv"
 
     fp = open(fn, "a")
-    fp.write (hdr)
+    fp.write (hdr+",")
     rv = rv + 1.0e-15
     #
     # We write an extended record, with model sky temp every 10 seconds
@@ -826,7 +826,7 @@ def handle_pwr_recording(pwr,rv,tsky,hdr,ltp,prefix,fdata,which,prate,mtemp):
     fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
     fn += ".csv"
     fp = open(fn, "a")
-    fp.write(hdr)
+    fp.write(hdr+",")
     for v in fdata:
         fp.write ("(%.7f,%.7f)," % (v[0], v[1]) )
     fp.write("\n")
@@ -845,7 +845,7 @@ def handle_spec_recording(fft,variant,ltp,hdr,prefix):
     fn += ".csv"
 
     fp = open(fn, "a")
-    fp.write(hdr)
+    fp.write(hdr+",")
     for v in fft:
         fp.write("%.2f," % v)
     fp.write("\n")
