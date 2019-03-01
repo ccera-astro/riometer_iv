@@ -27,7 +27,11 @@ fi
 #
 F1=30.0e6
 F2=38.2e6
-F3=25.05e6
+#
+# Apparent 4dB gain drop below 26MHz on R820T2, so
+#  Try in the maritime mobile band--we're inland quite a bit...
+#
+F3=26.125e6
 
 #
 # REF noise temperature estimate
@@ -35,7 +39,7 @@ F3=25.05e6
 # THIS will definitely require some tweaking
 #
 #
-REFTEMP=165e3
+REFTEMP=350e3
 
 #
 # Sample rate:  For Odroid C1, 300e3 is max possible
@@ -62,6 +66,11 @@ fi
 #
 #
 BW=150000
+if [ $SRATE = 902000 ]
+then
+	BW=250000
+fi
+
 d=`expr $SRATE / $BW`
 DECIM=$d
 
