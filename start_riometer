@@ -122,9 +122,16 @@ fi
 #
 while true
 do
+    #
+    # Nuke old .log files
+    #
+	find $HOME -type f -mtime +2 -name 'riometer-*.log' -exec rm -f '{}' ";"
 	date=`date +%Y%m%d%H%M`
 	LOGFILE=riometer-$date.log
-	DATADISK=/media/riometer/otherdisk
+
+    #
+    # Invoke riometer app
+    #
 	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" --freq $F1 \
 	   --freq2 $F2 --freq3 $F3 --tsys 400 --tsysref 400 \
 	  --reftemp 165e3 --srate $SRATE --decim $DECIM --rfgain 40 \

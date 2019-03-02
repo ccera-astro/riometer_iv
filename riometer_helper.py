@@ -637,19 +637,20 @@ def estimate_Tsky(pace,reftemp,tsys,tsys_ref):
 # This needs to be revisited, since it doesn't know about multi-channels, etc.
 #
 def annotate(prefix, reftemp, tsys, freq, bw, gain, itsys_ref, lnagain, notes):
-    fn = prefix+"annotation-"
-    ltp = time.gmtime(time.time())
+    if (False):
+        fn = prefix+"annotation-"
+        ltp = time.gmtime(time.time())
 
-    fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
-    fn += ".csv"
+        fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+        fn += ".csv"
 
-    fp = open(fn, "a")
-    fp.write("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
-    fp.write("%.1f,%.1f," % (reftemp, tsys))
-    fp.write("%.1f,%.1f,%.1f," % (freq, bw, gain))
-    fp.write("%.1f,%.1f" % (itsys_ref, lnagain))
-    fp.write("%s\n" % notes)
-    fp.close()
+        fp = open(fn, "a")
+        fp.write("%02d,%02d,%02d," % (ltp.tm_hour, ltp.tm_min, ltp.tm_sec))
+        fp.write("%.1f,%.1f," % (reftemp, tsys))
+        fp.write("%.1f,%.1f,%.1f," % (freq, bw, gain))
+        fp.write("%.1f,%.1f" % (itsys_ref, lnagain))
+        fp.write("%s\n" % notes)
+        fp.close()
 
 
 #
@@ -1190,7 +1191,7 @@ def do_gating(tp):
 # Used to clean directory of "old" data
 #
 import fnmatch
-def clean(direct):
+def clean(direct,retention):
     #
     # Filename prefixes we care about
     #
@@ -1206,12 +1207,11 @@ def clean(direct):
     # Handle old data
     #
     DAY=86400
-    WEEK=7
     
     #
     # Establish parameters for removal
     #
-    end = int(time.time()) - ((DAY*WEEK)*1.5)
+    end = int(time.time()) - (DAY*retention)
     
     #
     # Walk tree, based on pattern
