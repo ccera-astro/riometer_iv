@@ -22,6 +22,9 @@ else
 	DATAPLACE="."
 fi
 
+cd $DATAPLACE
+
+
 #
 # The three SKY frequencies
 #
@@ -117,6 +120,9 @@ then
     sleep 20
 fi
 
+python2 -m SimpleHTTPServer >server.log 2>&1 &
+httppid=$!
+
 #
 # Loop forever restarting the app if it crashes
 #
@@ -154,3 +160,5 @@ do
 	sleep 10
 	echo Restart in progress
 done
+
+kill $httpid

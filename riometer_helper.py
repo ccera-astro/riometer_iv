@@ -473,6 +473,9 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
         #
         if (seconds != 0 and (seconds % 60 == 0)):
             for n in range(NCHAN):
+                hdr_format = "%02d,%02d,%02d,%s,%d,%d"
+                hdr_contents = (ltp.tm_hour, ltp.tm_min, ltp.tm_sec, cur_sidereal(longitude), frqlist[n], bw)
+                hdr = hdr_format % hdr_contents
                 handle_spec_recording(get_raw_fft(n),"spec-raw-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_avg_fft(n), "spec-excised-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_peakhold(n), "spec-peak-%d-" % n, ltp, hdr, prefix)
