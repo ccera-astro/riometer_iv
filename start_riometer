@@ -24,6 +24,10 @@ fi
 
 cd $DATAPLACE
 
+#
+# GEO
+#
+LONGITUDE=-76.03
 
 #
 # The three SKY frequencies
@@ -140,7 +144,7 @@ do
     #
 	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" --freq $F1 \
 	   --freq2 $F2 --freq3 $F3 --tsys 400 --tsysref 400 \
-	  --reftemp 165e3 --srate $SRATE --decim $DECIM --rfgain 40 \
+	  --reftemp 165e3 --srate $SRATE --decim $DECIM --rfgain 40  --longitude $LONGITUDE \
 	  --refgain 40 --urate $URATE --prefix $DATAPLACE/ --finterval 3600 --swrate 0.75 --slow $SLOW >>$LOGFILE 2>&1
 	
 	if [ $single = True ]
