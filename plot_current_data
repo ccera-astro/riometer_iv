@@ -52,23 +52,31 @@ function do_skytemp {
 	then
 		return 1
 	fi
-	tail -3600 rio-$1-$2.csv|awk 'BEGIN {FS=", *"}
+	tail -3600 rio-$1-$2.csv|awk 'BEGIN {FS=", *"
+		gndx = 0
+		dndx = 0
+	}
 /./ {
 	 secs = $4 * 3600
      secs += $5 * 60
      secs += $6
 
-     dndx = int(secs/GRANULARITY)
      temp_array[dndx] += $13
      dcnt[dndx] += 1
+     gndx += 1
+     
+     if (gndx >= GRANULARITY)
+     {
+		dndx += 1
+		gndx = 0
      }
+ }
 END {hindx = 0
-	 for (i = 0; i < (86400/GRANULARITY); i++)
+	 for (i = 0; i <= dndx; i++)
      {
          if (dcnt[i] >= 1)
 	 {
-         printf ("%.5f %e\n", (hindx)/3600.0, temp_array[i]/dcnt[i])
-         hindx += GRANULARITY
+         printf ("%.5f %e\n", (i*GRANULARITY)/3600.0, temp_array[i]/dcnt[i])
      }
      }
      }' GRANULARITY=10 >current-skytemp-$1.dat
