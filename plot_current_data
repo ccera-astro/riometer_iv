@@ -72,20 +72,22 @@ function do_skytemp {
      }
  }
 END {hindx = 0
-	 for (i = 0; i <= dndx; i++)
+	tndx=0
+	 for (i = dndx-1; i >=0; i--)
      {
          if (dcnt[i] >= 1)
 	 {
-         printf ("%.5f %e\n", (i*GRANULARITY)/3600.0, temp_array[i]/dcnt[i])
+         printf ("%.5f %e\n", tndx/3600.0, temp_array[i]/dcnt[i])
+         tndx += GRANULARITY
      }
      }
      }' GRANULARITY=10 >current-skytemp-$1.dat
-	 START_LMST=`tail -3600 rio-$1-$2.csv|head -1 |awk '
+	 START_LMST=`tail -1|awk '
 BEGIN {FS=", *"}
 /./ {hour=$4*1.0
-	 hour += ($5/60.0)
-	 hour += ($6/3600.0)
-	 printf ("%f\n", hour)
+	 minute=$5
+	 second=$=6
+	 printf ("%02d:%02d:%02d", hour, minute, second)
  }
 '`
 	return 0
