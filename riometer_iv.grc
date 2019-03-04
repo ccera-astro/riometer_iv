@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.13'?>
+<?grc format='1' created='3.7.12'?>
 <flow_graph>
   <timestamp>Tue Jan 22 11:50:07 2019</timestamp>
   <block>
@@ -7344,7 +7344,7 @@ def signal_evaluator(infft,prefix,prate,swrate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.285
+    ignoretime = 0.350
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -8516,7 +8516,7 @@ def clean(direct,retention):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(2.0/frate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(4.0/frate))</value>
     </param>
     <param>
       <key>alias</key>
