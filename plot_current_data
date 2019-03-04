@@ -82,7 +82,7 @@ END {hindx = 0
      }
      }
      }' GRANULARITY=10 >current-skytemp-$1.dat
-	 START_LMST=`tail -1|awk '
+	 START_LMST=`tail -1 rio-$1-$2.csv|awk '
 BEGIN {FS=", *"}
 /./ {hour=$4*1.0
 	 minute=$5
