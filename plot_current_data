@@ -112,6 +112,17 @@ then
 fi
 for chan in 0 1 2
 do
+	case $chan in
+	0)
+		MAX=15000
+		;;
+	1)
+		MAX=7000
+		;;
+	2)
+		MAX=150000
+		;;
+	esac
 	do_skytemp $chan $date
 	if [ -e current-skytemp-$chan.dat ]
 	then
@@ -127,7 +138,7 @@ set output 'current-tmp.png'
 set xlabel 'Time (Hours LMST)'
 set xtics 0.1
 set ylabel 'Apparent Noise Temp(K)'
-set yrange [0:150000]
+set yrange [0:$MAX]
 plot 'plt1.dat' with lines title "Sky Temp(K)"
 !EOF!
 		rm -f plt1.dat
