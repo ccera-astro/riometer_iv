@@ -102,7 +102,7 @@ set xlabel 'Frequency (MHz)'
 set ylabel 'Rel. Power (dB)'
 plot 'plt1.dat' with lines title "Peak Hold", 'plt2.dat' with lines title "Excised"
 !EOF!
-		mv current-tmp.png current-spec-$chan.png
+		mv current-tmp.png plots/current-spec-$chan.png
 		rm -f plt1.dat plt2.dat
 	fi
 done
@@ -131,7 +131,7 @@ set yrange [0:150000]
 plot 'plt1.dat' with lines title "Sky Temp(K)"
 !EOF!
 		rm -f plt1.dat
-		mv current-tmp.png current-skytemp-$chan.png
+		mv current-tmp.png plots/current-skytemp-$chan.png
 	fi
 done
 
