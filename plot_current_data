@@ -86,7 +86,7 @@ END {hindx = 0
 BEGIN {FS=", *"}
 /./ {hour=$4*1.0
 	 minute=$5
-	 second=$=6
+	 second=$6
 	 printf ("%02d:%02d:%02d", hour, minute, second)
  }
 '`
