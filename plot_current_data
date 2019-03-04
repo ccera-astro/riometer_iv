@@ -72,7 +72,14 @@ END {hindx = 0
      }
      }
      }' GRANULARITY=10 >current-skytemp-$1.dat
-	
+	 START_LMST=`tail -3600 rio-$1-$2.csv|head -1 |awk '
+BEGIN {FS=", *"}
+/./ {hour=$4*1.0
+	 hour += ($5/60.0)
+	 hour += ($6/3600.0)
+	 printf ("%f\n", hour)
+ }
+'`
 	return 0
 }
 if [ -e /mnt/riometer_data ]
@@ -140,7 +147,7 @@ set grid
 set title "$pltdate: Apparent Sky Temp--Chan $chan: Fc=$FREQ MHz, Bw=$BW kHz"
 set terminal png large size 900,600
 set output 'current-tmp.png'
-set xlabel 'Time (Hours LMST)'
+set xlabel 'Time (Hours LMST from $START_LMST)'
 set xtics 0.1
 set ylabel 'Apparent Noise Temp(K)'
 set yrange [0:$MAX]
