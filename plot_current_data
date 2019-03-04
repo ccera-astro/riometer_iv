@@ -89,7 +89,9 @@ do
 	if [ -e current-peak-$chan.dat ]
 	then
 		cp current-peak-$chan.dat plt1.dat
+		mv current-peak-$chan.dat plots
 		cp current-excised-$chan.dat plt2.dat
+		mv current-excised-$chan.dat plots
 		FREQ=`cat current-$chan-freq.dat`
 		BW=`cat current-$chan-bw.dat`
 		pltdate=`date -u +%Y/%m/%d-%H:%M:%S`
@@ -127,6 +129,7 @@ do
 	if [ -e current-skytemp-$chan.dat ]
 	then
 		cp current-skytemp-$chan.dat plt1.dat
+		mv current-skytemp-$chan.dat plots
 		FREQ=`cat current-$chan-freq.dat`
 		BW=`cat current-$chan-bw.dat`
 		pltdate=`date -u +%Y/%m/%d-%H:%M:%S`
