@@ -62,11 +62,13 @@ function do_skytemp {
      temp_array[dndx] += $13
      dcnt[dndx] += 1
      }
-END {for (i = 0; i < (86400/GRANULARITY); i++)
+END {hindx = 0
+	 for (i = 0; i < (86400/GRANULARITY); i++)
      {
          if (dcnt[i] >= 1)
 	 {
-         printf ("%.5f %e\n", (i*GRANULARITY)/3600.0, temp_array[i]/dcnt[i])
+         printf ("%.5f %e\n", (hindx)/3600.0, temp_array[i]/dcnt[i])
+         hindx += GRANULARITY
      }
      }
      }' GRANULARITY=10 >current-skytemp-$1.dat
