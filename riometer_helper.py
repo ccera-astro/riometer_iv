@@ -876,7 +876,7 @@ current_pwr = [0.0]*NCHAN
 #
 # A place to hold an L=PMEDIAN median filter for each channel
 #
-PMEDIAN=17
+PMEDIAN=21
 current_pwr_filter = [[-1.0]*PMEDIAN]*NCHAN
 def set_current_pwr(p,which):
     global current_pwr
