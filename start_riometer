@@ -34,11 +34,7 @@ LONGITUDE=-76.03
 #
 F1=30.0e6
 F2=38.2e6
-#
-#
-#  Try around the science allocation
-#
-F3=25.550e6
+F3=25.610e6
 
 #
 # REF noise temperature estimate
