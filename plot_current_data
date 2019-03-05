@@ -16,6 +16,8 @@ BEGIN {FS=", *"
         
         
 /./ {
+	  if(NF > 2048)
+	  {
       freq = $7
       bw = $8
       for (i = 9; i < 9+2048; i++)
@@ -23,6 +25,7 @@ BEGIN {FS=", *"
           spec[i-9] += 0.0+$i
           spec_cnt[i-9] += 1.0
       }
+  }
     }
 END {
       freq = freq - bw/2.0
