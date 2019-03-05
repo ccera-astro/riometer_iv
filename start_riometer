@@ -35,10 +35,10 @@ LONGITUDE=-76.03
 F1=30.0e6
 F2=38.2e6
 #
-# Apparent 4dB gain drop below 26MHz on R820T2, so
-#  Try in the maritime mobile band--we're inland quite a bit...
 #
-F3=26.125e6
+#  Try around the science allocation
+#
+F3=25.550e6
 
 #
 # REF noise temperature estimate
