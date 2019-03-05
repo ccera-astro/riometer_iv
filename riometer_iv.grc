@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.12'?>
+<?grc format='1' created='3.7.13'?>
 <flow_graph>
   <timestamp>Tue Jan 22 11:50:07 2019</timestamp>
   <block>
@@ -140,7 +140,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate,swrate)</value>
+      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate,swrate,corrs)</value>
     </param>
   </block>
   <block>
@@ -809,6 +809,33 @@ Sky Temp vs frequency</value>
     <param>
       <key>widget</key>
       <value>radio_buttons</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(920, 996)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>corrs</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>[eval(corr1),eval(corr2),eval(corr3)]</value>
     </param>
   </block>
   <block>
@@ -3614,6 +3641,147 @@ Sky Temp vs frequency</value>
     </param>
   </block>
   <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(48, 1504)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>corr1</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Correction parameters</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"[1.0,0.0]"</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(224, 1504)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>corr2</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Correction parameters</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"[1.0,0.0]"</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(400, 1504)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>corr3</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Correction parameters</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"[1.0,0.0]"</value>
+    </param>
+  </block>
+  <block>
     <key>dc_blocker_xx</key>
     <param>
       <key>alias</key>
@@ -4300,7 +4468,7 @@ Sky Temp vs frequency</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(64, 1416)</value>
+      <value>(48, 1416)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7311,7 +7479,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate,swrate):
+def signal_evaluator(infft,prefix,prate,swrate,corrs):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -7344,7 +7512,7 @@ def signal_evaluator(infft,prefix,prate,swrate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.350
+    ignoretime = 0.285
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -7524,6 +7692,12 @@ def signal_evaluator(infft,prefix,prate,swrate):
         #
         # Other subsystems need to know current value of pwr
         #
+        #
+        # Apply an ax + b correction before storing
+        #
+        parms = corrs[lndx]
+        pwr *= parms[0]
+        pwr += parms[1]
         set_current_pwr(pwr,lndx)
 
     return None
@@ -8516,7 +8690,7 @@ def clean(direct,retention):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(4.0/frate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(2.0/frate))</value>
     </param>
     <param>
       <key>alias</key>
@@ -8630,7 +8804,7 @@ def clean(direct,retention):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(384, 1504)</value>
+      <value>(528, 1608)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -8900,7 +9074,7 @@ def clean(direct,retention):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 1504)</value>
+      <value>(24, 1600)</value>
     </param>
     <param>
       <key>_rotation</key>

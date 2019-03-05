@@ -109,7 +109,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate,swrate):
+def signal_evaluator(infft,prefix,prate,swrate,corrs):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -142,7 +142,7 @@ def signal_evaluator(infft,prefix,prate,swrate):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.350
+    ignoretime = 0.285
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
@@ -322,6 +322,12 @@ def signal_evaluator(infft,prefix,prate,swrate):
         #
         # Other subsystems need to know current value of pwr
         #
+        #
+        # Apply an ax + b correction before storing
+        #
+        parms = corrs[lndx]
+        pwr *= parms[0]
+        pwr += parms[1]
         set_current_pwr(pwr,lndx)
 
     return None

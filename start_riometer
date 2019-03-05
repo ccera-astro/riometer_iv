@@ -46,7 +46,14 @@ F3=26.125e6
 # THIS will definitely require some tweaking
 #
 #
-REFTEMP=350e3
+REFTEMP=302e3
+
+#
+# Channel corrections
+#
+CORR1="[1.0,0.0]"
+CORR2="[1.0,0.0]"
+CORR3="[0.6,-3000]"
 
 #
 # Sample rate:  For Odroid C1, 300e3 is max possible
@@ -142,9 +149,10 @@ do
     #
     # Invoke riometer app
     #
-	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" --freq $F1 \
-	   --freq2 $F2 --freq3 $F3 --tsys 400 --tsysref 400 \
-	  --reftemp 165e3 --srate $SRATE --decim $DECIM --rfgain 40  --longitude $LONGITUDE \
+	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" \
+	   --freq $F1 --freq2 $F2 --freq3 $F3 --corr1 "$CORR1" --corr2 "$CORR2" --corr3 "$CORR3" \
+	   --tsys 400 --tsysref 400 \
+	  --reftemp $REFTEMP --srate $SRATE --decim $DECIM --rfgain 40  --longitude $LONGITUDE \
 	  --refgain 40 --urate $URATE --prefix $DATAPLACE/ --finterval 3600 --swrate 0.75 --slow $SLOW >>$LOGFILE 2>&1
 	
 	if [ $single = True ]
