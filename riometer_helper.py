@@ -951,7 +951,7 @@ smoothed_raw_power = 0.0
 last_raw_power = -1.0
 measure_counter = fault_dict["INTERVAL"]
 
-def do_fault_schedule(tp,relayport,finterval):
+def do_fault_schedule(tp,relayport,finterval,prefix):
     global smoothed_raw_power
     global last_raw_power
     global fault_state
@@ -1029,6 +1029,22 @@ def do_fault_schedule(tp,relayport,finterval):
     else:
         relay_event(fault_dict["ANTENNA_FLED"], 0, relayport)
 
+    fn = os.path.join(prefix, "fault")
+    fn = os.path.join(fn,"antenna.txt")
+    if (get_fault(0) == True):
+        try:
+            fp = open(fn, "w")
+            fp.write("True")
+            fp.close()
+        except:
+            pass
+    else:
+        try:
+            os.remove(fn)
+        except:
+            pass
+        
+    
     return None
 
 

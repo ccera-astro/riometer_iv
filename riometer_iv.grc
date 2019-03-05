@@ -167,7 +167,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.do_fault_schedule(tp_prober,relayport,finterval)</value>
+      <value>riometer_helper.do_fault_schedule(tp_prober,relayport,finterval,prefix)</value>
     </param>
   </block>
   <block>
@@ -8321,7 +8321,7 @@ smoothed_raw_power = 0.0
 last_raw_power = -1.0
 measure_counter = fault_dict["INTERVAL"]
 
-def do_fault_schedule(tp,relayport,finterval):
+def do_fault_schedule(tp,relayport,finterval,prefix):
     global smoothed_raw_power
     global last_raw_power
     global fault_state
@@ -8399,6 +8399,22 @@ def do_fault_schedule(tp,relayport,finterval):
     else:
         relay_event(fault_dict["ANTENNA_FLED"], 0, relayport)
 
+    fn = os.path.join(prefix, "fault")
+    fn = os.path.join(fn,"antenna.txt")
+    if (get_fault(0) == True):
+        try:
+            fp = open(fn, "w")
+            fp.write("True")
+            fp.close()
+        except:
+            pass
+    else:
+        try:
+            os.remove(fn)
+        except:
+            pass
+        
+    
     return None
 
 
@@ -8640,7 +8656,7 @@ def clean(direct,retention):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
-      <value>1.0-math.pow(math.e,-2.0*(3.0/frate))</value>
+      <value>1.0-math.pow(math.e,-2.0*(5.0/frate))</value>
     </param>
     <param>
       <key>alias</key>
