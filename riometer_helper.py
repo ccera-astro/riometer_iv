@@ -487,6 +487,7 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
                 handle_spec_recording(get_peakhold(n), "spec-peak-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_ocount(n), "spec-ecounts-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_delta(n), "spec-edeltas-%d-" % n, ltp, hdr, prefix)
+                handle_spec_recording(get_ref_fft(n), "spec-reference-%d-" % n, ltp, hdr, prefix)
 
 #
 # A buffer for the averaged reference FFT

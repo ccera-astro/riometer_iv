@@ -106,6 +106,7 @@ do
 	do_spec peak $chan $date
 	do_spec excised $chan $date
 	do_spec raw $chan $date
+	do_spec reference $chan $date
 	if [ -e current-peak-$chan.dat ]
 	then
 		cp current-peak-$chan.dat plt1.dat
@@ -117,6 +118,9 @@ do
 		cp current-raw-$chan.dat plt3.dat
 		mv current-raw-$chan.dat plots
 		
+		cp current-reference-$chan.dat plt4.dat
+		mv current-reference-$chan.dat plots
+		
 		FREQ=`cat current-$chan-freq.dat`
 		BW=`cat current-$chan-bw.dat`
 		pltdate=`date -u +%Y/%m/%d-%H:%M:%S`
@@ -127,7 +131,7 @@ set terminal png large size 900,600
 set output 'current-tmp.png'
 set xlabel 'Frequency (MHz)'
 set ylabel 'Rel. Power (dB)'
-plot 'plt1.dat' with lines title "Peak Hold", 'plt2.dat' with lines title "Excised", 'plt3.dat' with lines title "Raw"
+plot 'plt1.dat' with lines title "Peak Hold", 'plt2.dat' with lines title "Excised", 'plt3.dat' with lines title "Raw", 'plt4.dat' with lines title "Ref"
 !EOF!
 		mv current-tmp.png plots/current-spec-$chan.png
 		rm -f plt1.dat plt2.dat
@@ -147,7 +151,7 @@ do
 		MAX=7000
 		;;
 	2)
-		MAX=150000
+		MAX=40000
 		;;
 	esac
 	do_skytemp $chan $date
