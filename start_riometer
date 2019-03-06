@@ -49,7 +49,7 @@ REFTEMP=302e3
 #
 CORR1="[1.0,0.0]"
 CORR2="[1.0,0.0]"
-CORR3="[0.6,-3000]"
+CORR3="[25.0,0.0]"
 
 #
 # Sample rate:  For Odroid C1, 300e3 is max possible
@@ -169,4 +169,4 @@ do
 	echo Restart in progress
 done
 
-kill $httpid
+kill $httppid
