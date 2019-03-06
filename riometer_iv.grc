@@ -7512,7 +7512,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     #
     #
     # The ignore time, in seconds
-    ignoretime = 0.350
+    ignoretime = 0.400
 
     #
     # Map this into counts, since we get called at prate Hz (more or less)
