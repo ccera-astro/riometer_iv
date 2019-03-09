@@ -34,7 +34,7 @@ LONGITUDE=-76.03
 #
 F1=30.0e6
 F2=38.2e6
-F3=26.125e6
+F3=25.610e6
 
 #
 # REF noise temperature estimate
@@ -47,9 +47,9 @@ REFTEMP=302e3
 #
 # Channel corrections
 #
-CORR1="[1.5,0.0]"
-CORR2="[3.0,0.0]"
-CORR3="[0.1,0.0]"
+CORR1="[1.0,0.0]"
+CORR2="[2.5,0.0]"
+CORR3="[0.5,0.0]"
 
 #
 # Sample rate:  For Odroid C1, 300e3 is max possible
@@ -138,7 +138,7 @@ do
     #
     # Nuke old .log files
     #
-	find $HOME -type f -mtime +2 -name 'riometer-*.log' -exec rm -f '{}' ";"
+	find $DATAPLACE -type f -mtime +2 -name 'riometer-*.log' -exec rm -f '{}' ";"
 	date=`date +%Y%m%d%H%M`
 	LOGFILE=riometer-$date.log
 
