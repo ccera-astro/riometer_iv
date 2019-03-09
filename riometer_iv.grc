@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.12'?>
+<?grc format='1' created='3.7.13'?>
 <flow_graph>
   <timestamp>Tue Jan 22 11:50:07 2019</timestamp>
   <block>
@@ -4834,7 +4834,7 @@ the FFTs</value>
     </param>
     <param>
       <key>bw0</key>
-      <value>0</value>
+      <value>6e6</value>
     </param>
     <param>
       <key>dc_offset_mode0</key>
@@ -5274,7 +5274,7 @@ the FFTs</value>
     </param>
     <param>
       <key>bw1</key>
-      <value>0</value>
+      <value>6e6</value>
     </param>
     <param>
       <key>dc_offset_mode1</key>
