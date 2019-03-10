@@ -9,8 +9,6 @@ import copy
 import os
 import signal
 
-
-
 #
 # FFT size
 #
@@ -951,15 +949,23 @@ smoothed_raw_power = 0.0
 last_raw_power = -1.0
 measure_counter = fault_dict["INTERVAL"]
 
+stashed_tp = -1.0
 def do_fault_schedule(tp,relayport,finterval,prefix):
     global smoothed_raw_power
     global last_raw_power
     global fault_state
     global fault_dict
     global measure_counter
+    global stashed_tp
 
     t = int(time.time())
 
+    if ((t % 30) == 0):
+        if (stashed_tp == tp):
+            assert_fault("dataflow-sky", prefix)
+        else:
+            remove_fault("dataflow-sky", prefix)
+        stashed_tp = tp
     #
     # Power estimate comes from raw total-power estimator in flow-graph
     #
@@ -1029,21 +1035,10 @@ def do_fault_schedule(tp,relayport,finterval,prefix):
     else:
         relay_event(fault_dict["ANTENNA_FLED"], 0, relayport)
 
-    fn = os.path.join(prefix, "fault")
-    fn = os.path.join(fn,"antenna.txt")
     if (get_fault(0) == True):
-        try:
-            fp = open(fn, "w")
-            fp.write("True")
-            fp.close()
-        except:
-            pass
+        assert_fault("antenna", prefix)
     else:
-        try:
-            os.remove(fn)
-        except:
-            pass
-        
+        remove_fault("antenna", prefix)
     
     return None
 
@@ -1254,3 +1249,60 @@ def clean(direct,retention):
                             os.remove(actualfn)
                     except:
                         pass
+                        
+stashed_ref_fft = [-220.0]*FFTSIZE
+def do_sanity_check(p,reflevel,prefix):
+    global stashed_ref_fft
+    
+    #
+    # Initialize stashed_ref_fft
+    #
+    if (stashed_ref_fft[0] == -220.0 and stashed_ref_fft[FFTSIZE-1] == -220.0):
+        stashed_ref_fft = list(get_ref_fft(0))
+    
+    #
+    # Given our cadence, these things *should not* be identical
+    # IF they are, it means dataflow has stalled, and things are broken
+    #
+    #
+    elif( stashed_ref_fft == list(get_ref_fft(0))):
+        assert_fault("dataflow-ref", prefix)
+    else:
+        stashed_ref_fft = list(get_ref_fft(0))
+        remove_fault("dataflow-ref", prefix)
+
+    #
+    # Compare actual REF FFT power levels with "expected"
+    #  They should not vary by more than 2dB
+    #
+    swath = list(get_ref_fft(0))
+    swath = swath[400:FFTSIZE-400]
+    rsum = numpy.sum(swath)/len(swath)
+    
+    if (abs(rsum-reflevel) >= 3.5):
+        assert_fault("reflevel", prefix)
+    else:
+        remove_fault("reflevel", prefix)
+    
+    return None
+        
+def assert_fault(fname, prefix):
+    fn = os.path.join(prefix, "fault")
+    fn = os.path.join(fn, fname)
+    
+    try:
+        fp = open(fn, "w")
+        fp.write(time.ctime(time.time()))
+        fp.write("\n")
+        fp.close()
+    except:
+        pass
+
+def remove_fault(fname, prefix):
+    fn = os.path.join(prefix, "fault")
+    fn = os.path.join(fn, fname)
+    
+    try:
+        os.remove(fn)
+    except:
+        pass

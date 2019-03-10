@@ -43,6 +43,7 @@ F3=25.610e6
 #
 #
 REFTEMP=302e3
+REFLEVEL=-48.5
 
 #
 # Channel corrections
@@ -148,7 +149,7 @@ do
 	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" \
 	   --freq $F1 --freq2 $F2 --freq3 $F3 --corr1 "$CORR1" --corr2 "$CORR2" --corr3 "$CORR3" \
 	   --tsys 400 --tsysref 400 \
-	  --reftemp $REFTEMP --srate $SRATE --decim $DECIM --rfgain 40  --longitude $LONGITUDE \
+	  --reftemp $REFTEMP --reflevel $REFLEVEL--srate $SRATE --decim $DECIM --rfgain 40  --longitude $LONGITUDE \
 	  --refgain 40 --urate $URATE --prefix $DATAPLACE/ --finterval 3600 --swrate 0.75 --slow $SLOW >>$LOGFILE 2>&1
 	
 	if [ $single = True ]
