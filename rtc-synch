@@ -1,0 +1,8 @@
+#!/bin/sh
+
+ntcount=`ntpq -p|grep ' 377'|wc -l`
+
+if [ $ntcount -gt 0 ]
+then
+	sudo hwclock --systohc
+fi
