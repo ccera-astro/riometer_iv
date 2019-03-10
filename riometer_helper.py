@@ -1251,7 +1251,7 @@ def clean(direct,retention):
                         pass
                         
 stashed_ref_fft = [-220.0]*FFTSIZE
-def do_sanity_check(p,reflevel,prefix):
+def do_sanity_check(p,reflevel,skylower,prefix):
     global stashed_ref_fft
     
     #
@@ -1283,6 +1283,22 @@ def do_sanity_check(p,reflevel,prefix):
         assert_fault("reflevel", prefix)
     else:
         remove_fault("reflevel", prefix)
+    
+    #
+    # Compute average sky level over NCHAN
+    #
+	rsum = 0
+	for n in range(NCHAN):
+		swath = list(get_avg_fft(n))
+		swath = swath[400:FFTSIZE-400]
+		rsum += numpy.sum(swath)/len(swath)
+	rsum /= NCHAN
+		
+    
+    if (rsum < (skylower-10) or rsum > (reflevel+10)):
+        assert_fault("skylevel", prefix)
+    else:
+        remove_fault("skylevel", prefix)
     
     return None
         
