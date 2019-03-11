@@ -51,7 +51,7 @@ REFLEVEL=-48.5
 #
 # Lowest "reasonable" sky level
 #
-SKYLOWER=-85
+SKYLOWER=-90
 
 #
 # Channel corrections

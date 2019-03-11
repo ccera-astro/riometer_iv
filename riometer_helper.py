@@ -1301,8 +1301,8 @@ def do_sanity_check(p,reflevel,skylower,prefix):
     rsum /= NCHAN
         
     
-    if (rsum < (skylower-10) or rsum > (reflevel+10)):
-        assert_fault("skylevel", "%.3f %.3f" % (skylower, rsum), prefix)
+    if ((rsum < skylower) or rsum > (reflevel+10.0)):
+        assert_fault("skylevel", "%.3f %.3f %.3f" % (skylower, rsum, reflevel+10.0), prefix)
     else:
         remove_fault("skylevel", prefix)
     
