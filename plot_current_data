@@ -130,10 +130,11 @@ do
 		gnuplot <<!EOF!
 set grid
 set title "$pltdate: Channel $chan: Fc=$FREQ MHz, Bw=$BW kHz"
-set terminal png large size 900,600
+set terminal png large size 1000,600
 set output 'current-tmp.png'
 set xlabel 'Frequency (MHz)'
 set ylabel 'Rel. Power (dB)'
+set xtics 0.025
 plot 'plt1.dat' with lines title "Peak Hold", 'plt2.dat' with lines title "Excised", 'plt3.dat' with lines title "Raw", 'plt4.dat' with lines title "Ref"
 !EOF!
 		mv current-tmp.png plots/current-spec-$chan.png
@@ -168,7 +169,7 @@ do
 		gnuplot <<!EOF!
 set grid
 set title "$pltdate: Apparent Sky Temp--Chan $chan: Fc=$FREQ MHz, Bw=$BW kHz"
-set terminal png large size 900,600
+set terminal png large size 1000,600
 set output 'current-tmp.png'
 set xlabel 'Time (Hours LMST from $START_LMST)'
 set xtics 0.1
