@@ -8751,24 +8751,28 @@ def do_sanity_check(p,reflevel,skylower,prefix):
         remove_fault("skylevel", prefix)
     
     return None
-        
+
+import json
+       
 def assert_fault(fname, extra, prefix):
     fn = os.path.join(prefix, "fault")
-    fn = os.path.join(fn, fname)
-    
+    fn = os.path.join(fn, fname+".json")
+
+    if extra == None:
+        extra = ""
     try:
+        jdict = {"event_time" : time.ctime(time.time()), "event_reason" : fname, "event_details" : extra }
         fp = open(fn, "w")
-        fp.write(time.ctime(time.time()))
-        if (extra != None):
-            fp.write(extra+"\n")
-        fp.write("\n")
+        fp.write(json.dumps(jdict,indent=4)+"\n")
         fp.close()
     except:
-        pass
+        print ("Could not assert fault on file %s: " % fn)
+
+    return None
 
 def remove_fault(fname, prefix):
     fn = os.path.join(prefix, "fault")
-    fn = os.path.join(fn, fname)
+    fn = os.path.join(fn, fname+".json")
     
     try:
         os.remove(fn)

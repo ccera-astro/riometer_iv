@@ -16,6 +16,7 @@ install: riometer_iv.py
 	cp relay_server.py /usr/local/bin
 	cp start_riometer $(HOME)
 	cp plot_current_data $(HOME)
+	cp rtc-synch $(HOME)
 
 commit: clean
 	git commit -a
