@@ -962,7 +962,7 @@ def do_fault_schedule(tp,relayport,finterval,prefix):
 
     if ((t % 30) == 0):
         if (stashed_tp == tp):
-            assert_fault("dataflow-sky", prefix)
+            assert_fault("dataflow-sky", None, prefix)
         else:
             remove_fault("dataflow-sky", prefix)
         stashed_tp = tp
@@ -1036,7 +1036,7 @@ def do_fault_schedule(tp,relayport,finterval,prefix):
         relay_event(fault_dict["ANTENNA_FLED"], 0, relayport)
 
     if (get_fault(0) == True):
-        assert_fault("antenna", prefix)
+        assert_fault("antenna", "%.3e %.3e" % (get_normal_power(), smoothed_raw_power), prefix)
     else:
         remove_fault("antenna", prefix)
     
@@ -1090,6 +1090,12 @@ def handle_normal_power(pwr,renormal,which):
         antenna_fault(True)
     elif (get_fault(0) == False):
         antenna_fault(False)
+
+def get_normal_power():
+    global normal_power
+    
+    return normal_power
+
 #
 # Keep track of antenna-fault state
 #
@@ -1266,7 +1272,7 @@ def do_sanity_check(p,reflevel,skylower,prefix):
     #
     #
     elif( stashed_ref_fft == list(get_ref_fft(0))):
-        assert_fault("dataflow-ref", prefix)
+        assert_fault("dataflow-ref", None, prefix)
     else:
         stashed_ref_fft = list(get_ref_fft(0))
         remove_fault("dataflow-ref", prefix)
@@ -1280,35 +1286,37 @@ def do_sanity_check(p,reflevel,skylower,prefix):
     rsum = numpy.sum(swath)/len(swath)
     
     if (abs(rsum-reflevel) >= 3.5):
-        assert_fault("reflevel", prefix)
+        assert_fault("reflevel", "%.3f %.3f" % (reflevel, rsum), prefix)
     else:
         remove_fault("reflevel", prefix)
     
     #
     # Compute average sky level over NCHAN
     #
-	rsum = 0
-	for n in range(NCHAN):
-		swath = list(get_avg_fft(n))
-		swath = swath[400:FFTSIZE-400]
-		rsum += numpy.sum(swath)/len(swath)
-	rsum /= NCHAN
-		
+    rsum = 0
+    for n in range(NCHAN):
+        swath = list(get_avg_fft(n))
+        swath = swath[400:FFTSIZE-400]
+        rsum += numpy.sum(swath)/len(swath)
+    rsum /= NCHAN
+        
     
     if (rsum < (skylower-10) or rsum > (reflevel+10)):
-        assert_fault("skylevel", prefix)
+        assert_fault("skylevel", "%.3f %.3f" % (skylower, rsum), prefix)
     else:
         remove_fault("skylevel", prefix)
     
     return None
         
-def assert_fault(fname, prefix):
+def assert_fault(fname, extra, prefix):
     fn = os.path.join(prefix, "fault")
     fn = os.path.join(fn, fname)
     
     try:
         fp = open(fn, "w")
         fp.write(time.ctime(time.time()))
+        if (extra != None):
+            fp.write(extra+"\n")
         fp.write("\n")
         fp.close()
     except:
