@@ -20,7 +20,7 @@ FFTSIZE=2048
 NCHAN=3
 
 #
-# Size of the median filter
+# Size of the FFT median filter
 #
 MSIZE=9
 
@@ -119,7 +119,6 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     global last_eval_ndx
     global eval_hold_off
     global raw_fft
-    global gated
 
 
     lndx = frq_ndx
@@ -169,7 +168,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     # We don't do anything further if input has been GATED by
     # The strong-impulse detector function
     #
-    if (gated):
+    if (get_gated() == True):
         return
 
     #
@@ -284,22 +283,14 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
         indx += 1
 
 
-    #
-    # Set up "reasonable" IIR filter parameters
-    #
-    alpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
-    alpha *= MSIZE
-    beta = 1.0-alpha
     
     #
     # The excised FFT is in "outfft"
     # We use it to contribue to the avg_fft for this channel
     #
-    # Do single-pole IIR filter
-    #
     
     #
-    # We median-filter the excised FFF, and then use it to update avg_fft
+    # We median-filter the excised FFT, and then use it to update avg_fft
     #
     filtered = median_filter(outfft,lndx,MSIZE)
     
@@ -307,6 +298,13 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     # The median filter only returns an output once every MSIZE cycles
     #
     if (filtered != None):
+        #
+        # Set up "reasonable" IIR filter parameters
+        #
+        alpha = 1.0-(math.pow(math.e,-2*(1.0/prate)))
+        alpha *= MSIZE
+        beta = 1.0-alpha
+        
         new_fft = numpy.multiply(outfft,[alpha]*len(outfft))
         avg_fft[lndx] = numpy.add(new_fft, numpy.multiply(avg_fft[lndx],[beta]*len(outfft)))
 
@@ -486,6 +484,7 @@ def logging(p,prefix,freq,bw,prate,longitude,frqlist):
                 handle_spec_recording(get_exceeded_ocount(n), "spec-ecounts-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_exceeded_delta(n), "spec-edeltas-%d-" % n, ltp, hdr, prefix)
                 handle_spec_recording(get_ref_fft(n), "spec-reference-%d-" % n, ltp, hdr, prefix)
+                handle_minutes_recording(get_minutes(n), "rio-daily-%d-" % n, ltp, hdr, prefix)
 
 #
 # A buffer for the averaged reference FFT
@@ -699,6 +698,11 @@ def minute_data(p,which):
 
     return minutes_chart[which]
 
+def get_minutes(which):
+    global minutes_chart
+    
+    return minutes_chart[which]
+
 sky_metrics = [1.0]*NCHAN
 qmcounter = 0
 SECONDS = 60
@@ -860,6 +864,30 @@ def handle_spec_recording(fft,variant,ltp,hdr,prefix):
     fp.write("\n")
     fp.close()
 
+
+def handle_minutes_recording(minutes,variant,ltp,hdr,prefix):
+    fn = prefix+variant+"-"
+    fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
+    fn += ".csv"
+
+    #
+    # Notice that we use 'w'
+    #
+    fp = open(fn, "w")
+    
+    #
+    # We construct everything in a string, then write that string
+    #  in a single operation, then close.
+    #
+    # This will hopefully contribute to "atomicity"
+    #
+    outstr = ""
+    oustr = outstr + hdr+","
+    for v in minutes:
+        outstr = outstr + "%.2f," % v
+    outstr += "\n"
+    fp.write(oustr)
+    fp.close()
 
 #
 # The current ratio between SKY and REF
@@ -1167,52 +1195,72 @@ def median_filter(fft,which,flen):
 # Maintain last TP value--VERY raw, from early
 #  in the flow-graph
 #
-last_tp_value = 0.0 
-last_tp_is_valid = 200 
-gate_counter = 0
+last_tp_value = -1.0
+gate_init_timer = -1.0
 gated=False
-gate_timer=0
-def do_gating(tp):
+def do_gating(tp,holdoff_time,prate,threshold,prefix):
     global last_tp_value
-    global last_tp_is_valid
-    global gate_counter
-    global gated
-    global gate_timer
+    global gate_init_timer
+    
+    #
+    # For command-line convenience, threshold is in dB
+    #
+    linear_thresh = math.pow(10.0,threshold/10.0)
 
-    alpha = 0.01
+    #
+    # Smoothing parameters
+    #
+    alpha = 0.025
     beta = 1.0 - alpha
     
     #
-    # This prevents us from being gated forever
+    # Initialize the timer that allows us to "do nothing" for the first
+    #  little bit after start-up
     #
-    if (gate_timer < 50):
-        if (last_tp_is_valid <= 0):
-            if (tp > (12.0 * last_tp_value)):
-                
-                #
-                # We only count an initial gating
-                #
-                if (gated == False):
-                    gate_counter += 1
-                gated=True
-                gate_timer +=1
-                return (True,gate_counter)
-    else:
+    if (gate_init_timer < 0):
+        gate_init_timer = prate*60
+    
+    #
+    # If timer still > 0, we are still in init phase, and TP value likely
+    #   hasn't settled to anything "reasonable", so, we wait.
+    #
+    if (gate_init_timer > 0):
+        gate_init_timer += 1
+        return False
+    
+    #
+    # Init last TP value
+    #
+    if (last_tp_value < 0):
         last_tp_value = tp
+    
     #
-    # Just update last_tp_value, applying smoothing as we go
+    # Major TP increase all of a sudden--declare gate
     #
-    last_tp_value = (tp*alpha) + (beta*last_tp_value)
-    gate_timer = 0
+    if (tp > (last_tp_value*linear_thresh)):
+        gated = True
+        assert_fault("gated", "%.4e %.4e" % (tp, last_tp_value), prefix)
+        return True
+    
+    #
+    # If we were gated, remove the fault assertion.
+    #
+    if (gated == True):
+        remove_fault("gated", prefix)
+    
+    #
+    # Deassert gated
+    #
     gated = False
+    last_tp_value = (tp*alpha) + (last_tp_value * beta)
     
-    #
-    # We need a bit of time to determine what the average value actually
-    #  is
-    #
-    last_tp_is_valid -= 1
+    return False
+
+def get_gated():
+    global gated
     
-    return (False,gate_counter)
+    return gated
+
 
 #
 # Used to clean directory of "old" data
@@ -1279,12 +1327,15 @@ def do_sanity_check(p,reflevel,skylower,prefix):
 
     #
     # Compare actual REF FFT power levels with "expected"
-    #  They should not vary by more than 2dB
+    #  They should not vary by more than 3.5dB
     #
     swath = list(get_ref_fft(0))
     swath = swath[400:FFTSIZE-400]
     rsum = numpy.sum(swath)/len(swath)
     
+    #
+    # Sanity check reference level
+    #
     if (abs(rsum-reflevel) >= 3.5):
         assert_fault("reflevel", "%.3f %.3f" % (reflevel, rsum), prefix)
     else:
@@ -1301,6 +1352,9 @@ def do_sanity_check(p,reflevel,skylower,prefix):
     rsum /= NCHAN
         
     
+    #
+    # Off-scale low, or off-scale high.   Both bad.
+    #
     if ((rsum < skylower) or rsum > (reflevel+10.0)):
         assert_fault("skylevel", "%.3f %.3f %.3f" % (skylower, rsum, reflevel+10.0), prefix)
     else:

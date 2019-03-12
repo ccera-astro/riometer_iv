@@ -4,6 +4,23 @@ if [ $# -ge 1 ]
 then
 	DEBUG=True
 fi
+
+function do_daily {
+file=rio-daily-$1--$2.csv
+if [ ! -e $file ]
+then
+	return 1
+else
+
+tail -1 $file|awk '
+/./ {for i = 9; i < NF; i++)
+		{
+			printf ("%f %.5e\n", (i-9)*(1.0/60.0), $i)
+		}
+	}
+' >daily-$1.dat
+}
+
 function do_spec {
 file=spec-$1-$2--$3.csv
 if [ ! -e $file ]
@@ -141,6 +158,24 @@ plot 'plt1.dat' with lines title "Peak Hold", 'plt2.dat' with lines title "Excis
 		rm -f plt1.dat plt2.dat
 	fi
 done
+
+for chan in 0 1 2
+do
+	do_daily $chan $date
+	cp daily-$chan.dat plt1.dat
+gnuplot <<!EOF!
+set grid
+set title "$pltdate: Channel $chan.  24 hour summary"
+set termina png large size 1000,600
+set output 'current-tmp.png'
+set xlabel 'Time offset (Hours)'
+set ylabel 'Apparent Sky Temp (K)'
+plot 'plt1.dat' with lines title "Sky Temp"
+!EOF!
+	mv current-tmp.png plots/current-daily-$chan.png
+	rm -f plt1.dat
+done
+
 if [ $DEBUG = True ]
 then
 	date=20190303
