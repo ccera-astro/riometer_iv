@@ -5,15 +5,22 @@ then
 	DEBUG=True
 fi
 
-function do_daily {
+function do_daily
+{
 file=rio-daily-$1--$2.csv
 if [ ! -e $file ]
 then
 	return 1
-else
-
+fi
+lines=`wc -l $file`
+if [ $lines -le 0 ]
+then
+	return 1
+fi
 tail -1 $file|awk '
-/./ {for i = 9; i < NF; i++)
+BEGIN {FS=", *"
+}
+/./ {for ( i = 9; i < NF; i++)
 		{
 			printf ("%f %.5e\n", (i-9)*(1.0/60.0), $i)
 		}

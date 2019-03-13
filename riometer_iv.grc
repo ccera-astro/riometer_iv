@@ -8316,16 +8316,11 @@ def handle_spec_recording(fft,variant,ltp,hdr,prefix):
     fp.write("\n")
     fp.close()
 
-
+import sys
 def handle_minutes_recording(minutes,variant,ltp,hdr,prefix):
     fn = prefix+variant+"-"
     fn += "%04d%02d%02d" % (ltp.tm_year, ltp.tm_mon, ltp.tm_mday)
     fn += ".csv"
-
-    #
-    # Notice that we use 'w'
-    #
-    fp = open(fn, "w")
     
     #
     # We construct everything in a string, then write that string
@@ -8334,11 +8329,16 @@ def handle_minutes_recording(minutes,variant,ltp,hdr,prefix):
     # This will hopefully contribute to "atomicity"
     #
     outstr = ""
-    oustr = outstr + hdr+","
+    outstr = outstr + hdr+","
     for v in minutes:
         outstr = outstr + "%.2f," % v
     outstr += "\n"
-    fp.write(oustr)
+    
+    #
+    # Notice that we use 'w'
+    #
+    fp = open(fn, "w")
+    fp.write(outstr)
     fp.close()
 
 #
