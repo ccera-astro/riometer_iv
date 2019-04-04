@@ -107,7 +107,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate,swrate,corrs):
+def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -157,7 +157,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     if (eval_hold_off > 0):
         eval_hold_off = eval_hold_off - 1
         return None
-
+    
     #
     # We capture the "raw" FFT input here.
     # It is used for display AND antenna-fault detection
@@ -170,7 +170,19 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     #
     if (get_gated() == True):
         return
-
+    
+    #
+    # Possible to specify reduced bandwidth in analysis and
+    #  power determination
+    #
+    if (ibw[lndx] != tbw[lndx]):
+        ignfrac = float(tbw[lndx])/float(ibw[lndx])
+        ignbins = len(raw_fft[lndx])*ignfrac
+        ignbins = int(ignbins/2)
+        reduced_fft = infft[ignbins:len(infft)-ignbins]
+    else:
+        reduced_fft = infft
+        ignbins = 0
     #
     # (re)init fuzz buffers either
     #  because they are too small, or we want to randomly
@@ -193,7 +205,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     #   as the "mode" of the dataset
     #
     dbdict = {}
-    for v in infft:
+    for v in reduced_fft:
         key = int(v)
         if key in dbdict:
             dbdict[key] += 1
@@ -227,8 +239,8 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     #
     # Lop-off the edge roll-off
     #
-    parta=infft[int(FFTSIZE*0.17):int(FFTSIZE/2.05)]
-    partb=infft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
+    parta=reduced_fft[int(FFTSIZE*0.17):int(FFTSIZE/2.05)]
+    partb=reduced_fftinfft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
     minny = sorted(parta+partb)
     minny = sum(minny[0:10])
     minny /= 10.0
@@ -281,9 +293,6 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
         else:
             outfft[indx] = v
         indx += 1
-
-
-    
     #
     # The excised FFT is in "outfft"
     # We use it to contribue to the avg_fft for this channel
@@ -783,6 +792,7 @@ def handle_peak_hold(infft,ticks):
     #
     # Do the peak-hold math
     #
+    infft = get_raw_fft(lndx)
     for i in range(0,len(peakhold[lndx])):
         if (infft[i] > peakhold[lndx][i]):
             peakhold[lndx][i] = infft[i]

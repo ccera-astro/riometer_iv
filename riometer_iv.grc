@@ -10,7 +10,7 @@
     </param>
     <param>
       <key>window_size</key>
-      <value>1900,1700</value>
+      <value>1900,1900</value>
     </param>
     <param>
       <key>category</key>
@@ -140,7 +140,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate,swrate,corrs)</value>
+      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate,swrate,corrs,ibw,tbw)</value>
     </param>
   </block>
   <block>
@@ -540,90 +540,6 @@
     <param>
       <key>value</key>
       <value>riometer_helper.estimate_Tsky(fast_pacer,ireftemp,itsys,itsys_ref)</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value>Based on an empirical model of 
-Sky Temp vs frequency</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(680, 1268)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Tant_e</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>(riometer_helper.tsky_model(freq)/2.0)+290</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value>Based on an empirical model of 
-Sky Temp vs frequency</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(688, 1380)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Tant_e2</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>(riometer_helper.tsky_model(freq2)/2.0)+290</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value>Based on an empirical model of 
-Sky Temp vs frequency</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(680, 1492)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>Tant_e3</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>(riometer_helper.tsky_model(freq3)/2.0)+290</value>
     </param>
   </block>
   <block>
@@ -1208,6 +1124,33 @@ Sky Temp vs frequency</value>
     <param>
       <key>value</key>
       <value>[freq,freq2,freq3]</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(608, 1268)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>ibw</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>[samp_rate,samp_rate,samp_rate]</value>
     </param>
   </block>
   <block>
@@ -1929,6 +1872,114 @@ Sky Temp vs frequency</value>
     <param>
       <key>poll_rate</key>
       <value>1.0/60.0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(608, 1340)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tbw</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>[tbw1,tbw2,tbw3]</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(16, 1788)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tbw1</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>samp_rate if bw1 == 0 else bw1</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(184, 1788)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tbw2</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>samp_rate if bw2 == 0 else bw2</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(368, 1780)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>tbw3</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>samp_rate if bw3 == 0 else bw3</value>
     </param>
   </block>
   <block>
@@ -3579,6 +3630,147 @@ Sky Temp vs frequency</value>
     <param>
       <key>vlen</key>
       <value>3600</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(24, 1696)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>bw1</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Channel 1 bandwidth</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>eng_float</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(192, 1696)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>bw2</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Channel 2 Bandwidth</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>eng_float</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>parameter</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(368, 1696)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>bw3</value>
+    </param>
+    <param>
+      <key>label</key>
+      <value>Channel 3 Bandwidth</value>
+    </param>
+    <param>
+      <key>short_id</key>
+      <value></value>
+    </param>
+    <param>
+      <key>hide</key>
+      <value>none</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>eng_float</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>0</value>
     </param>
   </block>
   <block>
@@ -6950,7 +7142,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>color3</key>
-      <value>"green"</value>
+      <value>"magenta"</value>
     </param>
     <param>
       <key>label3</key>
@@ -7559,7 +7751,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate,swrate,corrs):
+def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -7609,7 +7801,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     if (eval_hold_off &gt; 0):
         eval_hold_off = eval_hold_off - 1
         return None
-
+    
     #
     # We capture the "raw" FFT input here.
     # It is used for display AND antenna-fault detection
@@ -7622,7 +7814,19 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     #
     if (get_gated() == True):
         return
-
+    
+    #
+    # Possible to specify reduced bandwidth in analysis and
+    #  power determination
+    #
+    if (ibw[lndx] != tbw[lndx]):
+        ignfrac = float(tbw[lndx])/float(ibw[lndx])
+        ignbins = len(raw_fft[lndx])*ignfrac
+        ignbins = int(ignbins/2)
+        reduced_fft = infft[ignbins:len(infft)-ignbins]
+    else:
+        reduced_fft = infft
+        ignbins = 0
     #
     # (re)init fuzz buffers either
     #  because they are too small, or we want to randomly
@@ -7645,7 +7849,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     #   as the "mode" of the dataset
     #
     dbdict = {}
-    for v in infft:
+    for v in reduced_fft:
         key = int(v)
         if key in dbdict:
             dbdict[key] += 1
@@ -7679,8 +7883,8 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
     #
     # Lop-off the edge roll-off
     #
-    parta=infft[int(FFTSIZE*0.17):int(FFTSIZE/2.05)]
-    partb=infft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
+    parta=reduced_fft[int(FFTSIZE*0.17):int(FFTSIZE/2.05)]
+    partb=reduced_fftinfft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
     minny = sorted(parta+partb)
     minny = sum(minny[0:10])
     minny /= 10.0
@@ -7733,9 +7937,6 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs):
         else:
             outfft[indx] = v
         indx += 1
-
-
-    
     #
     # The excised FFT is in "outfft"
     # We use it to contribue to the avg_fft for this channel
@@ -8235,6 +8436,7 @@ def handle_peak_hold(infft,ticks):
     #
     # Do the peak-hold math
     #
+    infft = get_raw_fft(lndx)
     for i in range(0,len(peakhold[lndx])):
         if (infft[i] &gt; peakhold[lndx][i]):
             peakhold[lndx][i] = infft[i]
