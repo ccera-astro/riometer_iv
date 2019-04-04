@@ -240,7 +240,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
     # Lop-off the edge roll-off
     #
     parta=reduced_fft[int(FFTSIZE*0.17):int(FFTSIZE/2.05)]
-    partb=reduced_fftinfft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
+    partb=reduced_fft[int(FFTSIZE/0.95):int(FFTSIZE*0.83)]
     minny = sorted(parta+partb)
     minny = sum(minny[0:10])
     minny /= 10.0
