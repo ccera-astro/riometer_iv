@@ -60,6 +60,10 @@ CORR1="[1.0,0.0]"
 CORR2="[2.5,0.0]"
 CORR3="[0.5,0.0]"
 
+BW1=0.0
+BW2=0.0
+BW3=0.0
+
 #
 # Sample rate:  For Odroid C1, 300e3 is max possible
 #  For Odroid XU4 (and better) systems, 1.2e6 works out well
@@ -169,6 +173,7 @@ do
 	  --reftemp $REFTEMP --reflevel $REFLEVEL --skylower $SKYLOWER --srate $SRATE --decim $DECIM \
 	  --rfgain 40  --longitude $LONGITUDE \
 	  --refgain 40 --urate $URATE --prefix $DATAPLACE/ --finterval 3600 --swrate 0.75 --slow $SLOW \
+	  --bw1 $BW1 --bw2 $BW2 --bw3 $BW3 \
 	  --gtime $GATE_TIME --gthresh $GATE_THRESH >>$LOGFILE 2>&1
 	
 	if [ $single = True ]
