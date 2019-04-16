@@ -322,11 +322,12 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
         #
         pvect = numpy.multiply(avg_fft[lndx], [0.1]*len(avg_fft[lndx]))
         pvect = numpy.power([10.0]*len(avg_fft[lndx]),pvect)
-        if (len(avg_fft) != len(reduced_fft)):
-            x = len(avg_fft)-len(reduced_fft)
+        if (len(avg_fft[lndx]) != len(reduced_fft)):
+            x = len(avg_fft[lndx])-len(reduced_fft)
             x /= 2
-            y = len(avg_fft)-x
+            y = len(avg_fft[lndx])-x
             pwr = numpy.sum(pvect[x:y])
+            pwr *= len(avg_fft[lndx])/len(reduced_fft)
         else:
             pwr = numpy.sum(pvect)
 
