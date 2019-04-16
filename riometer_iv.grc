@@ -7966,7 +7966,13 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
         #
         pvect = numpy.multiply(avg_fft[lndx], [0.1]*len(avg_fft[lndx]))
         pvect = numpy.power([10.0]*len(avg_fft[lndx]),pvect)
-        pwr = numpy.sum(pvect)
+        if (len(avg_fft) != len(reduced_fft)):
+            x = len(avg_fft)-len(reduced_fft)
+            x /= 2
+            y = len(avg_fft)-x
+            pwr = numpy.sum(pvect[x:y])
+        else:
+            pwr = numpy.sum(pvect)
 
         #
         # Other subsystems need to know current value of pwr
