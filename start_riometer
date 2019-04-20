@@ -157,6 +157,10 @@ httppid=$!
 #
 while true
 do
+    if [ -f $HOME/riometer_params.txt ]
+    then
+		source $HOME/riometer_params.txt
+	fi
     #
     # Nuke old .log files
     #
