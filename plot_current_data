@@ -173,10 +173,11 @@ do
 gnuplot <<!EOF!
 set grid
 set title "$pltdate: Channel $chan.  24 hour summary"
-set termina png large size 1000,600
+set terminal png large size 1000,600
 set output 'current-tmp.png'
 set xlabel 'Time offset (Hours)'
 set ylabel 'Apparent Sky Temp (K)'
+set yrange [2000:16000]
 plot 'plt1.dat' with lines title "Sky Temp"
 !EOF!
 	mv current-tmp.png plots/current-daily-$chan.png
@@ -223,5 +224,3 @@ plot 'plt1.dat' with lines title "Sky Temp(K)"
 		mv current-tmp.png plots/current-skytemp-$chan.png
 	fi
 done
-
-	
