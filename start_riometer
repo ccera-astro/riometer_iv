@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # These variables can be modified to change the way the riometer
 #  app runs
