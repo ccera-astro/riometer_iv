@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<?grc format='1' created='3.7.12'?>
+<?grc format='1' created='3.7.13'?>
 <flow_graph>
   <timestamp>Tue Jan 22 11:50:07 2019</timestamp>
   <block>
@@ -8041,7 +8041,6 @@ exceeded_delta = [[0.0]*FFTSIZE]*NCHAN
 #
 # For fuzzing during impulse-blanking
 #
-fuzz_buffer_01 = [0.1]*FFTSIZE
 fuzz_buffer_04 = [0.4]*FFTSIZE
 
 #
@@ -8083,7 +8082,6 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw,lndx):
     global exceeded_mtime
     global exceeded_delta
     global ealpha
-    global fuzz_buffer_01
     global fuzz_buffer_04
     global last_eval_ndx
     global eval_hold_off
@@ -8096,8 +8094,6 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw,lndx):
     if (len(avg_fft[lndx]) != len(infft)):
         avg_fft = [list(infft)]*NCHAN
    
-
-    
     #
     # We capture the "raw" FFT input here.
     # It is used for display AND antenna-fault detection
@@ -8129,13 +8125,12 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw,lndx):
     #  refresh them.
     # The random() functions aren't particularly speedy, so we
     #   only want to call them 'sometimes'.  So, we arrange for there
-    #   to be a probability of 0.333 that we'll refresh the fuzz buffers
+    #   to be a probability of 0.25 that we'll refresh the fuzz buffers
     #
-    if ((len(fuzz_buffer_01) &lt; len(infft)) or (random.randint(0,3) == 0)):
+    if ((len(fuzz_buffer_04) &lt; len(infft)) or (random.randint(0,4) == 0)):
         #
         # Such pythonic, wow
         #
-        fuzz_buffer_01 = [(x*0)+random.uniform(-0.1,0.1) for x in range(len(infft))]
         fuzz_buffer_04 = [(x*0)+random.uniform(-0.4,0.4) for x in range(len(infft))]
     #
     # We build a dict of quantized-to-one-dB
@@ -8291,9 +8286,8 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw,lndx):
 #  actual RF channel.  This is purely for UI pleasantness reasons.
 #
 def get_raw_fft_ui(p, which):
-    global fuzz_buffer_04
 
-    return numpy.add(get_raw_fft(which),fuzz_buffer_04)
+    return get_raw_fft(which)
 
 def get_raw_fft(which):
     global raw_fft
@@ -8307,11 +8301,10 @@ def get_raw_fft(which):
 #   and current RF channel aren't the same.
 #
 def get_avg_fft_ui(p,which):
-    global fuzz_buffer_01
 
     retval = numpy.add(get_avg_fft(which),[15.0]*FFTSIZE)
 
-    return numpy.add(retval,fuzz_buffer_01)
+    return retval
 
 def get_avg_fft(which):
     global avg_fft
