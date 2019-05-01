@@ -58,11 +58,9 @@ SKYLOWER=-90
 #
 CORR1="[1.0,0.0]"
 CORR2="[2.5,0.0]"
-CORR3="[0.5,0.0]"
 
 BW1=0.0
 BW2=0.0
-BW3=0.0
 
 #
 # Sample rate:  For Odroid C1, 300e3 is max possible
@@ -121,7 +119,7 @@ fi
 #
 if [ $numcpus -ge 6 -o $cputype = 'x86_64' ]
 then
-    URATE=50
+    URATE=35
 else
     URATE=30
 fi
@@ -172,12 +170,12 @@ do
     # Invoke riometer app
     #
 	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" \
-	   --freq $F1 --freq2 $F2 --freq3 $F3 --corr1 "$CORR1" --corr2 "$CORR2" --corr3 "$CORR3" \
+	   --freq $F1 --freq2 $F2  --corr1 "$CORR1" --corr2 "$CORR2"  \
 	   --tsys 400 --tsysref 400 \
 	  --reftemp $REFTEMP --reflevel $REFLEVEL --skylower $SKYLOWER --srate $SRATE --decim $DECIM \
 	  --rfgain 40  --longitude $LONGITUDE \
 	  --refgain 40 --urate $URATE --prefix $DATAPLACE/ --finterval 3600 --swrate 0.75 --slow $SLOW \
-	  --bw1 $BW1 --bw2 $BW2 --bw3 $BW3 \
+	  --bw1 $BW1 --bw2 $BW2 \
 	  --gtime $GATE_TIME --gthresh $GATE_THRESH >>$LOGFILE 2>&1
 	
 	if [ $single = True ]
