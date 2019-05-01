@@ -51,7 +51,7 @@ def main():
     #
     # Create an FTDI BigBangDevice instance, based on serial number passed in
     #
-    bbd = BitBangDevice(sys.argv[2])
+    bbd = BitBangDevice(device_index=0)
     
     #
     # Set direction regiser

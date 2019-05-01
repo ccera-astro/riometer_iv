@@ -15,9 +15,9 @@ import signal
 FFTSIZE=2048
 
 #
-# Number of virtual channels
+# Number of channels
 #
-NCHAN=3
+NCHAN=2
 
 #
 # Size of the FFT median filter
@@ -35,7 +35,7 @@ frq_ndx = 0
 
 def do_freq_schedule(p,freqs):
     global schedule_counter
-    global frq_ndx
+    
 
     nv = frq_ndx + 1
     nv = nv % NCHAN
@@ -107,7 +107,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
+def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw,lndx):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -115,48 +115,18 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
     global ealpha
     global fuzz_buffer_01
     global fuzz_buffer_04
-    global frq_ndx
     global last_eval_ndx
     global eval_hold_off
     global raw_fft
 
-
-    lndx = frq_ndx
 
     #
     # Handle buffer init/resize
     #
     if (len(avg_fft[lndx]) != len(infft)):
         avg_fft = [list(infft)]*NCHAN
-    #
-    # Skip some of the initial values coming in, since there's
-    #  unavoidable flow-graph latency that will render the first few
-    #  FFT frames we get somewhat ambiguous with respect to exactly
-    #  which frequency setting (frq_ndx) they belong to.  In *addition* to
-    #  that issue, the tuner produces glitches across the frequency transition.
-    #
-    # We do this whenever the frequency index changes
-    #
-    #
-    # The ignore time, in seconds
-    ignoretime = 0.400
+   
 
-    #
-    # Map this into counts, since we get called at prate Hz (more or less)
-    #
-    ignorecount = float(prate)*ignoretime
-    ignorecount = int(round(ignorecount))
-
-    #
-    # Detect frequency change
-    #
-    if (lndx != last_eval_ndx):
-        last_eval_ndx = lndx
-        eval_hold_off = ignorecount
-
-    if (eval_hold_off > 0):
-        eval_hold_off = eval_hold_off - 1
-        return None
     
     #
     # We capture the "raw" FFT input here.
@@ -170,7 +140,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
     #
     if (get_gated() == True):
         return
-    
+
     #
     # Possible to specify reduced bandwidth in analysis and
     #  power determination
@@ -418,12 +388,10 @@ seconds = 0
 fast_data_pHz = [[0.0,0.0]*300]*NCHAN
 fast_data_ndx = [0]*NCHAN
 
-def do_pHz_data(pacer,prate):
-    global frq_ndx
+def do_pHz_data(pacer,prate,lndx):
+    
     global fast_data_pHz
     global fast_data_ndx
-
-    lndx = frq_ndx
 
     fast_data_pHz[lndx][fast_data_ndx[lndx]] = [get_current_pwr(lndx),get_refval(lndx)]
     fast_data_ndx[lndx] += 1
@@ -766,14 +734,11 @@ peakhold = [[0.0]*FFTSIZE]*NCHAN
 auto_rst=100
 auto_init=False
 
-def handle_peak_hold(infft,ticks):
+def handle_peak_hold(infft,ticks,lndx):
     global auto_rst
     global peakhold
     global auto_init
-    global frq_ndx
-
-    lndx = frq_ndx
-
+    
     #
     # Setup inital auto_rst value
     #

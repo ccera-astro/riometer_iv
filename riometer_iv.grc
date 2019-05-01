@@ -10,7 +10,7 @@
     </param>
     <param>
       <key>window_size</key>
-      <value>1900,1900</value>
+      <value>1900,2500</value>
     </param>
     <param>
       <key>category</key>
@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 996)</value>
+      <value>(192, 1388)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -136,11 +136,38 @@
     </param>
     <param>
       <key>id</key>
-      <value>Evaluations</value>
+      <value>Evaluations1</value>
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate,swrate,corrs,ibw,tbw)</value>
+      <value>riometer_helper.signal_evaluator(fft_prober,prefix,poll_rate,swrate,corrs,ibw,tbw,0)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1072, 996)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>Evaluations2</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>riometer_helper.signal_evaluator(fft_prober2,prefix,poll_rate,swrate,corrs,ibw,tbw,1)</value>
     </param>
   </block>
   <block>
@@ -182,33 +209,6 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(576, 932)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>FreqScheduler</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>riometer_helper.do_freq_schedule(freq_pacer,freqs)</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
       <value>(944, 996)</value>
     </param>
     <param>
@@ -236,7 +236,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(400, 996)</value>
+      <value>(400, 1388)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -263,7 +263,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(400, 932)</value>
+      <value>(288, 1396)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -275,7 +275,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.logging(pacer,prefix,ifreq,samp_rate,fprate,longitude,freqs)</value>
+      <value>riometer_helper.logging(pacer,prefix,0.0,samp_rate,fprate,longitude,freqs)</value>
     </param>
   </block>
   <block>
@@ -290,7 +290,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(488, 932)</value>
+      <value>(520, 1380)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -392,49 +392,6 @@
     </param>
   </block>
   <block>
-    <key>variable_qtgui_label</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>"%.1fK" % Tant_e3</value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>formatter</key>
-      <value>None</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1688, 1548)</value>
-    </param>
-    <param>
-      <key>gui_hint</key>
-      <value>main@2:7,2,1,1</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ModelTemp3</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Sky Model CH3</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>string</value>
-    </param>
-  </block>
-  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -458,7 +415,34 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.handle_peak_hold(fft_prober,poll_rate)</value>
+      <value>riometer_helper.handle_peak_hold(fft_prober,poll_rate,0)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(784, 996)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>Peaks2</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>riometer_helper.handle_peak_hold(fft_prober,poll_rate,1)</value>
     </param>
   </block>
   <block>
@@ -500,7 +484,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(512, 996)</value>
+      <value>(520, 1708)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -527,7 +511,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(688, 932)</value>
+      <value>(648, 940)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -566,7 +550,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.annotate(prefix, ireftemp, itsys, ifreq, samp_rate, igain, itsys_ref, 0, note)</value>
+      <value>riometer_helper.annotate(prefix, ireftemp, itsys, 0.0, samp_rate, igain, itsys_ref, 0, note)</value>
     </param>
   </block>
   <block>
@@ -629,7 +613,7 @@
     </param>
     <param>
       <key>num_opts</key>
-      <value>3</value>
+      <value>2</value>
     </param>
     <param>
       <key>option0</key>
@@ -680,7 +664,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(664, 996)</value>
+      <value>(424, 980)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -692,7 +676,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>[eval(corr1),eval(corr2),eval(corr3)]</value>
+      <value>[eval(corr1),eval(corr2)]</value>
     </param>
   </block>
   <block>
@@ -922,6 +906,49 @@
     </param>
   </block>
   <block>
+    <key>variable_function_probe</key>
+    <param>
+      <key>block_id</key>
+      <value>fft_probe2</value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>function_args</key>
+      <value></value>
+    </param>
+    <param>
+      <key>function_name</key>
+      <value>level</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1464, 1176)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>fft_prober2</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>[-220.0]*fftsize</value>
+    </param>
+    <param>
+      <key>poll_rate</key>
+      <value>poll_rate</value>
+    </param>
+  </block>
+  <block>
     <key>variable</key>
     <param>
       <key>comment</key>
@@ -933,7 +960,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(824, 1196)</value>
+      <value>(760, 1660)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1111,7 +1138,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(928, 1140)</value>
+      <value>(768, 1588)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1123,7 +1150,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>[freq,freq2,freq3]</value>
+      <value>[freq,freq2]</value>
     </param>
   </block>
   <block>
@@ -1138,7 +1165,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 1268)</value>
+      <value>(616, 1588)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1151,33 +1178,6 @@
     <param>
       <key>value</key>
       <value>[samp_rate,samp_rate,samp_rate]</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(984, 1068)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>ifreq</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>FreqScheduler</value>
     </param>
   </block>
   <block>
@@ -1430,7 +1430,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1696, 1468)</value>
+      <value>(1744, 1468)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1453,7 +1453,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>"%.1f %.1f %.1f" % (metrics[0], metrics[1], metrics[2])</value>
+      <value>"%.1f %.1f %.1f" % (metrics[0], metrics[1])</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1582,7 +1582,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(304, 932)</value>
+      <value>(24, 1444)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1590,11 +1590,38 @@
     </param>
     <param>
       <key>id</key>
-      <value>pHz</value>
+      <value>pHz1</value>
     </param>
     <param>
       <key>value</key>
-      <value>riometer_helper.do_pHz_data(fast_pacer,fprate)</value>
+      <value>riometer_helper.do_pHz_data(fast_pacer,fprate,0)</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(24, 1372)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>pHz2</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>riometer_helper.do_pHz_data(fast_pacer,fprate,1)</value>
     </param>
   </block>
   <block>
@@ -1652,7 +1679,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 1196)</value>
+      <value>(856, 1660)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1816,7 +1843,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(104, 156)</value>
+      <value>(88, 92)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1886,7 +1913,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 1340)</value>
+      <value>(616, 1660)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1898,7 +1925,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>[tbw1,tbw2,tbw3]</value>
+      <value>[tbw1,tbw2]</value>
     </param>
   </block>
   <block>
@@ -1913,7 +1940,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 1788)</value>
+      <value>(16, 2244)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1940,7 +1967,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(184, 1788)</value>
+      <value>(104, 2244)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1953,33 +1980,6 @@
     <param>
       <key>value</key>
       <value>samp_rate if bw2 == 0 else bw2</value>
-    </param>
-  </block>
-  <block>
-    <key>variable</key>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(368, 1780)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>tbw3</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>samp_rate if bw3 == 0 else bw3</value>
     </param>
   </block>
   <block>
@@ -2037,7 +2037,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(608, 1132)</value>
+      <value>(440, 1068)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2303,7 +2303,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1448, 828)</value>
+      <value>(1448, 852)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2312,57 +2312,6 @@
     <param>
       <key>id</key>
       <value>blocks_add_const_vxx_0_0_0_0_0</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>1440</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_add_const_vxx</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value>1-minute data, spanning 24 hours</value>
-    </param>
-    <param>
-      <key>const</key>
-      <value>riometer_helper.minute_data(pacer,2)</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1496, 908)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_add_const_vxx_0_0_0_0_0_0</value>
     </param>
     <param>
       <key>type</key>
@@ -2414,57 +2363,6 @@
     <param>
       <key>id</key>
       <value>blocks_add_const_vxx_0_0_1</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>float</value>
-    </param>
-    <param>
-      <key>maxoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>minoutbuf</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>vlen</key>
-      <value>3600</value>
-    </param>
-  </block>
-  <block>
-    <key>blocks_add_const_vxx</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>const</key>
-      <value>riometer_helper.chart_Tsky(pacer,3600,2)</value>
-    </param>
-    <param>
-      <key>affinity</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>1</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1376, 516)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>blocks_add_const_vxx_0_0_1_0</value>
     </param>
     <param>
       <key>type</key>
@@ -2742,7 +2640,50 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(624, 464)</value>
+      <value>(264, 1236)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_complex_to_mag_squared_0_1</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>fftsize</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_complex_to_mag_squared</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(544, 440)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2794,6 +2735,61 @@
     <param>
       <key>id</key>
       <value>blocks_keep_m_in_n_0</value>
+    </param>
+    <param>
+      <key>m</key>
+      <value>3*fftsize</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>n</key>
+      <value>(4+(slow*1))*fftsize</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>offset</key>
+      <value>0</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_keep_m_in_n</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(88, 1060)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_keep_m_in_n_0_0</value>
     </param>
     <param>
       <key>m</key>
@@ -2942,6 +2938,57 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(456, 1276)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_keep_one_in_n_0_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>n</key>
+      <value>frate/20</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>fftsize</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_keep_one_in_n</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(64, 756)</value>
     </param>
     <param>
@@ -2993,7 +3040,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(544, 564)</value>
+      <value>(624, 564)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3155,6 +3202,57 @@
     <param>
       <key>id</key>
       <value>blocks_nlog10_ff_0_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>fftsize</value>
+    </param>
+    <param>
+      <key>k</key>
+      <value>-20*math.log10(fftsize)-10.0*math.log10(winsum/fftsize)-20*math.log10(1)</value>
+    </param>
+    <param>
+      <key>n</key>
+      <value>10</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_nlog10_ff</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(488, 1188)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_nlog10_ff_0_0_0_0</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -3440,6 +3538,57 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(64, 1156)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_stream_to_vector_0_1</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>num_items</key>
+      <value>fftsize</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_stream_to_vector</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(1072, 812)</value>
     </param>
     <param>
@@ -3648,7 +3797,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(24, 1696)</value>
+      <value>(24, 2136)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3695,7 +3844,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 1696)</value>
+      <value>(192, 2136)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3742,54 +3891,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(368, 1696)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>bw3</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Channel 3 Bandwidth</value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>hide</key>
-      <value>none</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>eng_float</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>0</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(48, 1504)</value>
+      <value>(64, 1944)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3836,7 +3938,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(224, 1504)</value>
+      <value>(240, 1944)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3883,7 +3985,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(400, 1504)</value>
+      <value>(544, 1776)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4017,6 +4119,57 @@
     </param>
   </block>
   <block>
+    <key>dc_blocker_xx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(440, 476)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>dc_blocker_xx_0_0_0</value>
+    </param>
+    <param>
+      <key>length</key>
+      <value>512</value>
+    </param>
+    <param>
+      <key>long_form</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>cc</value>
+    </param>
+  </block>
+  <block>
     <key>parameter</key>
     <param>
       <key>alias</key>
@@ -4032,7 +4185,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(368, 1064)</value>
+      <value>(368, 1456)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4079,7 +4232,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(112, 1152)</value>
+      <value>(112, 1544)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4107,7 +4260,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>rtl=0 file=/dev/zero,rate=5.0e6</value>
+      <value>rtl=0 file=/dev/zero,rate=5.0e6 rtl=1</value>
     </param>
   </block>
   <block>
@@ -4252,7 +4405,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(440, 380)</value>
+      <value>(440, 292)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4261,6 +4414,65 @@
     <param>
       <key>id</key>
       <value>fft_filter_xxx_0_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>nthreads</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>samp_delay</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>taps</key>
+      <value>filter_l2</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>ccc</value>
+    </param>
+  </block>
+  <block>
+    <key>fft_filter_xxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>decim</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(416, 540)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>fft_filter_xxx_0_0_1</value>
     </param>
     <param>
       <key>maxoutbuf</key>
@@ -4347,6 +4559,65 @@
     </param>
   </block>
   <block>
+    <key>fft_filter_xxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>decim</key>
+      <value>decim</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(256, 492)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>fft_filter_xxx_0_2</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>nthreads</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>samp_delay</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>taps</key>
+      <value>filter_l1</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>ccc</value>
+    </param>
+  </block>
+  <block>
     <key>blocks_probe_signal_vx</key>
     <param>
       <key>alias</key>
@@ -4375,6 +4646,45 @@
     <param>
       <key>id</key>
       <value>fft_probe</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>fftsize</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_probe_signal_vx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(664, 1204)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>fft_probe2</value>
     </param>
     <param>
       <key>type</key>
@@ -4512,6 +4822,69 @@
     </param>
   </block>
   <block>
+    <key>fft_vxx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>fft_size</key>
+      <value>fftsize</value>
+    </param>
+    <param>
+      <key>forward</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(56, 1208)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>fft_vxx_0_1</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>complex</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>nthreads</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>shift</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>window</key>
+      <value>win</value>
+    </param>
+  </block>
+  <block>
     <key>parameter</key>
     <param>
       <key>alias</key>
@@ -4527,7 +4900,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(360, 1608)</value>
+      <value>(360, 2048)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4601,7 +4974,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(48, 1416)</value>
+      <value>(64, 1856)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4648,7 +5021,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(184, 1416)</value>
+      <value>(200, 1856)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4695,54 +5068,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(344, 1416)</value>
-    </param>
-    <param>
-      <key>_rotation</key>
-      <value>0</value>
-    </param>
-    <param>
-      <key>id</key>
-      <value>freq3</value>
-    </param>
-    <param>
-      <key>label</key>
-      <value>Third Frequency</value>
-    </param>
-    <param>
-      <key>short_id</key>
-      <value></value>
-    </param>
-    <param>
-      <key>hide</key>
-      <value>none</value>
-    </param>
-    <param>
-      <key>type</key>
-      <value>eng_float</value>
-    </param>
-    <param>
-      <key>value</key>
-      <value>25.1e6</value>
-    </param>
-  </block>
-  <block>
-    <key>parameter</key>
-    <param>
-      <key>alias</key>
-      <value></value>
-    </param>
-    <param>
-      <key>comment</key>
-      <value></value>
-    </param>
-    <param>
-      <key>_enabled</key>
-      <value>True</value>
-    </param>
-    <param>
-      <key>_coordinate</key>
-      <value>(1048, 1512)</value>
+      <value>(904, 1752)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4789,7 +5115,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1048, 1608)</value>
+      <value>(888, 1848)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4836,7 +5162,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 172)</value>
+      <value>(0, 100)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -4867,7 +5193,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(360, 1240)</value>
+      <value>(360, 1672)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -5073,7 +5399,7 @@ the FFTs</value>
     </param>
     <param>
       <key>freq0</key>
-      <value>ifreq</value>
+      <value>freq</value>
     </param>
     <param>
       <key>gain_mode0</key>
@@ -5941,7 +6267,7 @@ the FFTs</value>
     </param>
     <param>
       <key>bw2</key>
-      <value>0</value>
+      <value>6e6</value>
     </param>
     <param>
       <key>dc_offset_mode2</key>
@@ -5953,7 +6279,7 @@ the FFTs</value>
     </param>
     <param>
       <key>freq2</key>
-      <value>100e6</value>
+      <value>freq2</value>
     </param>
     <param>
       <key>gain_mode2</key>
@@ -5969,7 +6295,7 @@ the FFTs</value>
     </param>
     <param>
       <key>gain2</key>
-      <value>10</value>
+      <value>igain</value>
     </param>
     <param>
       <key>ant30</key>
@@ -6350,7 +6676,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(0, 220)</value>
+      <value>(8, 152)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6434,7 +6760,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>nchan</key>
-      <value>2</value>
+      <value>3</value>
     </param>
     <param>
       <key>num_mboards</key>
@@ -6469,7 +6795,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(256, 1064)</value>
+      <value>(256, 1456)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -6716,7 +7042,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>name</key>
-      <value>"Spectrum: Bw ~=" + str(ebw)+"kHz"+",Fc=%.2f/%.2fMHz/%.2fMHz" % (freq/1.0e6, freq2/1.0e6,freq3/1.0e6)</value>
+      <value>"Spectrum: Bw ~=" + str(ebw)+"kHz"+",Fc=%.2f/%.2fMHz" % (freq/1.0e6, freq2/1.0e6)</value>
     </param>
     <param>
       <key>nconnections</key>
@@ -6991,7 +7317,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>nconnections</key>
-      <value>3</value>
+      <value>2</value>
     </param>
     <param>
       <key>ref_level</key>
@@ -7262,7 +7588,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>nconnections</key>
-      <value>3</value>
+      <value>2</value>
     </param>
     <param>
       <key>ref_level</key>
@@ -7368,7 +7694,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 1240)</value>
+      <value>(16, 1672)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7415,7 +7741,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(704, 1608)</value>
+      <value>(536, 1856)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7462,7 +7788,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(272, 1152)</value>
+      <value>(272, 1544)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7509,7 +7835,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 1608)</value>
+      <value>(192, 2048)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7556,7 +7882,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(376, 1328)</value>
+      <value>(720, 1760)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7603,7 +7929,7 @@ two SKY frequencies</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 1152)</value>
+      <value>(16, 1544)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -7659,9 +7985,9 @@ import signal
 FFTSIZE=2048
 
 #
-# Number of virtual channels
+# Number of channels
 #
-NCHAN=3
+NCHAN=2
 
 #
 # Size of the FFT median filter
@@ -7679,7 +8005,7 @@ frq_ndx = 0
 
 def do_freq_schedule(p,freqs):
     global schedule_counter
-    global frq_ndx
+    
 
     nv = frq_ndx + 1
     nv = nv % NCHAN
@@ -7751,7 +8077,7 @@ ealpha = -200.0
 last_eval_ndx = 0
 eval_hold_off = -1
 
-def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
+def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw,lndx):
     global avg_fft
     global exceeded_ocount
     global exceeded_mtime
@@ -7759,48 +8085,18 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
     global ealpha
     global fuzz_buffer_01
     global fuzz_buffer_04
-    global frq_ndx
     global last_eval_ndx
     global eval_hold_off
     global raw_fft
 
-
-    lndx = frq_ndx
 
     #
     # Handle buffer init/resize
     #
     if (len(avg_fft[lndx]) != len(infft)):
         avg_fft = [list(infft)]*NCHAN
-    #
-    # Skip some of the initial values coming in, since there's
-    #  unavoidable flow-graph latency that will render the first few
-    #  FFT frames we get somewhat ambiguous with respect to exactly
-    #  which frequency setting (frq_ndx) they belong to.  In *addition* to
-    #  that issue, the tuner produces glitches across the frequency transition.
-    #
-    # We do this whenever the frequency index changes
-    #
-    #
-    # The ignore time, in seconds
-    ignoretime = 0.400
+   
 
-    #
-    # Map this into counts, since we get called at prate Hz (more or less)
-    #
-    ignorecount = float(prate)*ignoretime
-    ignorecount = int(round(ignorecount))
-
-    #
-    # Detect frequency change
-    #
-    if (lndx != last_eval_ndx):
-        last_eval_ndx = lndx
-        eval_hold_off = ignorecount
-
-    if (eval_hold_off &gt; 0):
-        eval_hold_off = eval_hold_off - 1
-        return None
     
     #
     # We capture the "raw" FFT input here.
@@ -7814,7 +8110,7 @@ def signal_evaluator(infft,prefix,prate,swrate,corrs,ibw,tbw):
     #
     if (get_gated() == True):
         return
-    
+
     #
     # Possible to specify reduced bandwidth in analysis and
     #  power determination
@@ -8062,12 +8358,10 @@ seconds = 0
 fast_data_pHz = [[0.0,0.0]*300]*NCHAN
 fast_data_ndx = [0]*NCHAN
 
-def do_pHz_data(pacer,prate):
-    global frq_ndx
+def do_pHz_data(pacer,prate,lndx):
+    
     global fast_data_pHz
     global fast_data_ndx
-
-    lndx = frq_ndx
 
     fast_data_pHz[lndx][fast_data_ndx[lndx]] = [get_current_pwr(lndx),get_refval(lndx)]
     fast_data_ndx[lndx] += 1
@@ -8410,14 +8704,11 @@ peakhold = [[0.0]*FFTSIZE]*NCHAN
 auto_rst=100
 auto_init=False
 
-def handle_peak_hold(infft,ticks):
+def handle_peak_hold(infft,ticks,lndx):
     global auto_rst
     global peakhold
     global auto_init
-    global frq_ndx
-
-    lndx = frq_ndx
-
+    
     #
     # Setup inital auto_rst value
     #
@@ -9183,6 +9474,57 @@ def remove_fault(fname, prefix):
     <key>single_pole_iir_filter_xx</key>
     <param>
       <key>alpha</key>
+      <value>1.0-math.pow(math.e,-2.0*(2.0/frate))</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(248, 1300)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>single_pole_iir_filter_xx_0_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>vlen</key>
+      <value>fftsize</value>
+    </param>
+  </block>
+  <block>
+    <key>single_pole_iir_filter_xx</key>
+    <param>
+      <key>alpha</key>
       <value>1.0-(math.pow(math.e,-2.0*(0.25/drate)))</value>
     </param>
     <param>
@@ -9203,7 +9545,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(600, 508)</value>
+      <value>(640, 508)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9246,7 +9588,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(880, 1608)</value>
+      <value>(712, 1856)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9293,7 +9635,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(528, 1608)</value>
+      <value>(360, 1856)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9340,7 +9682,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(128, 1064)</value>
+      <value>(128, 1456)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9387,7 +9729,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(184, 1328)</value>
+      <value>(200, 1768)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9438,7 +9780,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(592, 616)</value>
+      <value>(608, 624)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9469,7 +9811,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(184, 1240)</value>
+      <value>(184, 1672)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9516,7 +9858,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(8, 1328)</value>
+      <value>(24, 1768)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9563,7 +9905,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(24, 1600)</value>
+      <value>(24, 2040)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9687,6 +10029,33 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(456, 668)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_sink_2_0</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>f_sky2</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(264, 548)</value>
     </param>
     <param>
@@ -9768,7 +10137,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(40, 612)</value>
+      <value>(40, 628)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -9876,6 +10245,33 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(32, 996)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_3_0</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>f_sky2</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(592, 676)</value>
     </param>
     <param>
@@ -9957,7 +10353,7 @@ def remove_fault(fname, prefix):
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 460)</value>
+      <value>(432, 380)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -10009,22 +10405,10 @@ def remove_fault(fname, prefix):
     <sink_key>1</sink_key>
   </connection>
   <connection>
-    <source_block_id>blocks_add_const_vxx_0_0_0_0_0_0</source_block_id>
-    <sink_block_id>qtgui_vector_sink_f_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>2</sink_key>
-  </connection>
-  <connection>
     <source_block_id>blocks_add_const_vxx_0_0_1</source_block_id>
     <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>1</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_add_const_vxx_0_0_1_0</source_block_id>
-    <sink_block_id>qtgui_vector_sink_f_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>2</sink_key>
   </connection>
   <connection>
     <source_block_id>blocks_add_const_vxx_0_1</source_block_id>
@@ -10057,6 +10441,12 @@ def remove_fault(fname, prefix):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_complex_to_mag_squared_0_1</source_block_id>
+    <sink_block_id>single_pole_iir_filter_xx_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_complex_to_mag_squared_1</source_block_id>
     <sink_block_id>single_pole_iir_filter_xx_1</sink_block_id>
     <source_key>0</source_key>
@@ -10069,6 +10459,12 @@ def remove_fault(fname, prefix):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_keep_m_in_n_0_0</source_block_id>
+    <sink_block_id>blocks_stream_to_vector_0_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_keep_one_in_n_0</source_block_id>
     <sink_block_id>virtual_sink_0</sink_block_id>
     <source_key>0</source_key>
@@ -10077,6 +10473,12 @@ def remove_fault(fname, prefix):
   <connection>
     <source_block_id>blocks_keep_one_in_n_0_0</source_block_id>
     <sink_block_id>blocks_nlog10_ff_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_keep_one_in_n_0_0_0</source_block_id>
+    <sink_block_id>blocks_nlog10_ff_0_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -10123,6 +10525,12 @@ def remove_fault(fname, prefix):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_nlog10_ff_0_0_0_0</source_block_id>
+    <sink_block_id>fft_probe2</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_stream_to_vector_0</source_block_id>
     <sink_block_id>fft_vxx_0</sink_block_id>
     <source_key>0</source_key>
@@ -10131,6 +10539,12 @@ def remove_fault(fname, prefix):
   <connection>
     <source_block_id>blocks_stream_to_vector_0_0</source_block_id>
     <sink_block_id>blocks_keep_one_in_n_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>blocks_stream_to_vector_0_1</source_block_id>
+    <sink_block_id>fft_vxx_0_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -10160,12 +10574,6 @@ def remove_fault(fname, prefix):
   </connection>
   <connection>
     <source_block_id>blocks_throttle_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_0_0_0_0_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_throttle_0</source_block_id>
     <sink_block_id>blocks_null_sink_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
@@ -10179,12 +10587,6 @@ def remove_fault(fname, prefix):
   <connection>
     <source_block_id>blocks_throttle_0_0</source_block_id>
     <sink_block_id>blocks_add_const_vxx_0_0_1</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>blocks_throttle_0_0</source_block_id>
-    <sink_block_id>blocks_add_const_vxx_0_0_1_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -10207,6 +10609,12 @@ def remove_fault(fname, prefix):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>dc_blocker_xx_0_0_0</source_block_id>
+    <sink_block_id>virtual_sink_2_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>fft_filter_xxx_0</source_block_id>
     <sink_block_id>fft_filter_xxx_0_0</sink_block_id>
     <source_key>0</source_key>
@@ -10225,8 +10633,20 @@ def remove_fault(fname, prefix):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>fft_filter_xxx_0_0_1</source_block_id>
+    <sink_block_id>dc_blocker_xx_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>fft_filter_xxx_0_1</source_block_id>
     <sink_block_id>fft_filter_xxx_0_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>fft_filter_xxx_0_2</source_block_id>
+    <sink_block_id>fft_filter_xxx_0_0_1</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -10243,6 +10663,12 @@ def remove_fault(fname, prefix):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>fft_vxx_0_1</source_block_id>
+    <sink_block_id>blocks_complex_to_mag_squared_0_1</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>osmosdr_source_0</source_block_id>
     <sink_block_id>fft_filter_xxx_0</sink_block_id>
     <source_key>0</source_key>
@@ -10255,6 +10681,12 @@ def remove_fault(fname, prefix):
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>osmosdr_source_0</source_block_id>
+    <sink_block_id>fft_filter_xxx_0_2</sink_block_id>
+    <source_key>2</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>single_pole_iir_filter_xx_0</source_block_id>
     <sink_block_id>blocks_keep_one_in_n_0</sink_block_id>
     <source_key>0</source_key>
@@ -10263,6 +10695,12 @@ def remove_fault(fname, prefix):
   <connection>
     <source_block_id>single_pole_iir_filter_xx_0_0</source_block_id>
     <sink_block_id>blocks_keep_one_in_n_0_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>single_pole_iir_filter_xx_0_0_0</source_block_id>
+    <sink_block_id>blocks_keep_one_in_n_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -10293,6 +10731,12 @@ def remove_fault(fname, prefix):
   <connection>
     <source_block_id>virtual_source_3</source_block_id>
     <sink_block_id>blocks_keep_m_in_n_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>virtual_source_3_0</source_block_id>
+    <sink_block_id>blocks_keep_m_in_n_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
