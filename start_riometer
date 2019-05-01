@@ -169,7 +169,7 @@ do
     #
     # Invoke riometer app
     #
-	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN" \
+	riometer_iv.py --device "rtl=SKY,buflen=$BUFLEN rtl=REF,buflen=$BUFLEN rtl=SKY2,buflen=$BUFLEN" \
 	   --freq $F1 --freq2 $F2  --corr1 "$CORR1" --corr2 "$CORR2"  \
 	   --tsys 400 --tsysref 400 \
 	  --reftemp $REFTEMP --reflevel $REFLEVEL --skylower $SKYLOWER --srate $SRATE --decim $DECIM \
